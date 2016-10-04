@@ -116,6 +116,10 @@ public class GodFoodFile {
 		return config.getInt(String.valueOf(food) + ".amount");
 	}
 	
+	public static List<String> GetEffects(int food) {
+		return config.getStringList(String.valueOf(food) + ".effects");
+	}
+	
 	public static List<PotionEffect> getPotionEffects(int food) {
 		List<PotionEffect> effects = new ArrayList<PotionEffect>();
 		String[] e;
