@@ -179,6 +179,19 @@ public class Main extends JavaPlugin{
 						}
 
 			});
+			PlaceholderAPI.registerPlaceholder(this, "rankup_progress",
+					new PlaceholderReplacer() {
+						@Override
+						public String onPlaceholderReplace(
+								PlaceholderReplaceEvent event) {
+							Player player = event.getPlayer();
+							double percentage = ((double)econ.getBalance(player) /
+									(getChallengesFile().getPrice(getPlayerManager().getRank(player) + 1) * (getPlayerManager().getPrestige(player) + 1))) * 100;
+							if(percentage > 100) percentage = 100;
+							return ChatColor.GRAY + "" + String.format("%.1f", percentage) + "%";
+						}
+
+			});
 		}
 		else getLogs().log("MVdWPlaceholderAPI is missing! Custom placeholders won't work!");
 		if (Bukkit.getPluginManager().isPluginEnabled("DeluxeChat")) {
