@@ -240,7 +240,7 @@ public class Main extends JavaPlugin{
 		ApplicableRegionSet arset = regionManager.getApplicableRegions(player.getLocation());
 		ProtectedRegion region = regionManager.getRegion("__global__");
 		int priority = -10000;
-		for(ProtectedRegion r : arset.getRegions()) {
+		for(ProtectedRegion r : arset.getRegions()) { 
 			if(r.getPriority() > priority) {
 				region = r;
 				priority = r.getPriority();
