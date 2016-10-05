@@ -1,7 +1,9 @@
 package com.nekrosius.asgardascension.commands;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -25,15 +27,18 @@ import com.nekrosius.asgardascension.utils.Pager;
 
 public class TribeCommand implements CommandExecutor {
 	
+	public static Map<String, Boolean> socialSpy;
+	
 	private Main pl;
 	public TribeCommand(Main plugin) {
 		pl = plugin;
+		socialSpy = new HashMap<String, Boolean>();
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		if(!(sender instanceof Player)){
-			sender.sendMessage(TribeManager.mh + "This command is available only for players!");
+			sender.sendMessage(TribeManager.mh + "This command is only available for players!");
 			return true;
 		}
 		Player player = (Player) sender;
@@ -64,11 +69,12 @@ public class TribeCommand implements CommandExecutor {
 					msg += args[i] + " ";
 				}
 				if(TribeManager.isLeader(player.getName())){
-					TribeManager.sendMessage(TribeManager.getPlayerTribe(player.getName()), 
+					TribeManager.sendChatMessage(TribeManager.getPlayerTribe(player.getName()), 
 							TribeManager.mh + "[" + ChatColor.GREEN + player.getName() + ChatColor.GRAY + "] " +
 							ChatColor.RED + msg);
-				}else{
-					TribeManager.sendMessage(TribeManager.getPlayerTribe(player.getName()), 
+				}
+				else {
+					TribeManager.sendChatMessage(TribeManager.getPlayerTribe(player.getName()), 
 							TribeManager.mh + "[" + ChatColor.RED + player.getName() + ChatColor.GRAY + "] " +
 							ChatColor.RED + msg);	
 				}
@@ -98,6 +104,21 @@ public class TribeCommand implements CommandExecutor {
 				tribe.delete();
 				player.sendMessage(TribeManager.mh + "You've disbanded your tribe!");
 				return true;
+			}
+			else if(args[0].equalsIgnoreCase("socialspy") || args[0].equalsIgnoreCase("ss")) {
+				if(!(player.hasPermission("asgardascension.admin") || player.hasPermission("asgardascension.staff"))) {
+					sender.sendMessage(Main.mh + "This command is only available for staff members!");
+					return true;
+				}
+				if(socialSpy.get(player.getName()) == null) {
+					socialSpy.put(player.getName(), true);
+					player.sendMessage(TribeManager.mh + "You've turned on Social Spy!");
+				}
+				else {
+					socialSpy.remove(player.getName());
+					player.sendMessage(TribeManager.mh + "You've turned off Social Spy!");
+				}
+				
 			}
 			else if(args[0].equalsIgnoreCase("list")) {
 				Pager pager = new Pager();

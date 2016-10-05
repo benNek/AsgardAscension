@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.commands.TribeCommand;
 import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.files.TribeFile;
 import com.nekrosius.asgardascension.objects.Tribe;
@@ -20,7 +22,7 @@ public class TribeManager {
 	private static List<Tribe> tribes = new ArrayList<Tribe>();
 	private static Map<String, Tribe> playerTribe = new HashMap<String, Tribe>();
 	
-	public static String mh = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard Tribes" + ChatColor.GRAY + "] ";
+	public static String mh = ChatColor.GRAY + "[" + ChatColor.RED + "Tribes" + ChatColor.GRAY + "] ";
 	
 	private Main pl;
 	public TribeManager(Main plugin) {
@@ -94,6 +96,35 @@ public class TribeManager {
 		for(String p : tribe.getMembers()) {
 			if(Bukkit.getPlayer(p) != null){
 				Bukkit.getPlayer(p).sendMessage(message);
+			}
+			else {
+				try {
+					Bukkit.getPlayer(UUID.fromString(p)).sendMessage(message);
+				}
+				catch (IllegalArgumentException e) {
+					
+				}
+			}
+		}
+	}
+	
+	public static void sendChatMessage(Tribe tribe, String message) {
+		for(String p : TribeCommand.socialSpy.keySet()) {
+			if(Bukkit.getPlayer(p) != null){
+				Bukkit.getPlayer(p).sendMessage(ChatColor.GRAY + "[" + ChatColor.RED + "SS" + ChatColor.GRAY + "]" + message);
+			}
+		}
+		for(String p : tribe.getMembers()) {
+			if(Bukkit.getPlayer(p) != null){
+				Bukkit.getPlayer(p).sendMessage(message);
+			}
+			else {
+				try {
+					Bukkit.getPlayer(UUID.fromString(p)).sendMessage(message);
+				}
+				catch (IllegalArgumentException e) {
+					
+				}
 			}
 		}
 	}
