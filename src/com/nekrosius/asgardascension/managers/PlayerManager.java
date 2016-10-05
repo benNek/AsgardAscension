@@ -65,6 +65,7 @@ public class PlayerManager {
 	}
 	
 	public int getTokens(Player player) {
+		if(player == null) return 0;
 		if(tokens.get(player.getName()) == null) return 0;
 		return tokens.get(player.getName());
 	}
