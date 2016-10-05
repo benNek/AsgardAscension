@@ -2,6 +2,7 @@ package com.nekrosius.asgardascension.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -97,8 +98,17 @@ public class Tribe {
 		this.balance = balance;
 	}
 
-	public String getLeader() {
+	public String getLeaderUUID() {
 		return leader;
+	}
+	
+	public String getLeader() {
+		try {
+			return Bukkit.getOfflinePlayer(UUID.fromString(getLeaderUUID())).getName();
+		}
+		catch (IllegalArgumentException e) {
+			return getLeaderUUID();
+		}
 	}
 
 	public void setLeader(String player) {
@@ -112,7 +122,14 @@ public class Tribe {
 	public void setMembers(List<String> members) {
 		this.members = members;
 		for(String member : members) {
-			TribeManager.setPlayerTribe(member, this);
+			String name;
+			try{
+				name = Bukkit.getOfflinePlayer(UUID.fromString(member)).getName();
+			}
+			catch (IllegalArgumentException e) {
+				name = member;
+			}
+			TribeManager.setPlayerTribe(name, this);
 		}
 	}
 	

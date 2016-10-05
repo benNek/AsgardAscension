@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -102,7 +104,14 @@ public class TribeFile {
 		saveConfig();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void setLeader(String name) {
+		try {
+			UUID.fromString(name);
+		}
+		catch (IllegalArgumentException e) {
+			name = Bukkit.getOfflinePlayer(name).getUniqueId().toString();
+		}
 		config.set("leader", name);
 		saveConfig();
 	}
@@ -112,8 +121,22 @@ public class TribeFile {
 		saveConfig();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void setMembers(List<String> members) {
-		config.set("members", members);
+		
+		// TODO REMOVE AFTER 2016/10/19
+		List<String> fixedMembers = new ArrayList<String>();
+		for(String member : members) {
+			try {
+				UUID.fromString(member);
+			}
+			catch (IllegalArgumentException e) {
+				member = Bukkit.getOfflinePlayer(member).getUniqueId().toString();
+			}
+			fixedMembers.add(member);
+		}
+		
+		config.set("members", fixedMembers);
 		saveConfig();
 	}
 	

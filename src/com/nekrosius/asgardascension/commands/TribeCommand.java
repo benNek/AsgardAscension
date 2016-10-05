@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -89,7 +90,7 @@ public class TribeCommand implements CommandExecutor {
 				}
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
 				if(!TribeManager.isLeader(player.getName())){
-					tribe.removeMember(player.getName());
+					tribe.removeMember(player.getUniqueId().toString());
 					TribeManager.sendMessage(tribe, TribeManager.mh + ChatColor.RED + player.getName() + ChatColor.GRAY + " has left your tribe!");
 					player.sendMessage(TribeManager.mh + "You've left your tribe!");
 					return true;
@@ -201,8 +202,8 @@ public class TribeCommand implements CommandExecutor {
 				String name = args[1];
 				player.sendMessage(TribeManager.mh + "You've created new Tribe named " + ChatColor.RED + name);
 				Tribe tribe = new Tribe(name);
-				tribe.setLeader(player.getName());
-				tribe.addMember(player.getName());
+				tribe.setLeader(player.getUniqueId().toString());
+				tribe.addMember(player.getUniqueId().toString());
 				tribe.setType("aesir");
 				TribeManager.addTribe(tribe);
 				TribeFile.createConfig(name);
@@ -273,10 +274,10 @@ public class TribeCommand implements CommandExecutor {
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
 				target.sendMessage(TribeManager.mh + "You've been kicked from tribe!");
 				player.sendMessage(TribeManager.mh + "You've kicked " + ChatColor.RED + args[1] + ChatColor.GRAY + " from your tribe!");
-				tribe.removeMember(target.getName());
+				tribe.removeMember(target.getUniqueId().toString());
 				TribeManager.sendMessage(tribe, TribeManager.mh + ChatColor.RED + args[1] + ChatColor.GRAY + " has been kicked from your tribe!");
 				TribeFile.createConfig(tribe.getName());
-				TribeFile.removeMember(target.getName());
+				TribeFile.removeMember(target.getUniqueId().toString());
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("promote")){
@@ -294,7 +295,7 @@ public class TribeCommand implements CommandExecutor {
 					return true;
 				}
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
-				tribe.setLeader(target.getName());
+				tribe.setLeader(target.getUniqueId().toString());
 				target.sendMessage(TribeManager.mh + "You're new leader of your tribe!");
 				TribeManager.sendMessage(tribe, TribeManager.mh + ChatColor.RED + target.getName() + ChatColor.GRAY + " is new leader of your tribe!");
 				TribeFile.createConfig(tribe.getName());
@@ -313,10 +314,10 @@ public class TribeCommand implements CommandExecutor {
 				}
 				TribeManager.sendMessage(tribe, ChatColor.RED + player.getName() + ChatColor.GRAY + " has joined your tribe!");
 				tribe.removeInvite(player.getName());
-				tribe.addMember(player.getName());
+				tribe.addMember(player.getUniqueId().toString());
 				player.sendMessage(TribeManager.mh + "You've joined " + ChatColor.RED + tribe.getName());
 				TribeFile.createConfig(tribe.getName());
-				TribeFile.addMember(player.getName());
+				TribeFile.addMember(player.getUniqueId().toString());
 			}
 			else if(args[0].equalsIgnoreCase("decline")){
 				if(TribeManager.getTribe(args[1]) == null) {
@@ -337,9 +338,9 @@ public class TribeCommand implements CommandExecutor {
 					return true;
 				}
 				Tribe tribe = TribeManager.getTribe(args[1]);
-				player.sendMessage(ChatColor.GRAY + "" + ChatColor.BOLD + "▲▼▲▼▲▼▲▼▲▼▲▼▲▼");
+				
 				player.sendMessage(ChatColor.BOLD + tribe.getName());
-				player.sendMessage(ChatColor.GRAY + "" + ChatColor.BOLD + "▲▼▲▼▲▼▲▼▲▼▲▼▲▼");
+				player.sendMessage(ChatColor.GRAY + "" + ChatColor.BOLD + "------------------------------------");
 				player.sendMessage(ChatColor.GRAY + "Balance: " + ChatColor.RED + tribe.getBalance());
 			}
 			else if(args[0].equalsIgnoreCase("pay")) {
@@ -606,9 +607,17 @@ public class TribeCommand implements CommandExecutor {
 			TribeManager.sendMessage(tribe, ChatColor.RED + "Good luck playing (BenRush)!");
 			tribe.setLevel(5);
 		}
-		player.sendMessage(ChatColor.GRAY + "" + ChatColor.BOLD + "▲▼▲▼▲▼▲▼▲▼▲▼▲▼");
-		player.sendMessage(ChatColor.BOLD + tribe.getName() + ChatColor.GRAY + " ▲ " + tribe.getType());
-		player.sendMessage(ChatColor.GRAY + "" + ChatColor.BOLD + "▲▼▲▼▲▼▲▼▲▼▲▼▲▼");
+		
+		int titleLength = tribe.getName().length();
+		
+		String scores = "";
+		for(int i = 0; i < titleLength + 4; i++) scores += '-';
+		String title = "    " + tribe.getName() + "  ";
+		
+		player.sendMessage(ChatColor.GRAY + "" + ChatColor.BOLD + "/" + scores + "\\");
+		player.sendMessage(ChatColor.BOLD + title);
+		player.sendMessage(ChatColor.GRAY + "" + ChatColor.BOLD + "\\" + scores + "/");
+		player.sendMessage(ChatColor.GRAY + "Type: " + ChatColor.RED + WordUtils.capitalize(tribe.getType()));
 		player.sendMessage(ChatColor.GRAY + "Leader: " + ChatColor.RED + tribe.getLeader());
 		player.sendMessage(ChatColor.GRAY + "Level: " + ChatColor.RED + tribe.getLevel());
 		player.sendMessage(ChatColor.GRAY + "Balance: " + ChatColor.RED + tribe.getBalance());
