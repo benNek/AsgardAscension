@@ -324,11 +324,6 @@ public class PlayerListener implements Listener {
 		}
 	}
 	
-	@EventHandler
-	public void onIgnite(ExplosionPrimeEvent event) {
-		event.setCancelled(true);
-	}
-	
 	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onExplode(EntityExplodeEvent event) {
 		if(event.getEntityType().equals(EntityType.PRIMED_TNT)) {
