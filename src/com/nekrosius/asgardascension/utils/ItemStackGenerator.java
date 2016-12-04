@@ -68,6 +68,20 @@ public class ItemStackGenerator {
 		return item;
 	}
 	
+	public static ItemStack createItem(ItemStack item, String name, List<String> lore) {
+		ItemMeta meta = item.getItemMeta();
+		if(name != null){
+			meta.setDisplayName(name);
+		}
+		if(lore != null){
+			if(!lore.isEmpty()){
+				meta.setLore(lore);
+			}
+		}
+		item.setItemMeta(meta);
+		return item;
+	}
+	
 	public static boolean isHelmet(ItemStack item) {
 		if(item.getType().equals(Material.LEATHER_HELMET)) return true;
 		else if(item.getType().equals(Material.IRON_HELMET)) return true;
@@ -133,7 +147,19 @@ public class ItemStackGenerator {
 		if(item.getType().equals(Material.GOLD_HOE)) return true;
 		if(item.getType().equals(Material.DIAMOND_HOE)) return true;
 		
+		// SWORD
+		if(item.getType().equals(Material.WOOD_SWORD)) return true;
+		if(item.getType().equals(Material.STONE_SWORD)) return true;
+		if(item.getType().equals(Material.IRON_SWORD)) return true;
+		if(item.getType().equals(Material.GOLD_SWORD)) return true;
+		if(item.getType().equals(Material.DIAMOND_SWORD)) return true;
+		
 		return false;
+	}
+	
+	public static boolean isRepairable(ItemStack item) {
+		if(item.getType().equals(Material.AIR)) return false;
+		return isTool(item) || isHelmet(item) || isChestplate(item) || isLeggings(item) || isBoots(item);
 	}
 	
 	private static ItemStack removeAttributes(ItemStack item) {

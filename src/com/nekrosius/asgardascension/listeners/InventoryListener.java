@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.inventory.ItemStack;
 
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.challenges.ChallengeSetup;
@@ -20,6 +21,7 @@ import com.nekrosius.asgardascension.files.RagnorakFile;
 import com.nekrosius.asgardascension.handlers.FoodSetup;
 import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.handlers.Ragnorak;
+import com.nekrosius.asgardascension.inventories.GodTokensInventory;
 import com.nekrosius.asgardascension.inventories.MainInventory;
 import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.objects.GodToken;
@@ -37,9 +39,9 @@ public class InventoryListener implements Listener {
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
+		Player player = (Player) event.getWhoClicked();
 		if(event.getCurrentItem() == null) return;
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Asgard Ascension")) {
-			Player player = (Player) event.getWhoClicked();
 			event.setCancelled(true);
 			if(event.getCurrentItem().getType().equals(Material.NETHER_STAR)){
 				MainInventory.setupChallengesInventory(player);
@@ -57,7 +59,6 @@ public class InventoryListener implements Listener {
 			}
 		}
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Rank-Up")) { 
-			Player player = (Player) event.getWhoClicked();
 			event.setCancelled(true);
 			if(event.getCurrentItem().getType().equals(Material.DIAMOND_HELMET)) {
 				pl.getChallenges().startChallenge(player);
@@ -78,7 +79,6 @@ public class InventoryListener implements Listener {
 			}
 		}
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Rank-ups and Challenges")) {
-			Player player = (Player) event.getWhoClicked();
 			event.setCancelled(true);
 			if(ChallengeSetup.getStep(player) > 0){
 				player.sendMessage(pl.getChallenges().mh + "You are already in ChallengeSetup of challenge!");
@@ -92,7 +92,6 @@ public class InventoryListener implements Listener {
 			}
 		}
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Ragnorak")) {
-			Player player = (Player) event.getWhoClicked();
 			event.setCancelled(true);
 			if(event.getCurrentItem().getType().equals(Material.LEVER)) {
 				player.closeInventory();
@@ -119,7 +118,6 @@ public class InventoryListener implements Listener {
 			}
 		}
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Challenge type")) {
-			Player player = (Player) event.getWhoClicked();
 			event.setCancelled(true);
 			if(event.getCurrentItem().getType().equals(Material.GOLD_BOOTS)){
 				player.closeInventory();
@@ -199,7 +197,6 @@ public class InventoryListener implements Listener {
 				e.printStackTrace();
 				return;
 			}
-			Player player = (Player) event.getWhoClicked();
 			if(event.getCurrentItem().getType().equals(Material.IRON_BARDING)){
 				pl.getChallenges().setTesting(player, true);
 				pl.getChallenges().setChallenge(player, challenge);
@@ -312,7 +309,6 @@ public class InventoryListener implements Listener {
 		}
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Food of the Gods")) {
 			event.setCancelled(true);
-			Player player = (Player) event.getWhoClicked();
 			if(FoodSetup.getStep(player) > 0) {
 				player.sendMessage(FoodSetup.mh + "You are already in setup of Food of the Gods!");
 				return;
@@ -331,7 +327,6 @@ public class InventoryListener implements Listener {
 		}
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Edit Food of the Gods")) {
 			event.setCancelled(true);
-			Player player = (Player) event.getWhoClicked();
 			if(event.getSlotType().equals(SlotType.CONTAINER)){
 				MainInventory.setupFoodEditMenu(player, event.getSlot() + 1);
 			}
@@ -354,7 +349,6 @@ public class InventoryListener implements Listener {
 				e.printStackTrace();
 				return;
 			}
-			Player player = (Player) event.getWhoClicked();
 			if(event.getCurrentItem().getType().equals(Material.PAPER)) {
 				player.closeInventory();
 				FoodSetup.setEditing(player, true);
@@ -411,7 +405,6 @@ public class InventoryListener implements Listener {
 		}
 		else if(event.getInventory().getName().equals(ChatColor.BOLD + "Select Tribe Type")) {
 			event.setCancelled(true);
-			Player player = (Player) event.getWhoClicked();
 			Tribe tribe = TribeManager.getPlayerTribe(player.getName());
 			if(event.getCurrentItem().getType().equals(Material.DIAMOND_SWORD)){
 				player.closeInventory();
@@ -428,14 +421,13 @@ public class InventoryListener implements Listener {
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "God Tokens Type")) {
 			event.setCancelled(true);
 			if(event.getCurrentItem().getItemMeta() == null) return;
-			Player player = (Player) event.getWhoClicked();
 			int tokens = pl.getPlayerManager().getTokens(player);
 			if(event.getCurrentItem().getType().equals(Material.BOOK)) {
 				return;
 			}
 			else if(event.getCurrentItem().getType().equals(Material.STONE_SPADE)) {
 				player.closeInventory();
-				if(!MainInventory.canBuyPlot(player)) {
+				if(!GodTokensInventory.canBuyPlot(player)) {
 					player.sendMessage(GodTokens.mh + "No more upgrades!");
 					return;
 				}
@@ -458,8 +450,11 @@ public class InventoryListener implements Listener {
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "cr givekey " + player.getName() + " key 1");
 				player.sendMessage(GodTokens.mh + "You've bought a crate!");
 			}
+			else if(event.getCurrentItem().getType().equals(Material.ANVIL)) {
+				GodTokensInventory.setupRepairMenu(player);
+			}
 			else {
-				MainInventory.setupTokensShopMenu((Player) event.getWhoClicked(),
+				GodTokensInventory.setupTokensShopMenu((Player) event.getWhoClicked(),
 						TokenType.valueOf(event.getCurrentItem().getItemMeta().getDisplayName().substring(2).toUpperCase()));
 			}
 		}
@@ -468,7 +463,7 @@ public class InventoryListener implements Listener {
 			event.setCancelled(true);
 			if(event.getCurrentItem().getItemMeta() == null) return;
 			if(event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
-				MainInventory.setupTokensMenu((Player) event.getWhoClicked());
+				GodTokensInventory.setupTokensMenu((Player) event.getWhoClicked());
 				return;
 			}
 			GodToken token = GodTokens.findToken(event.getCurrentItem().getItemMeta().getDisplayName().substring(2));
@@ -488,7 +483,7 @@ public class InventoryListener implements Listener {
 				GodTokens.startSkill(event.getWhoClicked().getName(), token);
 			}
 			else {
-				MainInventory.setupTokensDurationMenu((Player) event.getWhoClicked(), token);
+				GodTokensInventory.setupTokensDurationMenu((Player) event.getWhoClicked(), token);
 			}
 		}
 		// GOD TOKEN DURATION
@@ -497,10 +492,9 @@ public class InventoryListener implements Listener {
 			if(event.getCurrentItem().getItemMeta() == null) return;
 			GodToken token = GodTokens.findToken(event.getInventory().getName().substring(6));
 			if(event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
-				MainInventory.setupTokensShopMenu((Player) event.getWhoClicked(), token.getType());
+				GodTokensInventory.setupTokensShopMenu((Player) event.getWhoClicked(), token.getType());
 				return;
 			}
-			Player player = (Player) event.getWhoClicked();
 			if(event.getCurrentItem().getType().equals(Material.PAPER)) {
 				player.closeInventory();
 				if(pl.getPlayerManager().getTokens(player) < token.getTempPrice()) {
@@ -522,6 +516,48 @@ public class InventoryListener implements Listener {
 				player.sendMessage(GodTokens.mh + "You've permanently bought " + ChatColor.RED + token.getName() + ChatColor.GRAY + " ability!");
 			}
 			
+		}
+		// GOD TOKEN REPAIR MENU
+		else if(event.getInventory().getName().equals(ChatColor.BOLD + "Repair Menu")) {
+			if(event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
+				GodTokensInventory.setupTokensMenu((Player) event.getWhoClicked());
+				return;
+			}
+			else if(event.getCurrentItem().getType().equals(Material.STRING)) {
+				player.closeInventory();
+				player.sendMessage(GodTokens.mh + event.getCurrentItem().getItemMeta().getDisplayName());
+			}
+			else if(event.getCurrentItem().hasItemMeta()
+					&& event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Repair item in main hand")) {
+				player.closeInventory();
+				if(pl.getPlayerManager().hasTokens(player, 1)) {
+					player.sendMessage(GodTokens.mh + "Your item in hand was successfully repaired!");
+					pl.getPlayerManager().withdrawTokens(player, 1);
+					player.getInventory().getItemInMainHand().setDurability((short)0);
+				}
+				else {
+					player.sendMessage(GodTokens.mh + "You don't have enough GT! It costs" + ChatColor.RED + " 1 GT");
+				}
+			}
+			else if(event.getCurrentItem().getType().equals(Material.CHEST)) {
+				player.closeInventory();
+				if(pl.getPlayerManager().hasTokens(player, 5)) {
+					for (ItemStack item : player.getInventory().getContents()) {
+	                    if (item != null) {
+	                        if (ItemStackGenerator.isRepairable(item))
+	                            item.setDurability((short) 0);
+	                    }
+	                }
+	                for (ItemStack item : player.getInventory().getArmorContents()) {
+	                    if (item != null)
+	                        item.setDurability((short) 0);
+	                }
+	                player.sendMessage(GodTokens.mh + "All items in your inventory were successfully repaired!");
+				}
+				else {
+					player.sendMessage(GodTokens.mh + "You don't have enough GT! It costs" + ChatColor.RED + " 5 GT");
+				}
+			}
 		}
 		
 		// CHALLENGES MENU

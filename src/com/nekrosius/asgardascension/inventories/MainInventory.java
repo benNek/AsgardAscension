@@ -10,10 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import com.nekrosius.asgardascension.Main;
-import com.nekrosius.asgardascension.enums.TokenType;
 import com.nekrosius.asgardascension.files.GodFoodFile;
-import com.nekrosius.asgardascension.handlers.GodTokens;
-import com.nekrosius.asgardascension.objects.GodToken;
 import com.nekrosius.asgardascension.utils.Convert;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
@@ -37,54 +34,6 @@ public class MainInventory {
 				ChatColor.LIGHT_PURPLE + "I can buy anything!",
 				Arrays.asList(	ChatColor.RED 	+ "Skip the challenge by",
 								ChatColor.RED + "paying 2 times more!")));
-		player.openInventory(inv);
-	}
-	
-	public static void setupTokensDurationMenu(Player player, GodToken token) {
-		Inventory inv = Bukkit.createInventory(player, 9, ChatColor.BOLD + "BUY " + token.getName());
-		inv.setItem(2, ItemStackGenerator.createItem(Material.PAPER, 0, 0, ChatColor.RED + "Temporary (" + ChatColor.GOLD + token.getTempPrice() + " tokens"  + ChatColor.RED + ")", null));
-		inv.setItem(4, ItemStackGenerator.createItem(token.getIcon(), 0, 0, ChatColor.RED + token.getName(), token.getDescription(), true));
-		inv.setItem(6, ItemStackGenerator.createItem(Material.BOOK, 0, 0, ChatColor.RED + "Permanent (" + ChatColor.GOLD + token.getPermPrice() + " tokens"  + ChatColor.RED + ")", null));
-		inv.setItem(8, ItemStackGenerator.createItem(Material.REDSTONE_BLOCK, 0, 0, ChatColor.RED + "Go back!", null));
-		player.openInventory(inv);
-	}
-	
-	public static void setupTokensShopMenu(Player player, TokenType type) {
-		Inventory inv = Bukkit.createInventory(player, 9, ChatColor.BOLD + "God Tokens");
-		for(GodToken token : GodTokens.tokens) {
-			if(token.getType().equals(type)) {
-				inv.addItem(ItemStackGenerator.createItem(token.getIcon(),
-						0, 0, ChatColor.LIGHT_PURPLE + token.getName(),
-						token.getDescription(), true));
-			}
-		}
-		inv.setItem(8, ItemStackGenerator.createItem(Material.REDSTONE_BLOCK, 0, 0, ChatColor.RED + "Go back!", null));
-		player.openInventory(inv);
-	}
-	
-	public static void setupTokensMenu(Player player) {
-		Inventory inv = Bukkit.createInventory(player, 9, ChatColor.BOLD + "God Tokens Type");
-		inv.setItem(0, ItemStackGenerator.createItem(Material.BOOK, 0, 0,
-				ChatColor.GRAY + "God Tokens: " + ChatColor.RED + plugin.getPlayerManager().getTokens(player), null));
-		inv.setItem(8, ItemStackGenerator.createItem(Material.BOOK, 0, 0,
-				ChatColor.GRAY + "God Tokens: " + ChatColor.RED + plugin.getPlayerManager().getTokens(player), null));
-		
-		if(canBuyPlot(player)) {
-			inv.setItem(2, ItemStackGenerator.createItem(Material.STONE_SPADE, 0, 0, ChatColor.LIGHT_PURPLE + "Additional plot access", 
-					Arrays.asList(	ChatColor.GRAY + "Price: " + ChatColor.RED + "25 god tokens"), true));
-		}
-
-		//inv.setItem(2, ItemStackGenerator.createItem(Material.CHEST, 0, 0, ChatColor.LIGHT_PURPLE + "Donator rank", 
-		//		Arrays.asList(ChatColor.GREEN + "Price: " + ChatColor.RED + "8 god tokens")));
-		inv.setItem(6, ItemStackGenerator.createItem(Material.CHEST, 0, 0, ChatColor.LIGHT_PURPLE + "Crate", 
-				Arrays.asList(ChatColor.GREEN + "Price: " + ChatColor.RED + "8 god tokens")));
-		Material values[] = {Material.GOLD_SWORD, Material.GOLD_PICKAXE, Material.DOUBLE_PLANT};
-		int i = 0;
-		for(TokenType type : TokenType.values()) {
-			inv.setItem(i + 3, ItemStackGenerator.createItem(values[i], 0, 0,
-					ChatColor.LIGHT_PURPLE + type.name(), null, true));
-			i++;
-		}
 		player.openInventory(inv);
 	}
 	
@@ -285,10 +234,6 @@ public class MainInventory {
 		inv.setItem(12, ItemStackGenerator.createItem(Material.MONSTER_EGG, 0, 65, ChatColor.DARK_GRAY + "Bat", null));
 		inv.setItem(13, ItemStackGenerator.createItem(Material.MONSTER_EGG, 0, 66, ChatColor.DARK_PURPLE + "Witch", null));
 		player.openInventory(inv);
-	}
-	
-	public static boolean canBuyPlot(Player player) {
-		return !player.hasPermission("plots.plot.2");
 	}
 	
 	public static int getInventorySize(int items) {

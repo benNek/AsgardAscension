@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.handlers.GodTokens;
-import com.nekrosius.asgardascension.inventories.MainInventory;
+import com.nekrosius.asgardascension.inventories.GodTokensInventory;
 
 public class TokenCommand implements CommandExecutor {
 	
@@ -116,7 +116,7 @@ public class TokenCommand implements CommandExecutor {
 				player.sendMessage(GodTokens.mh + "Your current God Token is being used! Wait for it to end!");
 				return true;
 			}
-			MainInventory.setupTokensMenu(player);
+			GodTokensInventory.setupTokensMenu(player);
 		}
 		return true;
 	}

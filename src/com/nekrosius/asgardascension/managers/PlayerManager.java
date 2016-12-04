@@ -74,6 +74,18 @@ public class PlayerManager {
 		this.tokens.put(player.getName(), tokens);
 	}
 	
+	public void withdrawTokens(Player player, int tokens) {
+		this.tokens.put(player.getName(), this.tokens.get(player.getName()) - tokens);
+	}
+	
+	public void addTokens(Player player, int tokens) {
+		this.tokens.put(player.getName(), this.tokens.get(player.getName()) + tokens);
+	}
+	
+	public boolean hasTokens(Player player, int tokens) {
+		return this.tokens.get(player.getName()) >= tokens;
+	}
+	
 	public List<String> getPurchasedTokens(Player player) {
 		return purchased.get(player.getName());
 	}
