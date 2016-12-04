@@ -525,7 +525,7 @@ public class InventoryListener implements Listener {
 			}
 			else if(event.getCurrentItem().getType().equals(Material.STRING)) {
 				player.closeInventory();
-				player.sendMessage(GodTokens.mh + event.getCurrentItem().getItemMeta().getDisplayName());
+				player.sendMessage(GodTokens.mh + event.getCurrentItem().getItemMeta().getDisplayName().substring(2));
 			}
 			else if(event.getCurrentItem().hasItemMeta()
 					&& event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Repair item in main hand")) {
