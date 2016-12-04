@@ -1,0 +1,46 @@
+name: AsgardAscension
+author: benNek
+version: 1.02
+main: com.nekrosius.asgardascension.Main
+depend: [Vault, WorldGuard]
+softdepend: [DeluxeChat]
+commands:
+    asgardascension:
+        aliases: [aa, asg]
+        usage: /<command>
+        description: Main command
+    rankup:
+        usage: /<command>
+        description: Telepors to rankup area
+    tribe:
+        aliases: [t]
+        usage: /<command>
+        description: Main command of tribe
+    token:
+        aliases: [tokens]
+        usage: /<command>
+        description: Brings up tokens' menu
+    prestige:
+        usage: /<command>
+        description: Resets rank and gives gold star
+    ragnorak:
+        usage: /<command>
+        description: Used by player to vote for Ragnorak
+    rank:
+        usage: /<command>
+        description: Sets rank of the player
+    fog:
+        aliases: [foodofgoods]
+        usage: /<command>
+        description: Shows a list of fog items
+    challenge:
+        aliases: [challenges]
+        usage: /<command>
+        description: Shows a list of all challenges
+permissions:
+    asgardascension.admin:
+        description: Allows to use /aa
+        default: op
+    asgardascension.staff:
+        description: Gives staff permission
+        default: op
