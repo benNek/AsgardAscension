@@ -552,6 +552,7 @@ public class InventoryListener implements Listener {
 	                    if (item != null)
 	                        item.setDurability((short) 0);
 	                }
+	                pl.getPlayerManager().withdrawTokens(player, 5);
 	                player.sendMessage(GodTokens.mh + "All items in your inventory were successfully repaired!");
 				}
 				else {
