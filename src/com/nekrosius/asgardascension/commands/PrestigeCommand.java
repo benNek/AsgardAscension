@@ -29,6 +29,18 @@ public class PrestigeCommand implements CommandExecutor {
 		}
 		Player player = (Player) sender;
 		
+		if(args.length == 1) {
+			if(args[0].equalsIgnoreCase("location")) {
+				if(!sender.hasPermission("asgardascension.admin")){
+					sender.sendMessage(Main.mh + "This command is available only for OPs!");
+					return true;
+				}
+				ConfigFile.setPrestigeLocation(Convert.LocationToString(player.getLocation(), true));
+				player.sendMessage(Main.mh + "You've succesfully added prestige teleport location!");
+				return true;
+			}
+		}
+		
 		if(pl.getPlayerManager().getRank(player) != pl.getChallengesFile().getChallengesAmount()) {
 			player.sendMessage(mh + "Your Rank is too low for Prestige! Maximum Rank level is "
 					+ ChatColor.RED + pl.getChallengesFile().getChallengesAmount());
@@ -51,6 +63,7 @@ public class PrestigeCommand implements CommandExecutor {
 				pl.getPlayerManager().setPrestige(player, pl.getPlayerManager().getPrestige(player) + 1, PrestigeType.SELF);
 				pl.getPlayerManager().setRank(player, 0);
 				pl.getPlayerManager().setTokens(player, pl.getPlayerManager().getTokens(player) + ConfigFile.getTokensReward());
+				player.teleport(ConfigFile.getPrestigeLocation());
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user " + player.getName() + " group remove Odin");
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user " + player.getName() + " group add A");
 				String comm = ConfigFile.getPrestigeCommand();

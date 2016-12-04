@@ -5,14 +5,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.utils.Convert;
 
 public class ConfigFile {
 	
-	File file;
+	static File file;
 	public static FileConfiguration config;
 
 	private Main pl;
@@ -30,6 +32,7 @@ public class ConfigFile {
 		if(!file.exists()){
 			config.addDefault("prestige.tokens_reward", 2);
 			config.addDefault("prestige.command", "give %player dirt");
+			config.addDefault("prestige.location", "world, 0, 0, 0, 0, 0");
 			config.addDefault("rankup.max_prestige", 2);
 			config.addDefault("rankup.fight_max_mobs", 20);
 			List<String> cmds = new ArrayList<String>();
@@ -74,7 +77,7 @@ public class ConfigFile {
 		saveConfig();
 	}
 	
-	public void saveConfig()
+	public static void saveConfig()
 	{
 		try {
 			config.save(file);
@@ -117,6 +120,15 @@ public class ConfigFile {
 	
 	public static List<String> getLuckyCommandMessages() {
 		return config.getStringList("lucky_blocks.messages");
+	}
+	
+	public static Location getPrestigeLocation() {
+		return Convert.StringToLocation(config.getString("prestige.location"));
+	}
+	
+	public static void setPrestigeLocation(String location) {
+		config.set("prestige.location", location);
+		saveConfig();
 	}
 	
 	public Main getPlugin() {
