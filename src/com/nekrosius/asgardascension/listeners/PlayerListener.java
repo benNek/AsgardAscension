@@ -1,9 +1,6 @@
 package com.nekrosius.asgardascension.listeners;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -20,19 +17,16 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -43,8 +37,6 @@ import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.managers.TribeManager;
-import com.nekrosius.asgardascension.objects.Tribe;
-import com.nekrosius.asgardascension.utils.Cooldowns;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
 public class PlayerListener implements Listener {
@@ -327,102 +319,7 @@ public class PlayerListener implements Listener {
 		if(event.getItemDrop().getItemStack().getType().equals(Material.GOLD_SWORD)) {
 			if(event.getItemDrop().getItemStack().getItemMeta().getDisplayName() == null) return;
 			if(event.getItemDrop().getItemStack().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Ultimate Skill")){
-				event.setCancelled(true);
-			}
-		}
-	}
-	
-	@EventHandler
-	public void onInteract(PlayerInteractEvent event) {
-		if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			if(event.getPlayer().getInventory().getItemInMainHand() == null) {
-				return;
-			}
-			if(!event.getPlayer().isSneaking()){
-				return;
-			}
-			if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.WOOD_SWORD) 
-					|| event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.STONE_SWORD) 
-					|| event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_SWORD)
-					|| event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.DIAMOND_SWORD) ) {
-				Player player = event.getPlayer();
-				event.setCancelled(true);
-				if(!Main.isPVPEnabled(player)) {
-					return;
-				}
-				if(!TribeManager.hasTribe(player.getName())){
-					return;
-				}
-				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
-				if(Cooldowns.getCooldown(player, "action") <= 0) {
-					if(tribe.getLevel() == 2) {
-						player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 300, 0));
-						Cooldowns.setCooldown(player, "action", 7200000);
-						player.sendMessage(TribeManager.mh + "You've used Tribe's Action skill!");
-					}
-					else if(tribe.getLevel() == 3) {
-						player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 300, 0));
-						player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 300, 0));
-						Cooldowns.setCooldown(player, "action", 7200000);
-						player.sendMessage(TribeManager.mh + "You've used Tribe's Action skill!");
-					}
-					else if(tribe.getLevel() == 4) {
-						player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 600, 0));
-						player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 0));
-						player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 600, 0));
-						Cooldowns.setCooldown(player, "action", 7200000);
-						player.sendMessage(TribeManager.mh + "You've used Tribe's Action skill!");
-					}
-					else if(tribe.getLevel() == 5) {
-						player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 1200, 1));
-						player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 1200, 1));
-						Cooldowns.setCooldown(player, "action", 7200000);
-						player.sendMessage(TribeManager.mh + "You've used Tribe's Action skill!");
-					}
-				}else{
-					player.sendMessage(TribeManager.mh + "You can use Tribe's Action skill in " + Cooldowns.getCooldown(player, "action") / 60000 + " min.");
-				}
-			}
-			else if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.GOLD_SWORD)) {
-				if(!(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Ultimate Skill"))){
-					return;
-				}
-				if(!TribeManager.hasTribe(event.getPlayer().getName())) {
-					return;
-				}
-				if(!Main.isPVPEnabled(event.getPlayer())) {
-					return;
-				}
-				Player player = event.getPlayer();
-				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
-				if(Cooldowns.getCooldown(player, "ultimate") >= 0){
-					player.sendMessage(TribeManager.mh + "You can use Tribe's Ultimate skill in " + Cooldowns.getCooldown(player, "ultimate") / 60000 + " min.");
-					return;
-				}
-				if(tribe.getType().equalsIgnoreCase("aesir")) {
-					@SuppressWarnings("deprecation")
-					Location loc = getCenterLocation(player.getLocation(), player.getTargetBlock(new HashSet<Byte>(), 5).getLocation());
-					double smashDamage = getSmashDamageByTribeLevel(tribe.getLevel());
-					for(Player p : getNearbyPlayers(loc, 2.5)){
-						if(p != player) {
-							if(p.getHealth() >= smashDamage){
-								p.setHealth(p.getHealth() - smashDamage);
-							}else{
-								p.setHealth(0);
-							}
-						}
-					}
-					if(tribe.getLevel() != 5) {
-						Cooldowns.setCooldown(player, "ultimate", 3600000);
-					}else{
-						Cooldowns.setCooldown(player, "ultimate", 1800000);
-					}
-				}
-				else if(tribe.getType().equalsIgnoreCase("vanir")) {
-					Fireball fb = player.launchProjectile(Fireball.class);
-					fb.setMetadata("ultimate", new FixedMetadataValue(pl, tribe.getLevel()));
-					Cooldowns.setCooldown(player, "ultimate", 3600000);
-				}
+				event.getItemDrop().remove();
 			}
 		}
 	}
@@ -437,39 +334,6 @@ public class PlayerListener implements Listener {
 		if(event.getEntityType().equals(EntityType.PRIMED_TNT)) {
 			event.setCancelled(true);
 			event.getLocation().getBlock().setType(Material.TNT);
-		}
-		if(event.getEntityType().equals(EntityType.FIREBALL)){
-			Fireball fb = (Fireball) event.getEntity();
-			if(fb.hasMetadata("ultimate")){
-				int level = fb.getMetadata("ultimate").get(0).asInt();
-				double directDamage = getFireballDamageByTribeLevel(level, true);
-				double explosionDamage = getFireballDamageByTribeLevel(level, false);
-				Player victim;
-				for(Entity e : fb.getNearbyEntities(0.5, 0.5, 0.5)){
-					if(e instanceof Player){
-						victim = (Player) e;
-						if(directDamage == 0){
-							victim.setHealth(0);
-						}
-						else if(victim.getHealth() >= directDamage){
-							victim.setHealth(victim.getHealth() - directDamage);
-						}else{
-							victim.setHealth(0);
-						}
-					}
-				}
-				for(Entity e : fb.getNearbyEntities(5, 5, 5)){
-					if(e instanceof Player){
-						victim = (Player) e;
-						if(victim.getHealth() >= explosionDamage){
-							victim.setHealth(victim.getHealth() - explosionDamage);
-						}else{
-							victim.setHealth(0);
-						}
-					}
-				}
-				event.setCancelled(true);
-			}
 		}
 	}
 	
@@ -492,46 +356,6 @@ public class PlayerListener implements Listener {
 				event.setRadius(0);
 			}
 		}
-	}
-	
-	private double getSmashDamageByTribeLevel(int level) {
-		if(level == 1) return 3;
-		else if(level == 2) return 4;
-		else if(level == 3) return 6;
-		else if(level == 4) return 7;
-		else return 0;
-	}
-	
-	private double getFireballDamageByTribeLevel(int level, boolean direct) {
-		if(direct){
-			return 10;
-		}
-		else{
-			if(level == 1 || level == 2) return 4;
-			else if(level == 3 || level == 4) return 6;
-			else return 4;
-		}
-	}
-	
-	private static Location getCenterLocation(Location loc1, Location loc2){
-		Location loc = new Location(loc1.getWorld(), 0, 0, 0);
-		double x = (loc1.getX() + loc2.getX()) / 2;
-		double z = (loc1.getZ() + loc2.getZ()) / 2;
-		loc.setX(x);
-		loc.setY(loc1.getY());
-		loc.setZ(z);
-		return loc;
-	}
-	
-	private static List<Player> getNearbyPlayers(Location loc, double radius){
-		List<Player> players = new ArrayList<Player>();
-		for(Entity e : loc.getWorld().getEntities()){
-			if(e instanceof Player){
-				if(loc.distance(e.getLocation()) <= radius)
-					players.add((Player)e);
-			}
-		}
-		return players;
 	}
 
 	@SuppressWarnings("unused")
