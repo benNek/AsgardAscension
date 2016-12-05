@@ -91,6 +91,9 @@ public class GodTokens {
 		else if(skill.equalsIgnoreCase("Efficiency")) {
 			p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 6000, 2));
 		}
+		else if(skill.equalsIgnoreCase("Dodge")) {
+			
+		}
 		else {
 			p.getInventory().addItem(ItemStackGenerator.createItem(Material.GOLD_SWORD, 0, 0, ChatColor.RED + token.getName(), Arrays.asList(ChatColor.GRAY + "Right-Click to use this!"), true));
 		}

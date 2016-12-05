@@ -23,7 +23,7 @@ public class GodTokensInventory {
 		Inventory inv = Bukkit.createInventory(player, 9, ChatColor.BOLD + "BUY " + token.getName());
 		inv.setItem(2, ItemStackGenerator.createItem(Material.PAPER, 0, 0, ChatColor.RED + "Temporary (" + ChatColor.GOLD + token.getTempPrice() + " GT"  + ChatColor.RED + ")", null));
 		inv.setItem(4, ItemStackGenerator.createItem(token.getIcon(), 0, 0, ChatColor.RED + token.getName(), token.getDescription(), true));
-		inv.setItem(6, ItemStackGenerator.createItem(Material.BOOK, 0, 0, ChatColor.RED + "Permanent (" + ChatColor.GOLD + token.getPermPrice() + " GT"  + ChatColor.RED + ")", null));
+		inv.setItem(6, ItemStackGenerator.createItem(Material.BOOK, 0, 0, ChatColor.RED + "Permanent Access (" + ChatColor.GOLD + token.getPermPrice() + " GT"  + ChatColor.RED + ")", null));
 		inv.setItem(8, ItemStackGenerator.createItem(Material.REDSTONE_BLOCK, 0, 0, ChatColor.RED + "Go back!", null));
 		player.openInventory(inv);
 	}
