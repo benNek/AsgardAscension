@@ -45,8 +45,8 @@ public class GodTokensInventory {
 		Inventory inv = Bukkit.createInventory(player, 9, ChatColor.BOLD + "God Tokens Type");
 		inv.setItem(0, ItemStackGenerator.createItem(Material.BOOK, 0, 0,
 				ChatColor.GRAY + "GT: " + ChatColor.RED + plugin.getPlayerManager().getTokens(player), null));
-		inv.setItem(8, ItemStackGenerator.createItem(Material.BOOK, 0, 0,
-				ChatColor.GRAY + "GT: " + ChatColor.RED + plugin.getPlayerManager().getTokens(player), null));
+		inv.setItem(8, ItemStackGenerator.createItem(Material.NETHER_STAR, 0, 0,
+				ChatColor.LIGHT_PURPLE + "Withdraw 1 GT", null));
 		
 		if(canBuyPlot(player)) {
 			inv.setItem(1, ItemStackGenerator.createItem(Material.STONE_SPADE, 0, 0, ChatColor.LIGHT_PURPLE + "Additional plot access", 

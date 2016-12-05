@@ -425,6 +425,19 @@ public class InventoryListener implements Listener {
 			if(event.getCurrentItem().getType().equals(Material.BOOK)) {
 				return;
 			}
+			if(event.getCurrentItem().getType().equals(Material.NETHER_STAR)) {
+				player.closeInventory();
+				if(pl.getPlayerManager().hasTokens(player, 1)) {
+					player.getInventory().addItem(ItemStackGenerator.createItem(Material.NETHER_STAR, 1, 0, 
+							ChatColor.LIGHT_PURPLE + "God Token",
+							Arrays.asList(ChatColor.RED + "Right-Click to deposit GT")));
+					player.sendMessage(GodTokens.mh + "You've successfully withdrawn 1 GT!");
+					pl.getPlayerManager().withdrawTokens(player, 1);
+				}
+				else {
+					player.sendMessage(GodTokens.mh + "You don't have any GT to withdraw!");
+				}
+			}
 			else if(event.getCurrentItem().getType().equals(Material.STONE_SPADE)) {
 				player.closeInventory();
 				if(!GodTokensInventory.canBuyPlot(player)) {
