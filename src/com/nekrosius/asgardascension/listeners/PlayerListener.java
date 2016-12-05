@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -155,9 +156,10 @@ public class PlayerListener implements Listener {
 			for(int height = maxZ; height >= minZ; height--) {
 				for(int x = minX; x <= maxX; x++) {
 					for(int y = minY; y <= maxY; y++) {
-						if(!event.getBlock().getType().equals(Material.TNT))
-							player.getInventory().addItem(new ItemStack(event.getBlock().getType()));
-						event.getBlock().getLocation().getWorld().getBlockAt(new Location(event.getBlock().getWorld(), x, y, height)).setType(Material.AIR);
+						Block block = event.getBlock().getLocation().getWorld().getBlockAt(new Location(event.getBlock().getWorld(), x, y, height));
+						if(!block.getType().equals(Material.TNT))
+							player.getInventory().addItem(new ItemStack(block.getType()));
+						block.setType(Material.AIR);
 					}
 				}
 			}
