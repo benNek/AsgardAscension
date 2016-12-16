@@ -66,18 +66,18 @@ public class Main extends JavaPlugin{
 	private Challenge challenges;
 	
 	public void onEnable(){
-        if (!setupEconomy()) {
-        	System.out.println("Vault hasn't been found! Plugin is shutting down!");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-        logger = new Logger(this);
         setupChat();
-        enablePlaceholders();
+		logger = new Logger(this);
         setupManagers();
         setupClasses();
         setupFiles();
 		setupCommands();
+        if (!setupEconomy()) {
+        	getLogs().log("Vault or Economy plugin hasn't been found! Plugin is shutting down!");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        enablePlaceholders();
 		GodTokens.setupTokens();
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			getPlayerManager().loadData(p);

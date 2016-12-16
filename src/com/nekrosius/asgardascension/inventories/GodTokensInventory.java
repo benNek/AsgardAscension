@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.enums.TokenType;
@@ -80,7 +81,8 @@ public class GodTokensInventory {
 							null));
 				}
 				else {
-					inv.setItem(3, ItemStackGenerator.createItem(player.getInventory().getItemInMainHand(),
+					ItemStack item = player.getInventory().getItemInMainHand();
+					inv.setItem(3, ItemStackGenerator.createItem(item.getType(), item.getAmount(), item.getDurability(),
 							ChatColor.LIGHT_PURPLE + "Repair item in main hand", 
 							Arrays.asList("Price: " + ChatColor.RED + "1 GT")));
 				}
