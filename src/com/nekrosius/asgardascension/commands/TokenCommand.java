@@ -43,7 +43,8 @@ public class TokenCommand implements CommandExecutor {
 					return true;
 				}
 				pl.getPlayerManager().setTokens(target, pl.getPlayerManager().getTokens(target) + amount);
-				target.sendMessage(GodTokens.mh + sender.getName() + ChatColor.GRAY + " has sent you " + ChatColor.RED + amount + ChatColor.GRAY + " tokens!");
+				if(!sender.getName().equalsIgnoreCase("CONSOLE"))
+					target.sendMessage(GodTokens.mh + sender.getName() + ChatColor.GRAY + " has sent you " + ChatColor.RED + amount + ChatColor.GRAY + " tokens!");
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("remove")){
