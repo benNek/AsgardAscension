@@ -128,7 +128,27 @@ public class PlayerListener implements Listener {
 		// Diamond for every block
 		if(diamondMiner.get(event.getPlayer().getName()) != null) {
 			if(event.isCancelled()) return;
-			event.getPlayer().getInventory().addItem(new ItemStack(Material.DIAMOND));
+			
+			ItemStack itemToAdd = new ItemStack(Material.DIAMOND);
+			boolean isFull = true;
+			System.out.println(event.getPlayer().getInventory().getSize() + "");
+			for (int i = 0; i < 36; i++) {
+				if(event.getPlayer().getInventory().getItem(i) == null) {
+					isFull = false;
+					break;
+				}
+				ItemStack item = event.getPlayer().getInventory().getItem(i);
+				if(item.getType().equals(Material.DIAMOND) && item.getAmount() + 1 <= item.getMaxStackSize()) {
+					isFull = false;
+					break;
+				}
+			}
+			if (!isFull) {
+				event.getPlayer().getInventory().addItem(itemToAdd);
+			}
+			else {
+				event.getPlayer().sendMessage(Main.mh + "Your inventory is full!");
+			}
 		}
 		// Lucky blocks
 		if(!event.getBlock().getType().equals(Material.TNT)) return;
@@ -136,6 +156,22 @@ public class PlayerListener implements Listener {
 		event.getBlock().setType(Material.AIR);
 		final Player player = event.getPlayer();
 		int random = randomGen.nextInt(100 - 25);
+		
+		if(random <= 100) {
+			player.sendMessage(Main.mh + "Every block you break now yield diamonds!");
+			diamondMiner.put(player.getName(), true);
+			new BukkitRunnable() {
+				
+				@Override
+				public void run() {
+					if(!player.isOnline()) return;
+					diamondMiner.remove(player.getName());
+					player.sendMessage(Main.mh + ChatColor.YELLOW + "Diamond Miner Effect" + ChatColor.GRAY + " has run out!");
+				}
+				
+			}.runTaskLater(pl, 300L);
+			return;
+		}
 		
 		// 5% lava
 		if (random <= 29 - 25) {
