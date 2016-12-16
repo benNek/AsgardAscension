@@ -43,10 +43,14 @@ public class GodTokensInventory {
 	}
 	
 	public static void setupTokensMenu(Player player) {
-		Inventory inv = Bukkit.createInventory(player, 9, ChatColor.BOLD + "God Tokens Type");
+		Inventory inv = Bukkit.createInventory(player, 18, ChatColor.BOLD + "God Tokens Type");
 		inv.setItem(0, ItemStackGenerator.createItem(Material.BOOK, 0, 0,
 				ChatColor.GRAY + "GT: " + ChatColor.RED + plugin.getPlayerManager().getTokens(player), null));
+		inv.setItem(9, ItemStackGenerator.createItem(Material.BOOK, 0, 0,
+				ChatColor.GRAY + "GT: " + ChatColor.RED + plugin.getPlayerManager().getTokens(player), null));
 		inv.setItem(8, ItemStackGenerator.createItem(Material.NETHER_STAR, 0, 0,
+				ChatColor.LIGHT_PURPLE + "Withdraw 1 GT", null));
+		inv.setItem(17, ItemStackGenerator.createItem(Material.NETHER_STAR, 0, 0,
 				ChatColor.LIGHT_PURPLE + "Withdraw 1 GT", null));
 		
 		if(canBuyPlot(player)) {
@@ -56,17 +60,20 @@ public class GodTokensInventory {
 
 		//inv.setItem(2, ItemStackGenerator.createItem(Material.CHEST, 0, 0, ChatColor.LIGHT_PURPLE + "Donator rank", 
 		//		Arrays.asList(ChatColor.GREEN + "Price: " + ChatColor.RED + "8 god tokens")));
-		inv.setItem(5, ItemStackGenerator.createItem(Material.CHEST, 0, 0, ChatColor.LIGHT_PURPLE + "Crate", 
-				Arrays.asList("Price: " + ChatColor.RED + "8 GT")));
-		inv.setItem(6, ItemStackGenerator.createItem(Material.ANVIL, 0, 0, ChatColor.LIGHT_PURPLE + "Repair", 
-				Arrays.asList("Click for more information!")));
 		Material values[] = {Material.GOLD_SWORD, Material.GOLD_PICKAXE, Material.DOUBLE_PLANT};
 		int i = 0;
 		for(TokenType type : TokenType.values()) {
-			inv.setItem(i + 2, ItemStackGenerator.createItem(values[i], 0, 0,
+			inv.setItem(i + 3, ItemStackGenerator.createItem(values[i], 0, 0,
 					ChatColor.LIGHT_PURPLE + WordUtils.capitalize(type.name().toLowerCase()), null, true));
 			i++;
 		}
+		inv.setItem(12, ItemStackGenerator.createItem(Material.CHEST, 0, 0, ChatColor.LIGHT_PURPLE + "Crate", 
+				Arrays.asList("Price: " + ChatColor.RED + "8 GT")));
+		inv.setItem(13, ItemStackGenerator.createItem(Material.ANVIL, 0, 0, ChatColor.LIGHT_PURPLE + "Repair", 
+				Arrays.asList("Click for more information!")));
+		inv.setItem(14, ItemStackGenerator.createItem(Material.GOLDEN_APPLE, 0, 1, ChatColor.LIGHT_PURPLE + "Odins Apple", 
+				Arrays.asList("Price: " + ChatColor.RED + "1 GT")));
+		
 		player.openInventory(inv);
 	}
 	

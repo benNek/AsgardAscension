@@ -466,6 +466,17 @@ public class InventoryListener implements Listener {
 			else if(event.getCurrentItem().getType().equals(Material.ANVIL)) {
 				GodTokensInventory.setupRepairMenu(player);
 			}
+			else if(event.getCurrentItem().getType().equals(Material.GOLDEN_APPLE)) {	
+				player.closeInventory();
+				if(tokens < 1) {
+					player.sendMessage(GodTokens.mh + "You don't have enough god tokens! (" + tokens + ")");
+					return;
+				}
+				pl.getPlayerManager().withdrawTokens(player, 1);
+				player.getInventory().addItem(
+					ItemStackGenerator.createItem(Material.GOLDEN_APPLE, 0, 1, ChatColor.LIGHT_PURPLE + "Odins Apple", null));
+				player.sendMessage(GodTokens.mh + "You've bought a Odins Apple!");
+			}
 			else {
 				GodTokensInventory.setupTokensShopMenu((Player) event.getWhoClicked(),
 						TokenType.valueOf(event.getCurrentItem().getItemMeta().getDisplayName().substring(2).toUpperCase()));
