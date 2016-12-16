@@ -1,7 +1,5 @@
 package com.nekrosius.asgardascension.commands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,28 +24,7 @@ public class RagnorakCommand implements CommandExecutor {
 		}
 		Player player = (Player) sender;
 		if(args.length == 0) {
-			if(Ragnorak.hasStarted()){
-				player.sendMessage(Ragnorak.mh + "Ragnorak already started!");
-				return true;
-			}
-			else if(Ragnorak.onCooldown()){
-				player.sendMessage(Ragnorak.mh + "Ragnorak occured not so long ago!");
-				player.sendMessage(Ragnorak.mh + "Next Ragnorak in " + ChatColor.RED + (RagnorakFile.getTime() - Ragnorak.minutes) + ChatColor.GRAY + " minutes!");
-				return true;
-			}
-			else if(Ragnorak.hasVoted(player.getName())) {
-				player.sendMessage(Ragnorak.mh + "You've already voted!");
-				return true;
-			}
-			int toStart = (int)(Bukkit.getOnlinePlayers().size() * RagnorakFile.getPercentageMultiplier()) - Ragnorak.getVotes();
-			if(toStart > 0){
-				player.sendMessage(Ragnorak.mh + "You've voted for " + ChatColor.RED 
-						+ "Ragnorak" + ChatColor.GRAY + " to start! " + toStart + " mores votes to start!");
-			}else{
-				player.sendMessage(Ragnorak.mh + "You've voted for " + ChatColor.RED 
-						+ "Ragnorak" + ChatColor.GRAY + " to start!");
-			}
-			Ragnorak.setVoted(player.getName(), true);
+			pl.getRagnorak().addVote(player);
 			return true;
 		}
 		else if(args.length == 1) {
@@ -71,7 +48,7 @@ public class RagnorakCommand implements CommandExecutor {
 			}
 			else if(args[0].equalsIgnoreCase("start")) {
 				player.sendMessage(Ragnorak.mh + "You've started Ragnorak!");
-				Ragnorak.start();
+				pl.getRagnorak().start();
 				return true;
 			}
 			else{

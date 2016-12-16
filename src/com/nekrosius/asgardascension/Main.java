@@ -24,6 +24,7 @@ import com.nekrosius.asgardascension.files.PlayerFile;
 import com.nekrosius.asgardascension.files.RagnorakFile;
 import com.nekrosius.asgardascension.files.TribeFile;
 import com.nekrosius.asgardascension.handlers.GodTokens;
+import com.nekrosius.asgardascension.handlers.Ragnorak;
 import com.nekrosius.asgardascension.managers.ListenerManager;
 import com.nekrosius.asgardascension.managers.PlayerManager;
 import com.nekrosius.asgardascension.managers.TribeManager;
@@ -60,6 +61,7 @@ public class Main extends JavaPlugin{
 	public static Chat chat = null;
 	
 	private Logger logger;
+	private Ragnorak ragnorak;
 	private PlayerFile pf;
 	private ChallengesFile cf;
 	
@@ -68,9 +70,9 @@ public class Main extends JavaPlugin{
 	public void onEnable(){
         setupChat();
 		logger = new Logger(this);
+		setupFiles();
         setupManagers();
         setupClasses();
-        setupFiles();
 		setupCommands();
         if (!setupEconomy()) {
         	getLogs().log("Vault or Economy plugin hasn't been found! Plugin is shutting down!");
@@ -97,6 +99,7 @@ public class Main extends JavaPlugin{
 	
 	private void setupClasses() {
 		challenges = new Challenge(this);
+		ragnorak = new Ragnorak(this);
 	}
 	
 	public void setupFiles() {
@@ -241,6 +244,10 @@ public class Main extends JavaPlugin{
 	
 	public Challenge getChallenges() {
 		return challenges;
+	}
+	
+	public Ragnorak getRagnorak() {
+		return ragnorak;
 	}
 	
 	public ChallengesFile getChallengesFile() {

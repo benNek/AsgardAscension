@@ -95,11 +95,11 @@ public class InventoryListener implements Listener {
 			event.setCancelled(true);
 			if(event.getCurrentItem().getType().equals(Material.LEVER)) {
 				player.closeInventory();
-				if(Ragnorak.hasStarted()){
+				if(pl.getRagnorak().eventStarted){
 					player.sendMessage(Ragnorak.mh + "Ragnorak has already started!");
 				}else{
 					player.sendMessage(Ragnorak.mh + "You've force started Ragnorak!");
-					Ragnorak.start();
+					pl.getRagnorak().start();
 				}
 			}
 			else if(event.getCurrentItem().getType().equals(Material.DIAMOND_SWORD)) {

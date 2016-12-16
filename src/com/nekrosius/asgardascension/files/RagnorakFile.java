@@ -31,11 +31,27 @@ public class RagnorakFile {
 		file = new File("plugins" + File.separator + "AsgardAscension",
 				"ragnorak.yml");
 		config = YamlConfiguration.loadConfiguration(file);
-		if(!file.exists()){
-			config.addDefault("repeat", 240);
-			config.addDefault("percentage", 80);
-			config.addDefault("interval", 5);
+		if(!file.exists()) {
+			config.addDefault("duration", 10);
+			config.addDefault("vote.minimum_players", 4);
+			config.addDefault("vote.timers.restart", 60);
+			config.addDefault("vote.timers.successful", 120);
+			config.addDefault("vote.timers.unsuccessful", 30);
+			config.addDefault("vote.timers.period", 2);
 			config.options().copyDefaults(true);
+		}
+		else {
+			if(config.get("duration") == null) {
+				config.set("duration", 10);
+				config.set("vote.minimum_players", 4);
+				config.set("vote.timers.restart", 60);
+				config.set("vote.timers.successful", 120);
+				config.set("vote.timers.unsuccessful", 30);
+				config.set("vote.timers.period", 2);
+				config.set("repeat", null);
+				config.set("percentage", null);
+				config.set("interval", null);
+			}
 		}
 		saveConfig();
 	}
@@ -49,16 +65,8 @@ public class RagnorakFile {
 		}
 	}
 	
-	public static int getTime() {
-		return config.getInt("repeat");
-	}
-	
-	public static double getPercentageMultiplier() {
-		return config.getInt("percentage") / 100;
-	}
-	
-	public static int getInterval() {
-		return config.getInt("interval");
+	public static int getDuration() {
+		return config.getInt("duration");
 	}
 	
 	public static int getItemsAmount() {
@@ -119,6 +127,26 @@ public class RagnorakFile {
 		locs.add(Convert.LocationToString(loc, false));
 		config.set("locations", locs);
 		saveConfig();
+	}
+	
+	public static int getMinimumAmountOfPlayers() {
+		return config.getInt("vote.minimum_players");
+	}
+	
+	public static int getTimerAfterRestart() {
+		return config.getInt("vote.timers.restart");
+	}
+	
+	public static int getTimerAfterSuccessfulVote() {
+		return config.getInt("vote.timers.successful");
+	}
+	
+	public static int getTimerAfterUnsuccessfulVote() {
+		return config.getInt("vote.timers.unsuccessful");
+	}
+	
+	public static int getTimerForVotingPeriod() {
+		return config.getInt("vote.timers.period");
 	}
 	
     private static int getRandom(int min, int max){
