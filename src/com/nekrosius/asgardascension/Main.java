@@ -17,12 +17,14 @@ import com.nekrosius.asgardascension.commands.RankCommand;
 import com.nekrosius.asgardascension.commands.RankUpCommand;
 import com.nekrosius.asgardascension.commands.TokenCommand;
 import com.nekrosius.asgardascension.commands.TribeCommand;
+import com.nekrosius.asgardascension.commands.WarpsExecutor;
 import com.nekrosius.asgardascension.files.ChallengesFile;
 import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.files.GodFoodFile;
 import com.nekrosius.asgardascension.files.PlayerFile;
 import com.nekrosius.asgardascension.files.RagnorakFile;
 import com.nekrosius.asgardascension.files.TribeFile;
+import com.nekrosius.asgardascension.files.WarpsFile;
 import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.handlers.Ragnorak;
 import com.nekrosius.asgardascension.managers.ListenerManager;
@@ -109,6 +111,7 @@ public class Main extends JavaPlugin{
 		new ConfigFile(this);
 		new GodFoodFile(this);
 		new RagnorakFile(this);
+		new WarpsFile(this);
 	}
 	
 	private void setupCommands() {
@@ -121,6 +124,7 @@ public class Main extends JavaPlugin{
 		getCommand("rank").setExecutor(new RankCommand(this));
 		getCommand("fog").setExecutor(new FOGCommand(this));
 		getCommand("challenge").setExecutor(new ChallengesExecutor(this));
+		getCommand("tokenwarp").setExecutor(new WarpsExecutor(this));
 	}
 	
 	public void onDisable() {

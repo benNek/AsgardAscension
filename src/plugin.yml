@@ -37,6 +37,9 @@ commands:
         aliases: [challenges]
         usage: /<command>
         description: Shows a list of all challenges
+    tokenwarp:
+        usage: /<command>
+        description: Adds or modifies warp location and price
 permissions:
     asgardascension.admin:
         description: Allows to use /aa
