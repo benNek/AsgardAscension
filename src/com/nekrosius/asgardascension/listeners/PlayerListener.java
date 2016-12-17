@@ -157,22 +157,6 @@ public class PlayerListener implements Listener {
 		final Player player = event.getPlayer();
 		int random = randomGen.nextInt(100 - 25);
 		
-		if(random <= 100) {
-			player.sendMessage(Main.mh + "Every block you break now yield diamonds!");
-			diamondMiner.put(player.getName(), true);
-			new BukkitRunnable() {
-				
-				@Override
-				public void run() {
-					if(!player.isOnline()) return;
-					diamondMiner.remove(player.getName());
-					player.sendMessage(Main.mh + ChatColor.YELLOW + "Diamond Miner Effect" + ChatColor.GRAY + " has run out!");
-				}
-				
-			}.runTaskLater(pl, 300L);
-			return;
-		}
-		
 		// 5% lava
 		if (random <= 29 - 25) {
 			event.getBlock().setType(Material.LAVA);
