@@ -23,14 +23,6 @@ import de.slikey.effectlib.effect.ShieldEffect;
 
 public class Ragnorak {
 	
-	/*
-	private static int votes = 0;
-	public static int minutes = 0;
-	private static boolean started = false;
-	private static boolean cooldown = false;
-	private static Map<String, Boolean> voted = new HashMap<String, Boolean>();
-	*/
-	
 	public boolean voteStarted;
 	public boolean eventStarted;
 	public int minutesLeft = -1;
@@ -122,8 +114,8 @@ public class Ragnorak {
 					previousCount = voted.size();
 					int required = Bukkit.getOnlinePlayers().size() / 2 - 1;
 					required = Math.max(required, minCount);
-					String base = mh + previousCount + "/" + required + " players have already voted!";
 					for(Player p : Bukkit.getOnlinePlayers()) {
+						String base = mh + previousCount + "/" + required + " players have already voted!";
 						if(!hasVoted(p)) {
 							base += " Type /ragnorak to vote!";
 						}
@@ -181,27 +173,25 @@ public class Ragnorak {
 				block.getInventory().addItem(RagnorakFile.getItem(itemIndex));
 			}
 		}
-		new BukkitRunnable(){
-			public void run(){
-				for(Player p : Bukkit.getOnlinePlayers()){
-					p.sendMessage(mh + "Ragnorak has finished!");
-				}
-				for(String locString : RagnorakFile.getLocations()){
-					Location lloc = Convert.StringToLocation(locString);
-					if(lloc.getBlock().getState() instanceof Chest) {
-						Chest chest = (Chest) lloc.getBlock().getState();
-						chest.getInventory().clear();
-					}
-					lloc.getBlock().setType(Material.AIR);
-				}
-			}
-		}.runTaskLater(plugin, 2400);
 		
 		minutesLeft = 0;
 		new BukkitRunnable() {
 			public void run() {
 				if(minutesLeft >= RagnorakFile.getDuration()) {
 					eventStarted = false;
+					
+					for(Player p : Bukkit.getOnlinePlayers()){
+						p.sendMessage(mh + "Ragnorak has finished!");
+					}
+					for(String locString : RagnorakFile.getLocations()){
+						Location lloc = Convert.StringToLocation(locString);
+						if(lloc.getBlock().getState() instanceof Chest) {
+							Chest chest = (Chest) lloc.getBlock().getState();
+							chest.getInventory().clear();
+						}
+						lloc.getBlock().setType(Material.AIR);
+					}
+					
 					minutesLeft = RagnorakFile.getTimerAfterSuccessfulVote();
 					startTimer();
 					cancel();
