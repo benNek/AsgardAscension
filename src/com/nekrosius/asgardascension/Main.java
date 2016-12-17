@@ -21,6 +21,7 @@ import com.nekrosius.asgardascension.commands.WarpsExecutor;
 import com.nekrosius.asgardascension.files.ChallengesFile;
 import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.files.GodFoodFile;
+import com.nekrosius.asgardascension.files.MessagesFile;
 import com.nekrosius.asgardascension.files.PlayerFile;
 import com.nekrosius.asgardascension.files.RagnorakFile;
 import com.nekrosius.asgardascension.files.TribeFile;
@@ -112,6 +113,7 @@ public class Main extends JavaPlugin{
 		new GodFoodFile(this);
 		new RagnorakFile(this);
 		new WarpsFile(this);
+		new MessagesFile(this);
 	}
 	
 	private void setupCommands() {

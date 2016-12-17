@@ -36,6 +36,7 @@ import com.koletar.jj.mineresetlite.Mine;
 import com.koletar.jj.mineresetlite.MineResetLite;
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.files.ConfigFile;
+import com.nekrosius.asgardascension.files.MessagesFile;
 import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
@@ -131,7 +132,6 @@ public class PlayerListener implements Listener {
 			
 			ItemStack itemToAdd = new ItemStack(Material.DIAMOND);
 			boolean isFull = true;
-			System.out.println(event.getPlayer().getInventory().getSize() + "");
 			for (int i = 0; i < 36; i++) {
 				if(event.getPlayer().getInventory().getItem(i) == null) {
 					isFull = false;
@@ -160,6 +160,7 @@ public class PlayerListener implements Listener {
 		// 5% lava
 		if (random <= 29 - 25) {
 			event.getBlock().setType(Material.LAVA);
+			player.sendMessage(Main.mh + MessagesFile.getMessage("lucky_blocks.lava"));
 		}
 		// 10% 10x10 explosion
 		else if (random <= 34 - 25) {
@@ -184,7 +185,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 			
-			
+			player.sendMessage(Main.mh + MessagesFile.getMessage("lucky_blocks.explosion"));
 		}
 		// 5% BOB
 		else if (random <= 44 - 25) {
@@ -195,11 +196,13 @@ public class PlayerListener implements Listener {
 			ee.setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
 			ee.setBoots(new ItemStack(Material.DIAMOND_BOOTS));
 			ee.setItemInMainHand(new ItemStack(Material.DIAMOND_SWORD));
+			player.sendMessage(Main.mh + MessagesFile.getMessage("lucky_blocks.zombie"));
 		}
 		// 5% decoy chest
 		else if(random <= 49 - 25) {
 			event.getBlock().setType(Material.CHEST);
 			final Player target = event.getPlayer();
+			player.sendMessage(Main.mh + MessagesFile.getMessage("lucky_blocks.trap_chest"));
 			new BukkitRunnable() {
 				public void run() {
 					if(event.getBlock().getType().equals(Material.CHEST)) {
@@ -239,7 +242,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 			final boolean remove = temp;
-			player.sendMessage(Main.mh + "You have found " + ChatColor.YELLOW + "Speed Miner Effect" + ChatColor.GRAY + "!");
+			player.sendMessage(Main.mh + MessagesFile.getMessage("lucky_blocks.speed_miner.start"));
 			new BukkitRunnable() {
 				
 				@Override
@@ -252,14 +255,14 @@ public class PlayerListener implements Listener {
 							player.updateInventory();
 						}
 					}
-					player.sendMessage(Main.mh + ChatColor.YELLOW + "Speed Miner Effect" + ChatColor.GRAY + " has run out!");
+					player.sendMessage(Main.mh + MessagesFile.getMessage("lucky_blocks.speed_miner.end"));
 				}
 				
 			}.runTaskLater(pl, 300L);
 		}
 		// 12% Diamond miner
 		else if(random <= 76 - 25) {
-			player.sendMessage(Main.mh + "Every block you break now yield diamonds!");
+			player.sendMessage(Main.mh + MessagesFile.getMessage("lucky_blocks.diamond_miner.start"));
 			diamondMiner.put(player.getName(), true);
 			new BukkitRunnable() {
 				
@@ -267,7 +270,7 @@ public class PlayerListener implements Listener {
 				public void run() {
 					if(!player.isOnline()) return;
 					diamondMiner.remove(player.getName());
-					player.sendMessage(Main.mh + ChatColor.YELLOW + "Diamond Miner Effect" + ChatColor.GRAY + " has run out!");
+					player.sendMessage(Main.mh + MessagesFile.getMessage("lucky_blocks.diamond_miner.end"));
 				}
 				
 			}.runTaskLater(pl, 300L);
@@ -287,7 +290,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 			final boolean remove = temp;
-			player.sendMessage(Main.mh + "You have found " + ChatColor.YELLOW + "Rainbow Miner Effect" + ChatColor.GRAY + "!");
+			player.sendMessage(Main.mh + MessagesFile.getMessage("lucky_blocks.rainbow_miner.start"));
 			new BukkitRunnable() {
 				
 				@Override
@@ -300,7 +303,7 @@ public class PlayerListener implements Listener {
 							player.updateInventory();
 						}
 					}
-					player.sendMessage(Main.mh + ChatColor.YELLOW + "Rainbow Miner Effect" + ChatColor.GRAY + " has run out!");
+					player.sendMessage(Main.mh + MessagesFile.getMessage("lucky_blocks.rainbow_miner.end"));
 				}
 				
 			}.runTaskLater(pl, 300L);
