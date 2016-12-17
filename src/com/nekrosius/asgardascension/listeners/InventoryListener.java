@@ -111,6 +111,15 @@ public class InventoryListener implements Listener {
 					player.sendMessage(Ragnorak.mh + "You've succesfully added item to Ragnorak!");
 				}
 			}
+			else if(event.getCurrentItem().getType().equals(Material.CHEST)) {
+				player.closeInventory();
+				for(ItemStack item : player.getInventory()) {
+					if(item != null) {
+						RagnorakFile.addItem(item);
+					}
+				}
+				player.sendMessage(Ragnorak.mh + "You've added all your items from inventory to Ragnorak!");
+			}
 			else if(event.getCurrentItem().getType().equals(Material.COAL)) {
 				player.closeInventory();
 				RagnorakFile.addLocation(player.getLocation());

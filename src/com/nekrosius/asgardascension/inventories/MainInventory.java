@@ -52,11 +52,13 @@ public class MainInventory {
 	
 	public static void setupRagnorakInventory(Player player) {
 		Inventory inv = Bukkit.createInventory(player, 9, ChatColor.BOLD + "Ragnorak");
-		inv.setItem(2, ItemStackGenerator.createItem(Material.LEVER, 0, 0,
+		inv.setItem(1, ItemStackGenerator.createItem(Material.LEVER, 0, 0,
 				ChatColor.LIGHT_PURPLE + "Start Ragnorak", null));
-		inv.setItem(4, ItemStackGenerator.createItem(Material.DIAMOND_SWORD, 0, 0,
+		inv.setItem(3, ItemStackGenerator.createItem(Material.DIAMOND_SWORD, 0, 0,
 				ChatColor.LIGHT_PURPLE + "Add your current item to Ragnorak", null, true));
-		inv.setItem(6, ItemStackGenerator.createItem(Material.COAL, 0, 0,
+		inv.setItem(5, ItemStackGenerator.createItem(Material.CHEST, 0, 0,
+				ChatColor.LIGHT_PURPLE + "Add all items from your inventory to Ragnorak", null, true));
+		inv.setItem(7, ItemStackGenerator.createItem(Material.COAL, 0, 0,
 				ChatColor.LIGHT_PURPLE + "Add your location to Ragnorak", null));
 		player.openInventory(inv);
 	}
