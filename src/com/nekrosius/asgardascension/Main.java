@@ -150,6 +150,9 @@ public class Main extends JavaPlugin{
 			TribeFile.setName(t.getName());
 			TribeFile.setType(t.getType());
 		}
+		if(getRagnorak().eventStarted) {
+			getRagnorak().finishEvent();
+		}
 		PlaceholderHandler.unregisterPlaceholderHook(this);
 	}
 	

@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.nekrosius.asgardascension.Main;
@@ -157,49 +158,60 @@ public class Ragnorak {
 			p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_THUNDER, 1F, 1F);
 			p.sendMessage(mh + "Ragnorak" + ChatColor.GRAY + " has started!");
 		}
-		for(String locString : RagnorakFile.getLocations()){
-			Location loc = Convert.StringToLocation(locString);
-			loc.getBlock().setType(Material.CHEST);
-			ShieldEffect he = new ShieldEffect(Main.em);
-			he.setLocation(loc);
-			he.start();
-			effects.add(he);
-		}
-		for(int itemIndex = 0; itemIndex < RagnorakFile.getItemsAmount(); itemIndex++){
-			Location loc = RagnorakFile.getLocation();
-			if(loc.getBlock().getState() instanceof Chest){
-				Chest block = (Chest) loc.getBlock().getState();
-				if(RagnorakFile.getItem(itemIndex) == null) continue;
-				block.getInventory().addItem(RagnorakFile.getItem(itemIndex));
-			}
-		}
+		
+		spawnItems();
 		
 		minutesLeft = 0;
 		new BukkitRunnable() {
 			public void run() {
 				if(minutesLeft >= RagnorakFile.getDuration()) {
-					eventStarted = false;
-					
 					for(Player p : Bukkit.getOnlinePlayers()){
 						p.sendMessage(mh + "Ragnorak has finished!");
 					}
-					for(String locString : RagnorakFile.getLocations()){
-						Location lloc = Convert.StringToLocation(locString);
-						if(lloc.getBlock().getState() instanceof Chest) {
-							Chest chest = (Chest) lloc.getBlock().getState();
-							chest.getInventory().clear();
-						}
-						lloc.getBlock().setType(Material.AIR);
-					}
-					
+					finishEvent();
 					minutesLeft = RagnorakFile.getTimerAfterSuccessfulVote();
 					startTimer();
 					cancel();
 				}
 				minutesLeft++;
 			}
-		}.runTaskTimer(plugin, 1200, 1200);
-		
+		}.runTaskTimer(plugin, 1200L, 1200L);
+	}
+	
+	private void spawnItems() {
+		for(String locString : RagnorakFile.getLocations()){
+			Location loc = Convert.StringToLocation(locString);
+			loc.getBlock().setType(Material.CHEST);
+			ShieldEffect he = new ShieldEffect(Main.em);
+			he.setLocation(loc);
+			he.infinite();
+			he.start();
+			effects.add(he);
+		}
+		for(ItemStack item : RagnorakFile.getItemsToSpawn()){
+			Location loc = RagnorakFile.getLocation();
+			if(loc.getBlock().getState() instanceof Chest){
+				Chest block = (Chest) loc.getBlock().getState();
+				block.getInventory().addItem(item);
+			}
+		}
+		// TODO maybe remove empty chests?
+	}
+	
+	public void finishEvent() {
+		eventStarted = false;
+		for(Effect effect : effects) {
+			effect.cancel();
+		}
+		effects.clear();
+		for(String locString : RagnorakFile.getLocations()){
+			Location lloc = Convert.StringToLocation(locString);
+			if(lloc.getBlock().getState() instanceof Chest) {
+				Chest chest = (Chest) lloc.getBlock().getState();
+				chest.getInventory().clear();
+			}
+			lloc.getBlock().setType(Material.AIR);
+		}
 	}
 	
 }
