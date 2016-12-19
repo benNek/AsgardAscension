@@ -32,17 +32,17 @@ public class GodTokens {
 	
 	private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("AsgardAscension");
 	
-	private static Map<String, String> skill = new HashMap<String, String>();
-	private static Map<String, Effect> effect = new HashMap<String, Effect>();
+	private static Map<String, String> skill = new HashMap<>();
+	private static Map<String, Effect> effect = new HashMap<>();
 	
-	public static String mh = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard Tokens" + ChatColor.GRAY + "] ";
+	public static final String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard Tokens" + ChatColor.GRAY + "] ";
 
 	public static List<GodToken> tokens;
 	
 	public static void startSkill(final String player, final GodToken token) {
 		setSkill(player, token.getName());
 		startEffect(player, token.getName());
-		Bukkit.getPlayer(player).sendMessage(mh + ChatColor.RED + token.getName() + ChatColor.GRAY + " is now activated!");
+		Bukkit.getPlayer(player).sendMessage(MESSAGE_HEADER + ChatColor.RED + token.getName() + ChatColor.GRAY + " is now activated!");
 		
 		if(token.getDuration() != -1) {
 			new BukkitRunnable() {
@@ -58,8 +58,8 @@ public class GodTokens {
 			final double radius = 5;
 			new BukkitRunnable() {
 				public void run() {
-					if(getSkill(player) == null) this.cancel();
-					else if(!getSkill(player).equals("Fire")) this.cancel();
+					if(getSkill(player) == null || !"Fire".equals(getSkill(player)))
+						this.cancel();
 					for(Entity e : p.getNearbyEntities(radius, radius, radius)){
 						if(e instanceof Player) {
 							if(TribeManager.canAttack(p, (Player) e)) {
@@ -74,8 +74,9 @@ public class GodTokens {
 			new BukkitRunnable() {
 				public void run() {
 					for(Entity e : p.getNearbyEntities(5D, 5D, 5D)){
-						if(getSkill(player) == null) this.cancel();
-						else if(!getSkill(player).equals("Slowness")) this.cancel();
+						if(getSkill(player) == null || !"Slowness".equals(getSkill(player)))
+							this.cancel();
+						// TODO test this out
 						if(e instanceof Player) {
 							if(TribeManager.canAttack(p, (Player) e)) {
 								((Player) e).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, 1));
@@ -101,13 +102,15 @@ public class GodTokens {
 	
 	public static GodToken findToken(String name) {
 		for(GodToken token : tokens) {
-			if(token.getName().equals(name)) return token;
+			if(token.getName().equals(name))
+				return token;
 		}
 		return null;
 	}
 	
 	public static String getSkill(String player) {
-		if(skill.get(player) == null) return "";
+		if(skill.get(player) == null)
+			return "";
 		return skill.get(player);
 	}
 	
@@ -116,9 +119,11 @@ public class GodTokens {
 	}
 	
 	public static void finish(String player) {
-		if(Bukkit.getPlayer(player) == null) return;
-		if(!Bukkit.getPlayer(player).isOnline()) return;
-		Bukkit.getPlayer(player).sendMessage(mh + ChatColor.RED + getSkill(player) 
+		if(Bukkit.getPlayer(player) == null)
+			return;
+		if(!Bukkit.getPlayer(player).isOnline())
+			return;
+		Bukkit.getPlayer(player).sendMessage(MESSAGE_HEADER + ChatColor.RED + getSkill(player) 
 			+ ChatColor.GRAY + " has ended! You can use it again in " + findToken(getSkill(player)).getCooldown() + " minutes!");
 		Cooldowns.setCooldown(Bukkit.getPlayer(player), getSkill(player), (long)findToken(getSkill(player)).getCooldown() * 60000);
 		skill.remove(player);
@@ -128,7 +133,7 @@ public class GodTokens {
 	}
 	
 	public static void setupTokens() {
-		tokens = new ArrayList<GodToken>();
+		tokens = new ArrayList<>();
 		GodToken token;
 		// LIGHTNING
 		token = new GodToken("Lightning");

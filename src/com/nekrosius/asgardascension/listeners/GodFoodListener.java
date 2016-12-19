@@ -64,7 +64,7 @@ public class GodFoodListener implements Listener {
 									he.cancel();
 								}
 							}.runTaskLater(pl, maxDuration);
-							player.sendMessage(FoodSetup.mh + "You used " 
+							player.sendMessage(FoodSetup.MESSAGE_HEADER + "You used " 
 									+ ChatColor.RED + GodFoodFile.getName(id) + ChatColor.GRAY + "!");
 						}
 					}

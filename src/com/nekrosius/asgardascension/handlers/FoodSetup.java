@@ -8,22 +8,27 @@ import org.bukkit.entity.Player;
 
 public class FoodSetup {
 	
-	private static Map<String, Integer> setupStep = new HashMap<String, Integer>();
-	private static Map<String, Integer> foodIndex = new HashMap<String, Integer>();
-	private static Map<String, Boolean> editing = new HashMap<String, Boolean>();
+	private static Map<String, Integer> setupStep = new HashMap<>();
+	private static Map<String, Integer> foodIndex = new HashMap<>();
+	private static Map<String, Boolean> editing = new HashMap<>();
 	
-	private static Map<String, String> effectType = new HashMap<String, String>();
-	private static Map<String, Integer> effectDuration = new HashMap<String, Integer>();
-	private static Map<String, Integer> effectAmplifier = new HashMap<String, Integer>();
+	private static Map<String, String> effectType = new HashMap<>();
+	private static Map<String, Integer> effectDuration = new HashMap<>();
+	private static Map<String, Integer> effectAmplifier = new HashMap<>();
 	
-	public static String mh = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard FoG" + ChatColor.GRAY + "] ";
+	public static final String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard FoG" + ChatColor.GRAY + "] ";
+	
+	private FoodSetup() {
+	
+	}
 	
 	public static void setStep(Player player, int step) {
 		setupStep.put(player.getName(), step);
 	}
 	
 	public static int getStep(Player player) {
-		if(setupStep.get(player.getName()) == null) return 0;
+		if(setupStep.get(player.getName()) == null)
+			return 0;
 		return setupStep.get(player.getName());
 	}
 	
@@ -32,7 +37,8 @@ public class FoodSetup {
 	}
 	
 	public static int getFoodIndex(Player player) {
-		if(foodIndex.get(player.getName()) == null) return 0;
+		if(foodIndex.get(player.getName()) == null)
+			return 0;
 		return foodIndex.get(player.getName());
 	}
 
@@ -41,7 +47,8 @@ public class FoodSetup {
 	}
 	
 	public static boolean isEditing(Player player) {
-		if(editing.get(player.getName()) == null) return false;
+		if(editing.get(player.getName()) == null)
+			return false;
 		return editing.get(player.getName());
 	}
 	
@@ -58,7 +65,8 @@ public class FoodSetup {
 	}
 	
 	public static int getDuration(Player player) {
-		if(effectDuration.get(player.getName()) == null) return 0;
+		if(effectDuration.get(player.getName()) == null)
+			return 0;
 		return effectDuration.get(player.getName());
 	}
 	
@@ -67,7 +75,8 @@ public class FoodSetup {
 	}
 	
 	public static int getAmplifier(Player player) {
-		if(effectAmplifier.get(player.getName()) == null) return 0;
+		if(effectAmplifier.get(player.getName()) == null)
+			return 0;
 		return effectAmplifier.get(player.getName());
 	}
 	

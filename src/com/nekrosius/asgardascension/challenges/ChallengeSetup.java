@@ -8,22 +8,27 @@ import org.bukkit.entity.Player;
 
 public class ChallengeSetup {
 	
-	private static Map<String, Integer> setupStep = new HashMap<String, Integer>();
-	private static Map<String, Integer> challengeIndex = new HashMap<String, Integer>();
-	private static Map<String, String> 	type = new HashMap<String, String>();
-	private static Map<String, Boolean> editing = new HashMap<String, Boolean>();
+	private static Map<String, Integer> setupStep = new HashMap<>();
+	private static Map<String, Integer> challengeIndex = new HashMap<>();
+	private static Map<String, String> 	type = new HashMap<>();
+	private static Map<String, Boolean> editing = new HashMap<>();
 	
-	private static Map<String, Location> loc1 = new HashMap<String, Location>();
-	private static Map<String, Location> loc2 = new HashMap<String, Location>();
+	private static Map<String, Location> loc1 = new HashMap<>();
+	private static Map<String, Location> loc2 = new HashMap<>();
 	
-	private static Map<String, String> 	mobType = new HashMap<String, String>();
+	private static Map<String, String> 	mobType = new HashMap<>();
+	
+	private ChallengeSetup() {
+		
+	}
 	
 	public static void setStep(Player player, int step) {
 		setupStep.put(player.getName(), step);
 	}
 	
 	public static int getStep(Player player) {
-		if(setupStep.get(player.getName()) == null) return 0;
+		if(setupStep.get(player.getName()) == null)
+			return 0;
 		return setupStep.get(player.getName());
 	}
 	
@@ -32,7 +37,8 @@ public class ChallengeSetup {
 	}
 	
 	public static int getChallenge(Player player) {
-		if(challengeIndex.get(player.getName()) == null) return 0;
+		if(challengeIndex.get(player.getName()) == null)
+			return 0;
 		return challengeIndex.get(player.getName());
 	}
 	
@@ -49,7 +55,8 @@ public class ChallengeSetup {
 	}
 	
 	public static boolean isEditing(Player player) {
-		if(editing.get(player.getName()) == null) return false;
+		if(editing.get(player.getName()) == null)
+			return false;
 		return editing.get(player.getName());
 	}
 	

@@ -31,12 +31,12 @@ public class Ragnorak {
 	
 	private static List<Effect> effects;
 	
-	public static String mh = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard Ragnorak" + ChatColor.GRAY + "] ";
+	public static final String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard Ragnorak" + ChatColor.GRAY + "] ";
 	
 	private Main plugin;
 	public Ragnorak(Main plugin) {
 		this.plugin = plugin;
-		voted = new HashMap<String, Boolean>();
+		voted = new HashMap<>();
 		voteStarted = false;
 		eventStarted = false;
 		minutesLeft = RagnorakFile.getTimerAfterRestart();
@@ -45,21 +45,21 @@ public class Ragnorak {
 	
 	public void addVote(Player player) {
 		if(eventStarted) {
-			player.sendMessage(mh + "Ragnorak is already in progress!");
+			player.sendMessage(MESSAGE_HEADER + "Ragnorak is already in progress!");
 			return;
 		}
 		if(!voteStarted) {
-			player.sendMessage(mh + "Voting is currently not in progress!" + 
+			player.sendMessage(MESSAGE_HEADER + "Voting is currently not in progress!" + 
 					" The voting will start in " + minutesLeft + " min.");
 			return;
 		}
 		if(voted.containsKey(player.getName())) {
-			player.sendMessage(mh + "You've already voted! Current progress is " + voted.size() + "/" + Bukkit.getOnlinePlayers().size());
+			player.sendMessage(MESSAGE_HEADER + "You've already voted! Current progress is " + voted.size() + "/" + Bukkit.getOnlinePlayers().size());
 			return;
 		}
 		voted.put(player.getName(), true);
 		int required = Math.max(Bukkit.getOnlinePlayers().size() / 2 - 1, RagnorakFile.getMinimumAmountOfPlayers());
-		player.sendMessage(mh + "You've sucessfully voted! (" + voted.size() + "/" + required + ")");
+		player.sendMessage(MESSAGE_HEADER + "You've sucessfully voted! (" + voted.size() + "/" + required + ")");
 		checkForTrigger();
 	}
 	
@@ -80,7 +80,7 @@ public class Ragnorak {
 		voteStarted = true;
 		final int minCount = RagnorakFile.getMinimumAmountOfPlayers();
 		for(Player p : Bukkit.getOnlinePlayers()) {
-			p.sendMessage(mh + "Are you prepared for epic Ragnorak? Type /ragnorak to vote!");
+			p.sendMessage(MESSAGE_HEADER + "Are you prepared for epic Ragnorak? Type /ragnorak to vote!");
 			p.playSound(p.getLocation(), Sound.ENTITY_ENDERDRAGON_GROWL, 1F, 1F);
 		}
 		
@@ -94,7 +94,7 @@ public class Ragnorak {
 				}
 				minutesLeft = RagnorakFile.getTimerAfterUnsuccessfulVote();
 				for(Player p : Bukkit.getOnlinePlayers()) {
-					p.sendMessage(mh + "Voting has been unsuccessful! Next voting will begin in " + minutesLeft + " min.");
+					p.sendMessage(MESSAGE_HEADER + "Voting has been unsuccessful! Next voting will begin in " + minutesLeft + " min.");
 				}
 				eventStarted = false;
 				voteStarted = false;
@@ -116,7 +116,7 @@ public class Ragnorak {
 					int required = Bukkit.getOnlinePlayers().size() / 2 - 1;
 					required = Math.max(required, minCount);
 					for(Player p : Bukkit.getOnlinePlayers()) {
-						String base = mh + previousCount + "/" + required + " players have already voted!";
+						String base = MESSAGE_HEADER + previousCount + "/" + required + " players have already voted!";
 						if(!hasVoted(p)) {
 							base += " Type /ragnorak to vote!";
 						}
@@ -139,7 +139,7 @@ public class Ragnorak {
 	}
 	
 	public void start() {
-		effects = new ArrayList<Effect>();
+		effects = new ArrayList<>();
 		
 		if(eventStarted){
 			return;
@@ -156,7 +156,7 @@ public class Ragnorak {
 		
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_THUNDER, 1F, 1F);
-			p.sendMessage(mh + "Ragnorak" + ChatColor.GRAY + " has started!");
+			p.sendMessage(MESSAGE_HEADER + "Ragnorak" + ChatColor.GRAY + " has started!");
 		}
 		
 		spawnItems();
@@ -166,7 +166,7 @@ public class Ragnorak {
 			public void run() {
 				if(minutesLeft >= RagnorakFile.getDuration()) {
 					for(Player p : Bukkit.getOnlinePlayers()){
-						p.sendMessage(mh + "Ragnorak has finished!");
+						p.sendMessage(MESSAGE_HEADER + "Ragnorak has finished!");
 					}
 					finishEvent();
 					minutesLeft = RagnorakFile.getTimerAfterSuccessfulVote();

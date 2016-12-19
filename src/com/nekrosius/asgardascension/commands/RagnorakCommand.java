@@ -19,7 +19,7 @@ public class RagnorakCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		if(!(sender instanceof Player)) {
-			sender.sendMessage(Ragnorak.mh + "This command is available only for players!");
+			sender.sendMessage(Ragnorak.MESSAGE_HEADER + "This command is available only for players!");
 			return true;
 		}
 		Player player = (Player) sender;
@@ -29,34 +29,34 @@ public class RagnorakCommand implements CommandExecutor {
 		}
 		else if(args.length == 1) {
 			if(!sender.isOp()){
-				player.sendMessage(Ragnorak.mh + "This command is available only for OP!");
+				player.sendMessage(Ragnorak.MESSAGE_HEADER + "This command is available only for OP!");
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("additem")){
 				if(player.getInventory().getItemInMainHand() == null) {
-					player.sendMessage(Ragnorak.mh + "You don't have any item in your hand!");
+					player.sendMessage(Ragnorak.MESSAGE_HEADER + "You don't have any item in your hand!");
 					return true;
 				}
 				RagnorakFile.addItem(player.getInventory().getItemInMainHand());
-				player.sendMessage(Ragnorak.mh + "You've succesfully added item to Ragnorak!");
+				player.sendMessage(Ragnorak.MESSAGE_HEADER + "You've succesfully added item to Ragnorak!");
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("addlocation")) {
 				RagnorakFile.addLocation(player.getLocation());
-				player.sendMessage(Ragnorak.mh + "You've succesfully added new drop location!");
+				player.sendMessage(Ragnorak.MESSAGE_HEADER + "You've succesfully added new drop location!");
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("start")) {
-				player.sendMessage(Ragnorak.mh + "You've started Ragnorak!");
+				player.sendMessage(Ragnorak.MESSAGE_HEADER + "You've started Ragnorak!");
 				pl.getRagnorak().start();
 				return true;
 			}
 			else{
-				player.sendMessage(Ragnorak.mh + "Unknown command!");
+				player.sendMessage(Ragnorak.MESSAGE_HEADER + "Unknown command!");
 				return true;
 			}
 		}else{
-			player.sendMessage(Ragnorak.mh + "Unknown command!");
+			player.sendMessage(Ragnorak.MESSAGE_HEADER + "Unknown command!");
 			return true;
 		}
 	}

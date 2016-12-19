@@ -50,7 +50,7 @@ public class ChallengesFile {
 	}
 	
 	public void removeCommands(int challenge) {
-		List<String> cmds = new ArrayList<String>();
+		List<String> cmds = new ArrayList<>();
 		config.set(String.valueOf(challenge) + ".commands", cmds);
 		saveConfig();
 	}
@@ -79,7 +79,7 @@ public class ChallengesFile {
 		saveConfig();
 	}
 	
-	public void setNoteblock(Player player, int challenge, Location loc) {
+	public void setNoteblock(int challenge, Location loc) {
 		config.set(String.valueOf(challenge) + ".noteblock", Convert.LocationToString(loc, false));
 		saveConfig();
 	}
@@ -124,8 +124,10 @@ public class ChallengesFile {
 	
 	public Material getTypeMaterial(int challenge) {
 		String type = getType(challenge);
-		if(type.equalsIgnoreCase("parkour")) return Material.GOLD_BOOTS;
-		else if(type.equalsIgnoreCase("maze")) return Material.TORCH;
+		if("parkour".equalsIgnoreCase(type))
+			return Material.GOLD_BOOTS;
+		else if("maze".equalsIgnoreCase(type))
+			return Material.TORCH;
 		else return Material.GOLD_SWORD;
 	}
 	

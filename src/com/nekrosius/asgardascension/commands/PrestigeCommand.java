@@ -19,12 +19,12 @@ public class PrestigeCommand implements CommandExecutor {
 		pl = plugin;
 	}
 
-	public static String mh = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard RankUp" + ChatColor.GRAY + "] ";
+	public static String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard RankUp" + ChatColor.GRAY + "] ";
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		if(!(sender instanceof Player)) {
-			sender.sendMessage(mh + "This command is available only for players!");
+			sender.sendMessage(MESSAGE_HEADER + "This command is available only for players!");
 			return true;
 		}
 		Player player = (Player) sender;
@@ -32,31 +32,31 @@ public class PrestigeCommand implements CommandExecutor {
 		if(args.length == 1) {
 			if(args[0].equalsIgnoreCase("location")) {
 				if(!sender.hasPermission("asgardascension.admin")){
-					sender.sendMessage(Main.mh + "This command is available only for OPs!");
+					sender.sendMessage(Main.MESSAGE_HEADER + "This command is available only for OPs!");
 					return true;
 				}
 				ConfigFile.setPrestigeLocation(Convert.LocationToString(player.getLocation(), true));
-				player.sendMessage(Main.mh + "You've succesfully added prestige teleport location!");
+				player.sendMessage(Main.MESSAGE_HEADER + "You've succesfully added prestige teleport location!");
 				return true;
 			}
 		}
 		
 		if(pl.getPlayerManager().getRank(player) != pl.getChallengesFile().getChallengesAmount()) {
-			player.sendMessage(mh + "Your Rank is too low for Prestige! Maximum Rank level is "
+			player.sendMessage(MESSAGE_HEADER + "Your Rank is too low for Prestige! Maximum Rank level is "
 					+ ChatColor.RED + pl.getChallengesFile().getChallengesAmount());
 			return true;
 		}
 		if(pl.getPlayerManager().getPrestige(player) >= ConfigFile.getMaxPrestige()){
-			player.sendMessage(mh + "You've reached maximum level of Prestige!");
+			player.sendMessage(MESSAGE_HEADER + "You've reached maximum level of Prestige!");
 			return true;
 		}
 		if(args.length == 0){
-			player.sendMessage(mh + "You're ready to ascend! Type " + ChatColor.RED + "/prestige confirm" + ChatColor.GRAY + " to ascend!");
+			player.sendMessage(MESSAGE_HEADER + "You're ready to ascend! Type " + ChatColor.RED + "/prestige confirm" + ChatColor.GRAY + " to ascend!");
 			return true;
 		}
 		if(args.length == 1){
 			if(!args[0].equalsIgnoreCase("confirm")){
-				player.sendMessage(mh + "You're ready to ascend! Type " + ChatColor.RED + "/prestige confirm" + ChatColor.GRAY + " to ascend!");
+				player.sendMessage(MESSAGE_HEADER + "You're ready to ascend! Type " + ChatColor.RED + "/prestige confirm" + ChatColor.GRAY + " to ascend!");
 				return true;
 			}
 			else {
@@ -69,10 +69,10 @@ public class PrestigeCommand implements CommandExecutor {
 				String comm = ConfigFile.getPrestigeCommand();
 				comm = comm.replaceAll("%player", player.getName());
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), comm);
-				player.sendMessage(mh + "You've ascended! Your Prestige is " + ChatColor.RED 
+				player.sendMessage(MESSAGE_HEADER + "You've ascended! Your Prestige is " + ChatColor.RED 
 						+ pl.getPlayerManager().getPrestige(player) + ChatColor.GRAY + "!");
 				if(ConfigFile.getTokensReward() > 0) {
-					player.sendMessage(mh + "As a reward for hard work you got " + ConfigFile.getTokensReward() 
+					player.sendMessage(MESSAGE_HEADER + "As a reward for hard work you got " + ConfigFile.getTokensReward() 
 						+ " token " + Convert.addSuffix(ConfigFile.getTokensReward()) + "!");
 				}
 			}

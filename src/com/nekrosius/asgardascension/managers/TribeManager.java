@@ -22,7 +22,7 @@ public class TribeManager {
 	private static List<Tribe> tribes = new ArrayList<Tribe>();
 	private static Map<String, Tribe> playerTribe = new HashMap<String, Tribe>();
 	
-	public static String mh = ChatColor.GRAY + "[" + ChatColor.RED + "Tribes" + ChatColor.GRAY + "] ";
+	public static String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Tribes" + ChatColor.GRAY + "] ";
 	
 	private Main pl;
 	public TribeManager(Main plugin) {
@@ -130,7 +130,8 @@ public class TribeManager {
 	}
 	
 	public static boolean isAllies(Tribe one, Tribe two) {
-		if(one.getAllies().contains(two.getName())) return true;
+		if(one.getAllies().contains(two.getName()))
+			return true;
 		return false;
 	}
 	
@@ -138,7 +139,7 @@ public class TribeManager {
 		if(!hasTribe(one.getName()) || !hasTribe(two.getName())) {
 			return true;
 		}
-		if(getPlayerTribe(one.getName()).equals(getPlayerTribe(two.getName()))){
+		if(getPlayerTribe(one.getName()).getName().equals(getPlayerTribe(two.getName()).getName())){
 			return false;
 		}
 		if(isAllies(getPlayerTribe(one.getName()), getPlayerTribe(two.getName()))) {
@@ -152,15 +153,17 @@ public class TribeManager {
 	}
 	
 	public static List<String> getTribeListDescription() {
-		List<String> desc = new ArrayList<String>();
+		List<String> desc = new ArrayList<>();
 		ChatColor color;
 		int online;
 		for(Tribe tribe : getTribes()) {
 			online = 0;
-			if(tribe.getType().equals("vanir")) color = ChatColor.RED;
+			if(tribe.getType().equals("vanir"))
+				color = ChatColor.RED;
 			else color = ChatColor.YELLOW;
 			for(String str : tribe.getMembers()) {
-				if(Bukkit.getPlayer(str) != null) online++;
+				if(Bukkit.getPlayer(str) != null)
+					online++;
 			}
 			desc.add(color + tribe.getName() + ChatColor.GRAY + " " + online + "/" + tribe.getMembers().size() + " online, $" + tribe.getBalance());
 		}

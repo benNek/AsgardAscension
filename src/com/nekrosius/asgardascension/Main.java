@@ -51,7 +51,7 @@ import net.milkbowl.vault.economy.Economy;
 
 public class Main extends JavaPlugin{
 	
-	public static String mh = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard" + ChatColor.GRAY + "] ";
+	public static String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard" + ChatColor.GRAY + "] ";
 	public static WorldGuardPlugin wg;
 	
 	private ListenerManager lm;
@@ -174,7 +174,7 @@ public class Main extends JavaPlugin{
             chat = chatProvider.getProvider();
         }
 
-        return (chat != null);
+        return chat != null;
     }
 	
 	private void enablePlaceholders() {
@@ -199,7 +199,8 @@ public class Main extends JavaPlugin{
 							Player player = event.getPlayer();
 							double percentage = ((double)econ.getBalance(player) /
 									(getChallengesFile().getPrice(getPlayerManager().getRank(player) + 1) * (getPlayerManager().getPrestige(player) + 1))) * 100;
-							if(percentage > 100) percentage = 100;
+							if(percentage > 100)
+								percentage = 100;
 							return ChatColor.GRAY + "" + String.format("%.1f", percentage) + "%";
 						}
 
@@ -210,10 +211,10 @@ public class Main extends JavaPlugin{
 			PlaceholderHandler.registerPlaceholderHook(this, new DeluxePlaceholderHook() {
 				@Override
 				public String onPlaceholderRequest(Player p, String identifier) {
-					if (identifier.equals("prestige")) {
+					if ("prestige".equals(identifier)) {
 						return  "&6P" + getPlayerManager().getPrestige(p);
 					}
-					else if(identifier.equals("tokens")) {
+					else if("tokens".equals(identifier)) {
 						return "&6P" + getPlayerManager().getTokens(p);
 					}
 					return null;
@@ -264,10 +265,12 @@ public class Main extends JavaPlugin{
 	}
 	
 	public static boolean isPVPEnabled(Player player) {
-		if(Main.wg.getRegionManager(player.getWorld()) == null) return true;
+		String global = "__global__";
+		if(Main.wg.getRegionManager(player.getWorld()) == null)	
+			return true;
 		RegionManager regionManager = Main.wg.getRegionManager(player.getWorld());
 		ApplicableRegionSet arset = regionManager.getApplicableRegions(player.getLocation());
-		ProtectedRegion region = regionManager.getRegion("__global__");
+		ProtectedRegion region = regionManager.getRegion(global);
 		int priority = -10000;
 		for(ProtectedRegion r : arset.getRegions()) { 
 			if(r.getPriority() > priority) {
@@ -276,11 +279,13 @@ public class Main extends JavaPlugin{
 			}
 		}
 		if(region == null) {
-			if(regionManager.getRegion("__global__") == null) return false;
-			return regionManager.getRegion("__global__").getFlag(DefaultFlag.PVP).toString().equals("ALLOW");
+			if(regionManager.getRegion(global) == null)
+				return false;
+			return "ALLOW".equals(regionManager.getRegion(global).getFlag(DefaultFlag.PVP).toString());
 		}
-		if(region.getFlag(DefaultFlag.PVP) == null) return true;
-		return region.getFlag(DefaultFlag.PVP).toString().equalsIgnoreCase("ALLOW");
+		if(region.getFlag(DefaultFlag.PVP) == null)
+			return true;
+		return "ALLOW".equalsIgnoreCase(region.getFlag(DefaultFlag.PVP).toString());
 	}
 	
 }

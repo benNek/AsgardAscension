@@ -22,8 +22,10 @@ public class ChallengesMenu {
 		int level = plugin.getPlayerManager().getRank(player);
 		int prestige = plugin.getPlayerManager().getPrestige(player);
 		for(int i = 1; i <= plugin.getChallengesFile().getChallengesAmount(); i++) {
-			if(level + 1 == i) status = ChatColor.YELLOW + " [CURRENT]";
-			else if(i > level) status = ChatColor.RED + " [LOCKED]";
+			if(level + 1 == i)
+				status = ChatColor.YELLOW + " [CURRENT]";
+			else if(i > level)
+				status = ChatColor.RED + " [LOCKED]";
 			inv.addItem(ItemStackGenerator.createItem(plugin.getChallengesFile().getTypeMaterial(i), 0, 0, ChatColor.GOLD + "" + i + Convert.getOrdinalFor(i) + " challenge" + status,
 					Arrays.asList(ChatColor.GRAY + "Type: " + ChatColor.RED + WordUtils.capitalize(plugin.getChallengesFile().getType(i)),
 							ChatColor.GRAY + "Cost: " + Convert.toPrice(plugin.getChallengesFile().getPrice(i) * (prestige + 1))), true));
