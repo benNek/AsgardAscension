@@ -44,7 +44,7 @@ public class WarpsFile {
 	}
 	
 	public static void setLocation(String title, Location location) {
-		config.set(title + ".location", Convert.LocationToString(location, true));
+		config.set(title + ".location", Convert.locationToString(location, true));
 		if(config.get(title + ".price") == null) {
 			config.set(title + ".price", 1);
 		}
@@ -57,7 +57,7 @@ public class WarpsFile {
 	}
 	
 	public static Location getLocation(String title) {
-		return Convert.StringToLocation(config.getString(title + ".location"));
+		return Convert.stringToLocation(config.getString(title + ".location"));
 	}
 	
 	public static int getPrice(String title) {

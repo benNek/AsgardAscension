@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -28,6 +30,7 @@ import org.bukkit.util.Vector;
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.managers.TribeManager;
+import com.nekrosius.asgardascension.utils.Convert;
 
 import de.slikey.effectlib.effect.LineEffect;
 import de.slikey.effectlib.util.ParticleEffect;
@@ -41,21 +44,23 @@ public class GodTokenListener implements Listener {
 	
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
-		if(event.getPlayer().getInventory().getItemInMainHand() == null) return;
-		if(!(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.GOLD_SWORD))) return;
+		if(event.getPlayer().getInventory().getItemInMainHand() == null)
+			return;
+		if(!(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.GOLD_SWORD)))
+			return;
 		if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
 			Player player = event.getPlayer();
 			boolean remove = false;
 			if(!Main.isPVPEnabled(player)) {
 				return;
 			}
-			if(GodTokens.getSkill(player.getName()).equalsIgnoreCase("Fireball")) {
+			if("Fireball".equalsIgnoreCase(GodTokens.getSkill(player.getName()))) {
 				Fireball fb = player.launchProjectile(Fireball.class);
 				fb.setMetadata("god_token", new FixedMetadataValue(pl, player.getName()));
 				GodTokens.addCooldown(player.getName(), 10);
 				remove = true;
 			}
-			else if(GodTokens.getSkill(player.getName()).equals("Lightning")) {
+			else if("Lightning".equals(GodTokens.getSkill(player.getName()))) {
 				@SuppressWarnings("deprecation")
 				Block block = player.getTargetBlock((HashSet<Byte>) null, 15);
 				block.getWorld().strikeLightning(block.getLocation());
@@ -64,7 +69,8 @@ public class GodTokenListener implements Listener {
 						Player ee = (Player) e;
 						if(TribeManager.canAttack(player, ee)) {
 							if(ee.getLocation().distance(block.getLocation()) < 1){
-								if(ee.getHealth() > 16) ee.setHealth(ee.getHealth() - 16);
+								if(ee.getHealth() > 16)
+									ee.setHealth(ee.getHealth() - 16);
 								else ee.setHealth(0);
 							}
 							else if(ee.getLocation().distance(block.getLocation()) <= 3){
@@ -79,19 +85,17 @@ public class GodTokenListener implements Listener {
 				}
 				remove = true;
 			}
-			else if(GodTokens.getSkill(player.getName()).equals("Freeze")) {
-				if(getTargetPlayer(player) != null) {
-					LineEffect eff = new LineEffect(Main.em);
-					Player target = getTargetPlayer(player);
-					eff.setEntity(player);
-					eff.setTargetEntity(target);
-					eff.particle = ParticleEffect.SNOW_SHOVEL;
-					eff.start();
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "You've frozen " + ChatColor.RED + target.getName());
-					target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 6));
-					target.sendMessage(GodTokens.MESSAGE_HEADER + "You were frozen by God Token of " + ChatColor.RED + player.getName());
-					remove = true;
-				}
+			else if("Freeze".equals(GodTokens.getSkill(player.getName())) && getTargetPlayer(player) != null) {
+				LineEffect eff = new LineEffect(Main.em);
+				Player target = getTargetPlayer(player);
+				eff.setEntity(player);
+				eff.setTargetEntity(target);
+				eff.particle = ParticleEffect.SNOW_SHOVEL;
+				eff.start();
+				player.sendMessage(GodTokens.MESSAGE_HEADER + "You've frozen " + ChatColor.RED + target.getName());
+				target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 6));
+				target.sendMessage(GodTokens.MESSAGE_HEADER + "You were frozen by God Token of " + ChatColor.RED + player.getName());
+				remove = true;
 			}
 			if(remove) {
 				player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
@@ -102,11 +106,16 @@ public class GodTokenListener implements Listener {
 	
 	@EventHandler
 	public void onUseNetherStar(PlayerInteractEvent event) {
-		if(event.getPlayer().getInventory().getItemInMainHand() == null) return;
-		if(!(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR))) return;
-		if(!(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.NETHER_STAR))) return;
-		if(!event.getPlayer().getInventory().getItemInMainHand().hasItemMeta()) return;
-		if(!event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "God Token")) return;
+		if(event.getPlayer().getInventory().getItemInMainHand() == null)
+			return;
+		if(!(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)))
+			return;
+		if(!(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.NETHER_STAR)))
+			return;
+		if(!event.getPlayer().getInventory().getItemInMainHand().hasItemMeta())
+			return;
+		if(!event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "God Token"))
+			return;
 		
 		Player player = event.getPlayer();
 		int amount = player.getInventory().getItemInMainHand().getAmount();
@@ -124,9 +133,10 @@ public class GodTokenListener implements Listener {
 	
 	@EventHandler
 	public void onAttack(EntityDamageEvent event) {
-		if(event.isCancelled()) return;
+		if(event.isCancelled())
+			return;
 		if(event.getEntity() instanceof Player){
-			if(GodTokens.getSkill(((Player)event.getEntity()).getName()).equalsIgnoreCase("Dodge")){
+			if("Dodge".equals(GodTokens.getSkill(((Player)event.getEntity()).getName()))){
 				if(getRandom(1, 100) <= 30) {
 					((Player)event.getEntity()).sendMessage(GodTokens.MESSAGE_HEADER + "You've dodged an attack!");
 					event.setCancelled(true);
@@ -137,7 +147,8 @@ public class GodTokenListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerAttack(EntityDamageByEntityEvent event) {
-		if(event.isCancelled()) return;
+		if(event.isCancelled())
+			return;
 		if(event.getDamager() instanceof Fireball && event.getEntity() instanceof Player) {
 			if(event.getDamager().hasMetadata("god_token")) {
 				Player damager = Bukkit.getPlayer(event.getDamager().getMetadata("god_token").get(0).asString());
@@ -173,7 +184,6 @@ public class GodTokenListener implements Listener {
 	@EventHandler
 	public void onExplode(EntityExplodeEvent event) {
 		if(event.getEntityType().equals(EntityType.FIREBALL)){
-			// TODO FIX NX
 			Fireball fb = (Fireball) event.getEntity();
 			if(fb.hasMetadata("god_token")){
 				event.setCancelled(true);
@@ -183,6 +193,40 @@ public class GodTokenListener implements Listener {
 					}
 				}
 			}
+		}
+	}
+	
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		Player player = event.getPlayer();
+		if(GodTokens.getSkill(player.getName()) == null)
+			return;
+		if(!"Explosive".equals(GodTokens.getSkill(player.getName())))
+			return;
+		BlockFace playerDir = Convert.yawToFace(player.getLocation().getYaw());
+		Block block = event.getBlock();
+		Block up = block.getRelative(BlockFace.UP);
+		Block left = block.getRelative(BlockFace.EAST);
+		Block right = block.getRelative(BlockFace.WEST);
+		if(playerDir.equals(BlockFace.EAST) || playerDir.equals(BlockFace.WEST)) {
+			left = block.getRelative(BlockFace.NORTH);
+			right = block.getRelative(BlockFace.SOUTH);
+		}
+		if(Main.wg.canBuild(player, block)) {
+			player.getInventory().addItem(new ItemStack(block.getType()));
+			block.setType(Material.AIR);
+		}
+		if(Main.wg.canBuild(player, up)) {
+			player.getInventory().addItem(new ItemStack(up.getType()));
+			up.setType(Material.AIR);
+		}
+		if(Main.wg.canBuild(player, left)) {
+			player.getInventory().addItem(new ItemStack(left.getType()));
+			left.setType(Material.AIR);
+		}
+		if(Main.wg.canBuild(player, right)) {
+			player.getInventory().addItem(new ItemStack(right.getType()));
+			right.setType(Material.AIR);
 		}
 	}
 	

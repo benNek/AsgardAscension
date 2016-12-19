@@ -9,16 +9,13 @@ public class Pager {
  
     public Pager()
     {
-        List<String> l = new ArrayList<String>();
+        List<String> l = new ArrayList<>();
      
         //generates a demo List with some Strings
         for(int i=0 ; i<18 ; i++)
         {
             l.add(new StringBuilder("string").append(i+1).toString());
         }
-     
-        //Fetches a page and displays it afterwards
-        displayList(getPage(l, 4));
      
     }
  
@@ -30,7 +27,7 @@ public class Pager {
     */
     public List<String> getPage(List<String> l, int pagenr)
     {
-        List<String> page = new ArrayList<String>();
+        List<String> page = new ArrayList<>();
      
         int listart = (pagenr - 1) * PAGELENGTH;
         int liend  = listart + PAGELENGTH;
@@ -49,16 +46,5 @@ public class Pager {
      
         return page;
     }
- 
-    /**
-    * Displays a List<String> for debugging.
-    * @param l
-    */
-    public void displayList(List<String> l)
-    {
-        for(int i=0 ; i<l.size() ; i++)
-        {
-            System.out.println(l.get(i));
-        }
-    }
+    
 }

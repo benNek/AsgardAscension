@@ -19,10 +19,10 @@ public class PlayerManager {
 	Main pl;
 	public PlayerManager(Main pl) {
 		this.pl = pl;
-		rank = new HashMap<String, Integer>();
-		prestige = new HashMap<String, Integer>();
-		tokens = new HashMap<String, Integer>();
-		purchased = new HashMap<String, List<String>>();
+		rank = new HashMap<>();
+		prestige = new HashMap<>();
+		tokens = new HashMap<>();
+		purchased = new HashMap<>();
 	}
 	
 	public void loadData(Player player) {
@@ -65,8 +65,10 @@ public class PlayerManager {
 	}
 	
 	public int getTokens(Player player) {
-		if(player == null) return 0;
-		if(tokens.get(player.getName()) == null) return 0;
+		if(player == null)
+			return 0;
+		if(tokens.get(player.getName()) == null)
+			return 0;
 		return tokens.get(player.getName());
 	}
 	

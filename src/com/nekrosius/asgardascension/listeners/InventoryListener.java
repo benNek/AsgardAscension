@@ -504,14 +504,14 @@ public class InventoryListener implements Listener {
 				return;
 			}
 			GodToken token = GodTokens.findToken(event.getCurrentItem().getItemMeta().getDisplayName().substring(2));
-			if("Explosive".equalsIgnoreCase(token.getName()) || "Fortune".equalsIgnoreCase(token.getName())) {
+			if("Fortune".equalsIgnoreCase(token.getName())) {
 				event.getWhoClicked().sendMessage(GodTokens.MESSAGE_HEADER + "Currently disabled!");
 				return;
 			}
 			if(Cooldowns.getCooldown((Player) event.getWhoClicked(), token.getName()) > 0) {
 				event.getWhoClicked().closeInventory();
 				event.getWhoClicked().sendMessage(GodTokens.MESSAGE_HEADER + "You can use this token in " 
-						+ ChatColor.RED + Convert.TimeToString((int)(Cooldowns.getCooldown((Player) event.getWhoClicked(), token.getName()) / 1000))
+						+ ChatColor.RED + Convert.timeToString((int)(Cooldowns.getCooldown((Player) event.getWhoClicked(), token.getName()) / 1000))
 						+ ChatColor.GRAY + "!");
 				return;
 			}

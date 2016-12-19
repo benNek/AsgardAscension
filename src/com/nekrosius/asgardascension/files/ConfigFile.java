@@ -123,7 +123,7 @@ public class ConfigFile {
 	}
 	
 	public static Location getPrestigeLocation() {
-		return Convert.StringToLocation(config.getString("prestige.location"));
+		return Convert.stringToLocation(config.getString("prestige.location"));
 	}
 	
 	public static void setPrestigeLocation(String location) {

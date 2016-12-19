@@ -17,6 +17,10 @@ import com.comphenix.protocol.wrappers.nbt.NbtFactory;
 
 public class ItemStackGenerator {
 	
+	private ItemStackGenerator() {
+
+	}
+	
 	public static ItemStack createItem(Material material, int amount, int data, String name, List<String> lore){
 		short dat = (short) data;
 		ItemStack item;
@@ -33,10 +37,8 @@ public class ItemStackGenerator {
 		if(name != null){
 			meta.setDisplayName(name);
 		}
-		if(lore != null){
-			if(!lore.isEmpty()){
-				meta.setLore(lore);
-			}
+		if(lore != null && !lore.isEmpty()){
+			meta.setLore(lore);
 		}
 		item.setItemMeta(meta);
 		return item;
@@ -45,26 +47,28 @@ public class ItemStackGenerator {
 	public static ItemStack createItem(Material material, int amount, int data, String name, List<String> lore, boolean removeAtt){
 		short dat = (short) data;
 		ItemStack item;
-		if(amount == 0 && dat == 0){
+		if(amount == 0 && dat == 0) {
 			item = new ItemStack(material);
-		}else if(amount == 0 && dat != 0){
+		}
+		else if(amount == 0 && dat != 0) {
 			item = new ItemStack(material, 1, dat);
-		}else if(amount != 0 && dat == 0){
+		}
+		else if(amount != 0 && dat == 0) {
 			item = new ItemStack(material, amount);
-		}else{
+		}
+		else {
 			item = new ItemStack(material, amount, dat);
 		}
 		ItemMeta meta = item.getItemMeta();
-		if(name != null){
+		if(name != null) {
 			meta.setDisplayName(name);
 		}
-		if(lore != null){
-			if(!lore.isEmpty()){
-				meta.setLore(lore);
-			}
+		if(lore != null && !lore.isEmpty()) {
+			meta.setLore(lore);
 		}
 		item.setItemMeta(meta);
-		if(removeAtt) item = removeAttributes(item);
+		if(removeAtt)
+			item = removeAttributes(item);
 		return item;
 	}
 	
@@ -73,93 +77,141 @@ public class ItemStackGenerator {
 		if(name != null){
 			meta.setDisplayName(name);
 		}
-		if(lore != null){
-			if(!lore.isEmpty()){
-				meta.setLore(lore);
-			}
+		if(lore != null && !lore.isEmpty()){
+			meta.setLore(lore);
 		}
 		item.setItemMeta(meta);
 		return item;
 	}
 	
 	public static boolean isHelmet(ItemStack item) {
-		if(item.getType().equals(Material.LEATHER_HELMET)) return true;
-		else if(item.getType().equals(Material.IRON_HELMET)) return true;
-		else if(item.getType().equals(Material.CHAINMAIL_HELMET)) return true;
-		else if(item.getType().equals(Material.GOLD_HELMET)) return true;
-		else if(item.getType().equals(Material.DIAMOND_HELMET)) return true;
-		return false;
+		switch(item.getType()) {
+			case LEATHER_HELMET:
+			case IRON_HELMET:
+			case CHAINMAIL_HELMET:
+			case GOLD_HELMET:
+			case DIAMOND_HELMET:
+				return true;
+			default:
+				return false;
+		}
 	}
 	
 	public static boolean isChestplate(ItemStack item) {
-		if(item.getType().equals(Material.LEATHER_CHESTPLATE)) return true;
-		else if(item.getType().equals(Material.IRON_CHESTPLATE)) return true;
-		else if(item.getType().equals(Material.CHAINMAIL_CHESTPLATE)) return true;
-		else if(item.getType().equals(Material.GOLD_CHESTPLATE)) return true;
-		else if(item.getType().equals(Material.DIAMOND_CHESTPLATE)) return true;
-		return false;
+		switch(item.getType()) {
+			case LEATHER_CHESTPLATE:
+			case IRON_CHESTPLATE:
+			case CHAINMAIL_CHESTPLATE:
+			case GOLD_CHESTPLATE:
+			case DIAMOND_CHESTPLATE:
+				return true;
+			default:
+				return false;
+		}
 	}
 	
 	public static boolean isLeggings(ItemStack item) {
-		if(item.getType().equals(Material.LEATHER_LEGGINGS)) return true;
-		else if(item.getType().equals(Material.IRON_LEGGINGS)) return true;
-		else if(item.getType().equals(Material.CHAINMAIL_LEGGINGS)) return true;
-		else if(item.getType().equals(Material.GOLD_LEGGINGS)) return true;
-		else if(item.getType().equals(Material.DIAMOND_LEGGINGS)) return true;
-		return false;
+		switch(item.getType()) {
+			case LEATHER_LEGGINGS:
+			case IRON_LEGGINGS:
+			case CHAINMAIL_LEGGINGS:
+			case GOLD_LEGGINGS:
+			case DIAMOND_LEGGINGS:
+				return true;
+			default:
+				return false;
+		}
 	}
 	
 	public static boolean isBoots(ItemStack item) {
-		if(item.getType().equals(Material.LEATHER_BOOTS)) return true;
-		else if(item.getType().equals(Material.IRON_BOOTS)) return true;
-		else if(item.getType().equals(Material.CHAINMAIL_BOOTS)) return true;
-		else if(item.getType().equals(Material.GOLD_BOOTS)) return true;
-		else if(item.getType().equals(Material.DIAMOND_BOOTS)) return true;
-		return false;
+		switch(item.getType()) {
+			case LEATHER_BOOTS:
+			case IRON_BOOTS:
+			case CHAINMAIL_BOOTS:
+			case GOLD_BOOTS:
+			case DIAMOND_BOOTS:
+				return true;
+			default:
+				return false;
+		}
 	}
 	
 	public static boolean isTool(ItemStack item) {
-		// AXE
-		if(item.getType().equals(Material.WOOD_AXE)) return true;
-		if(item.getType().equals(Material.STONE_AXE)) return true;
-		if(item.getType().equals(Material.IRON_AXE)) return true;
-		if(item.getType().equals(Material.GOLD_AXE)) return true;
-		if(item.getType().equals(Material.DIAMOND_AXE)) return true;
-		
-		// PICKAXE
-		if(item.getType().equals(Material.WOOD_PICKAXE)) return true;
-		if(item.getType().equals(Material.STONE_PICKAXE)) return true;
-		if(item.getType().equals(Material.IRON_PICKAXE)) return true;
-		if(item.getType().equals(Material.GOLD_PICKAXE)) return true;
-		if(item.getType().equals(Material.DIAMOND_PICKAXE)) return true;
-		
-		// SPADE
-		if(item.getType().equals(Material.WOOD_SPADE)) return true;
-		if(item.getType().equals(Material.STONE_SPADE)) return true;
-		if(item.getType().equals(Material.IRON_SPADE)) return true;
-		if(item.getType().equals(Material.GOLD_SPADE)) return true;
-		if(item.getType().equals(Material.DIAMOND_SPADE)) return true;
-		
-		// HOE
-		if(item.getType().equals(Material.WOOD_HOE)) return true;
-		if(item.getType().equals(Material.STONE_HOE)) return true;
-		if(item.getType().equals(Material.IRON_HOE)) return true;
-		if(item.getType().equals(Material.GOLD_HOE)) return true;
-		if(item.getType().equals(Material.DIAMOND_HOE)) return true;
-		
-		// SWORD
-		if(item.getType().equals(Material.WOOD_SWORD)) return true;
-		if(item.getType().equals(Material.STONE_SWORD)) return true;
-		if(item.getType().equals(Material.IRON_SWORD)) return true;
-		if(item.getType().equals(Material.GOLD_SWORD)) return true;
-		if(item.getType().equals(Material.DIAMOND_SWORD)) return true;
-		
-		return false;
+		boolean isTool = isAxe(item) || isPickaxe(item) || isSpade(item) || isHoe(item);
+		return isTool || isSword(item);
+	}
+	
+	public static boolean isAxe(ItemStack item) {
+		switch(item.getType()) {
+			case WOOD_AXE:
+			case STONE_AXE:
+			case IRON_AXE:
+			case GOLD_AXE:
+			case DIAMOND_AXE:
+				return true;
+			default:
+				return false;
+		}
+	}
+	
+	public static boolean isPickaxe(ItemStack item) {
+		switch(item.getType()) {
+			case WOOD_PICKAXE:
+			case STONE_PICKAXE:
+			case IRON_PICKAXE:
+			case GOLD_PICKAXE:
+			case DIAMOND_PICKAXE:
+				return true;
+			default:
+				return false;
+		}
+	}
+	
+	public static boolean isSpade(ItemStack item) {
+		switch(item.getType()) {
+			case WOOD_SPADE:
+			case STONE_SPADE:
+			case IRON_SPADE:
+			case GOLD_SPADE:
+			case DIAMOND_SPADE:
+				return true;
+			default:
+				return false;
+		}
+	}
+	
+	public static boolean isHoe(ItemStack item) {
+		switch(item.getType()) {
+			case WOOD_HOE:
+			case STONE_HOE:
+			case IRON_HOE:
+			case GOLD_HOE:
+			case DIAMOND_HOE:
+				return true;
+			default:
+				return false;
+		}
+	}
+	
+	public static boolean isSword(ItemStack item) {
+		switch(item.getType()) {
+			case WOOD_SWORD:
+			case STONE_SWORD:
+			case IRON_SWORD:
+			case GOLD_SWORD:
+			case DIAMOND_SWORD:
+				return true;
+			default:
+				return false;
+		}
 	}
 	
 	public static boolean isRepairable(ItemStack item) {
-		if(item.getType().equals(Material.AIR)) return false;
-		return isTool(item) || isHelmet(item) || isChestplate(item) || isLeggings(item) || isBoots(item);
+		if(item.getType().equals(Material.AIR))
+			return false;
+		
+		boolean isArmourPart = isHelmet(item) || isChestplate(item) || isLeggings(item) || isBoots(item);
+		return isTool(item) || isArmourPart;
 	}
 	
 	private static ItemStack removeAttributes(ItemStack item) {

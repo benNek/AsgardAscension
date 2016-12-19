@@ -75,17 +75,17 @@ public class ChallengesFile {
 	}
 	
 	public void setSpawnpoint(Player player, int challenge) {
-		config.set(String.valueOf(challenge) + ".spawnpoint", Convert.LocationToString(player.getLocation(), true));
+		config.set(String.valueOf(challenge) + ".spawnpoint", Convert.locationToString(player.getLocation(), true));
 		saveConfig();
 	}
 	
 	public void setNoteblock(int challenge, Location loc) {
-		config.set(String.valueOf(challenge) + ".noteblock", Convert.LocationToString(loc, false));
+		config.set(String.valueOf(challenge) + ".noteblock", Convert.locationToString(loc, false));
 		saveConfig();
 	}
 	
 	public void setVictorySpawnpoint(Player player, int challenge) {
-		config.set(String.valueOf(challenge) + ".victory", Convert.LocationToString(player.getLocation(), true));
+		config.set(String.valueOf(challenge) + ".victory", Convert.locationToString(player.getLocation(), true));
 		saveConfig();
 	}
 	
@@ -98,16 +98,16 @@ public class ChallengesFile {
 	
 	public void addMonster(int challenge, String mob, Location loc) {
 		List<String> mobs = config.getStringList(String.valueOf(challenge) + ".monsters");
-		mobs.add(mob + ", " + Convert.LocationToString(loc, true));
+		mobs.add(mob + ", " + Convert.locationToString(loc, true));
 		config.set(String.valueOf(challenge) + ".monsters", mobs);
 		saveConfig();
 	}
 	
 	public void setMobsLocation(int challenge, Player player) {
 		config.set(String.valueOf(challenge) + ".spawns.first",
-				Convert.LocationToString(ChallengeSetup.getFirstLocation(player), false));
+				Convert.locationToString(ChallengeSetup.getFirstLocation(player), false));
 		config.set(String.valueOf(challenge) + ".spawns.second",
-				Convert.LocationToString(ChallengeSetup.getSecondLocation(player), false));
+				Convert.locationToString(ChallengeSetup.getSecondLocation(player), false));
 		saveConfig();
 	}
 	
@@ -132,7 +132,7 @@ public class ChallengesFile {
 	}
 	
 	public Location getSpawnpoint(int challenge) {
-		return Convert.StringToLocation(config.getString(String.valueOf(challenge) + ".spawnpoint")); 
+		return Convert.stringToLocation(config.getString(String.valueOf(challenge) + ".spawnpoint")); 
 	}
 	
 	public Long getPrice(int challenge) {
@@ -140,11 +140,11 @@ public class ChallengesFile {
 	}
 	
 	public Location getNoteblockLocation(int challenge) {
-		return Convert.StringToLocation(config.getString(String.valueOf(challenge) + ".noteblock")); 
+		return Convert.stringToLocation(config.getString(String.valueOf(challenge) + ".noteblock")); 
 	}
 	
 	public Location getVictorySpawnpoint(int challenge) {
-		return Convert.StringToLocation(config.getString(String.valueOf(challenge) + ".victory")); 
+		return Convert.stringToLocation(config.getString(String.valueOf(challenge) + ".victory")); 
 	}
 	
 	public List<String> getCommands(int challenge) {
@@ -156,11 +156,11 @@ public class ChallengesFile {
 	}
 	
 	public Location getFirstLocation(int challenge) {
-		return Convert.StringToLocation(config.getString(String.valueOf(challenge) + ".spawns.first"));
+		return Convert.stringToLocation(config.getString(String.valueOf(challenge) + ".spawns.first"));
 	}
 	
 	public Location getSecondLocation(int challenge) {
-		return Convert.StringToLocation(config.getString(String.valueOf(challenge) + ".spawns.second"));
+		return Convert.stringToLocation(config.getString(String.valueOf(challenge) + ".spawns.second"));
 	}
 	
 	public Main getPlugin() {

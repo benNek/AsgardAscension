@@ -33,10 +33,10 @@ public class FOGCommand implements CommandExecutor {
 		Inventory inv = Bukkit.createInventory(player, MainInventory.getInventorySize(GodFoodFile.getEffectAmount()), ChatColor.BOLD + "FoG");
 		for(int i = 1; i <= GodFoodFile.getEffectAmount(); i++) {
 			
-			List<String> effects = new ArrayList<String>();
+			List<String> effects = new ArrayList<>();
 			for(String str : GodFoodFile.GetEffects(i)) {
 				String[] values = str.split(", ");
-				effects.add(ChatColor.RED + values[0] + " " + Convert.ArabicToRome(Integer.parseInt(values[2])) + ChatColor.LIGHT_PURPLE + " " + values[1] + " sec.");
+				effects.add(ChatColor.RED + values[0] + " " + Convert.arabicToRome(Integer.parseInt(values[2])) + ChatColor.LIGHT_PURPLE + " " + values[1] + " sec.");
 			}
 			
 			inv.addItem(ItemStackGenerator.createItem(

@@ -100,7 +100,7 @@ public class RagnorakFile {
 	public static Location getLocation() {
 		int index = getRandom(0, getLocationsAmount() - 1);
 		if(config.getStringList("locations") != null){
-			return Convert.StringToLocation(config.getStringList("locations").get(index));
+			return Convert.stringToLocation(config.getStringList("locations").get(index));
 		}
 		return null;
 	}
@@ -121,7 +121,7 @@ public class RagnorakFile {
 	
 	public static void addLocation(Location loc) {
 		List<String> locs = getLocations();
-		locs.add(Convert.LocationToString(loc, false));
+		locs.add(Convert.locationToString(loc, false));
 		config.set("locations", locs);
 		saveConfig();
 	}

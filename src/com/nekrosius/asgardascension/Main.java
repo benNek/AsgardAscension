@@ -51,7 +51,7 @@ import net.milkbowl.vault.economy.Economy;
 
 public class Main extends JavaPlugin{
 	
-	public static String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard" + ChatColor.GRAY + "] ";
+	public static final String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard" + ChatColor.GRAY + "] ";
 	public static WorldGuardPlugin wg;
 	
 	private ListenerManager lm;

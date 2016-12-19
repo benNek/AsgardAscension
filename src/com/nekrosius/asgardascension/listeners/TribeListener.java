@@ -38,39 +38,41 @@ public class TribeListener implements Listener {
 	
 	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onExplode(EntityExplodeEvent event) {
-		if(event.getEntityType().equals(EntityType.FIREBALL)){
-			Fireball fb = (Fireball) event.getEntity();
-			if(fb.hasMetadata("ultimate")){
-				int level = fb.getMetadata("ultimate").get(0).asInt();
-				double directDamage = util.getFireballDamageByTribeLevel(level, true);
-				double explosionDamage = util.getFireballDamageByTribeLevel(level, false);
-				Player victim;
-				for(Entity e : fb.getNearbyEntities(0.5, 0.5, 0.5)){
-					if(e instanceof Player){
-						victim = (Player) e;
-						if(directDamage == 0){
-							victim.setHealth(0);
-						}
-						else if(victim.getHealth() >= directDamage){
-							victim.setHealth(victim.getHealth() - directDamage);
-						}else{
-							victim.setHealth(0);
-						}
-					}
+		if(!event.getEntityType().equals(EntityType.FIREBALL)) 
+			return;
+		Fireball fb = (Fireball) event.getEntity();
+		if(!fb.hasMetadata("ultimate"))
+			return;
+		
+		int level = fb.getMetadata("ultimate").get(0).asInt();	
+		double directDamage = util.getFireballDamageByTribeLevel(level, true);
+		double explosionDamage = util.getFireballDamageByTribeLevel(level, false);
+		
+		Player victim;
+		for(Entity e : fb.getNearbyEntities(0.5, 0.5, 0.5)){
+			if(e instanceof Player){
+				victim = (Player) e;
+				if(directDamage == 0){
+					victim.setHealth(0);
 				}
-				for(Entity e : fb.getNearbyEntities(5, 5, 5)){
-					if(e instanceof Player){
-						victim = (Player) e;
-						if(victim.getHealth() >= explosionDamage){
-							victim.setHealth(victim.getHealth() - explosionDamage);
-						}else{
-							victim.setHealth(0);
-						}
-					}
+				else if(victim.getHealth() >= directDamage){
+					victim.setHealth(victim.getHealth() - directDamage);
+				}else{
+					victim.setHealth(0);
 				}
-				event.setCancelled(true);
 			}
 		}
+		for(Entity e : fb.getNearbyEntities(5, 5, 5)){
+			if(e instanceof Player){
+				victim = (Player) e;
+				if(victim.getHealth() >= explosionDamage){
+					victim.setHealth(victim.getHealth() - explosionDamage);
+				}else{
+					victim.setHealth(0);
+				}
+			}
+		}
+		event.setCancelled(true);
 	}
 	
 	@EventHandler

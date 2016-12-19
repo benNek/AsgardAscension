@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class TribeUtils {
 	
 	public TribeUtils() {
-		
+		// It's empty because why not?
 	}
 	
 	public Location getCenterLocation(Location loc1, Location loc2){
@@ -24,22 +24,28 @@ public class TribeUtils {
 	}
 	
 	public List<Player> getNearbyPlayers(Location loc, double radius){
-		List<Player> players = new ArrayList<Player>();
+		List<Player> players = new ArrayList<>();
 		for(Entity e : loc.getWorld().getEntities()){
-			if(e instanceof Player){
-				if(loc.distance(e.getLocation()) <= radius)
-					players.add((Player)e);
+			if(e instanceof Player && loc.distance(e.getLocation()) <= radius){
+				players.add((Player)e);
 			}
 		}
 		return players;
 	}
 	
 	public double getSmashDamageByTribeLevel(int level) {
-		if(level == 1) return 3;
-		else if(level == 2) return 4;
-		else if(level == 3) return 6;
-		else if(level == 4) return 7;
-		else return 0;
+		switch(level) {
+			case 1:
+				return 3;
+			case 2:
+				return 4;
+			case 3:
+				return 6;
+			case 4:
+				return 7;
+			default:
+				return 0;
+		}
 	}
 	
 	public double getFireballDamageByTribeLevel(int level, boolean direct) {
@@ -47,9 +53,10 @@ public class TribeUtils {
 			return 10;
 		}
 		else{
-			if(level == 1 || level == 2) return 4;
-			else if(level == 3 || level == 4) return 6;
-			else return 4;
+			if(level == 1 || level == 2)
+				return 4;
+			else
+				return 6;
 		}
 	}
 

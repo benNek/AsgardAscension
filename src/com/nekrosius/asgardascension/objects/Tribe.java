@@ -35,8 +35,8 @@ public class Tribe {
 		setName(name);
 		setBalance(0);
 		setLevel(1);
-		members = new ArrayList<String>();
-		invites = new ArrayList<String>();
+		members = new ArrayList<>();
+		invites = new ArrayList<>();
 		setAllies(new ArrayList<String>());
 		setEnemies(new ArrayList<String>());
 		setAllyRequests(new ArrayList<String>());
@@ -46,17 +46,17 @@ public class Tribe {
 	}
 	
 	public void delete() {
-		if(getMembers().size() > 0){
+		if(!getMembers().isEmpty()){
 			for(String m : getMembers()){
 				TribeManager.removePlayerTribe(m);
 			}
 		}
-		if(getAllies().size() > 0){
+		if(!getAllies().isEmpty()){
 			for(String st : getAllies()){
 				TribeManager.getTribe(st).removeAlly(getName());
 			}
 		}
-		if(getEnemies().size() > 0){
+		if(!getEnemies().isEmpty()){
 			for(String st : getAllies()){
 				TribeManager.getTribe(st).removeEnemy(getName());
 			}
@@ -122,14 +122,14 @@ public class Tribe {
 	public void setMembers(List<String> members) {
 		this.members = members;
 		for(String member : members) {
-			String name;
+			String playerName;
 			try{
-				name = Bukkit.getOfflinePlayer(UUID.fromString(member)).getName();
+				playerName = Bukkit.getOfflinePlayer(UUID.fromString(member)).getName();
 			}
 			catch (IllegalArgumentException e) {
-				name = member;
+				playerName = member;
 			}
-			TribeManager.setPlayerTribe(name, this);
+			TribeManager.setPlayerTribe(playerName, this);
 		}
 	}
 	
@@ -262,7 +262,7 @@ public class Tribe {
 				}
 			return turinys;
 		}
-		return null;
+		return new ItemStack[0];
 	}
 
 	public void openInventory(Player player) {

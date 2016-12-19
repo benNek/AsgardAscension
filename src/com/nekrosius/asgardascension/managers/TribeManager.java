@@ -19,10 +19,10 @@ import com.nekrosius.asgardascension.objects.Tribe;
 
 public class TribeManager {
 	
-	private static List<Tribe> tribes = new ArrayList<Tribe>();
-	private static Map<String, Tribe> playerTribe = new HashMap<String, Tribe>();
+	private static List<Tribe> tribes = new ArrayList<>();
+	private static Map<String, Tribe> playerTribe = new HashMap<>();
 	
-	public static String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Tribes" + ChatColor.GRAY + "] ";
+	public static final String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Tribes" + ChatColor.GRAY + "] ";
 	
 	private Main pl;
 	public TribeManager(Main plugin) {
@@ -32,7 +32,8 @@ public class TribeManager {
 		String[] files = file.list();
 		if(files != null){
 			for(String str : files){
-				if(str.length() - 4 <= 0) continue;
+				if(str.length() - 4 <= 0)
+					continue;
 				String name = str.substring(0, str.length() - 4);
 				TribeFile.createConfig(name);
 				Tribe tribe = new Tribe(name);
@@ -71,7 +72,8 @@ public class TribeManager {
 	}
 	
 	public static boolean hasTribe(String player) {
-		if(playerTribe.get(player) != null) return true;
+		if(playerTribe.get(player) != null)
+			return true;
 		return false;
 	}
 	
@@ -88,7 +90,8 @@ public class TribeManager {
 	}
 	
 	public static boolean isLeader(String player) {
-		if(getPlayerTribe(player) == null) return false;
+		if(getPlayerTribe(player) == null)
+			return false;
 		return getPlayerTribe(player).getLeader().equals(player);
 	}
 	
@@ -158,7 +161,7 @@ public class TribeManager {
 		int online;
 		for(Tribe tribe : getTribes()) {
 			online = 0;
-			if(tribe.getType().equals("vanir"))
+			if("vanir".equals(tribe.getType()))
 				color = ChatColor.RED;
 			else color = ChatColor.YELLOW;
 			for(String str : tribe.getMembers()) {

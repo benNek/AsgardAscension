@@ -180,7 +180,7 @@ public class Ragnorak {
 	
 	private void spawnItems() {
 		for(String locString : RagnorakFile.getLocations()){
-			Location loc = Convert.StringToLocation(locString);
+			Location loc = Convert.stringToLocation(locString);
 			loc.getBlock().setType(Material.CHEST);
 			ShieldEffect he = new ShieldEffect(Main.em);
 			he.setLocation(loc);
@@ -205,7 +205,7 @@ public class Ragnorak {
 		}
 		effects.clear();
 		for(String locString : RagnorakFile.getLocations()){
-			Location lloc = Convert.StringToLocation(locString);
+			Location lloc = Convert.stringToLocation(locString);
 			if(lloc.getBlock().getState() instanceof Chest) {
 				Chest chest = (Chest) lloc.getBlock().getState();
 				chest.getInventory().clear();

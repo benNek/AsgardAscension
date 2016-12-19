@@ -35,7 +35,7 @@ public class PrestigeCommand implements CommandExecutor {
 					sender.sendMessage(Main.MESSAGE_HEADER + "This command is available only for OPs!");
 					return true;
 				}
-				ConfigFile.setPrestigeLocation(Convert.LocationToString(player.getLocation(), true));
+				ConfigFile.setPrestigeLocation(Convert.locationToString(player.getLocation(), true));
 				player.sendMessage(Main.MESSAGE_HEADER + "You've succesfully added prestige teleport location!");
 				return true;
 			}
