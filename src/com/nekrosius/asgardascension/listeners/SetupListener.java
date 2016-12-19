@@ -1,6 +1,8 @@
 package com.nekrosius.asgardascension.listeners;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
@@ -19,6 +21,7 @@ import com.nekrosius.asgardascension.challenges.Challenge;
 import com.nekrosius.asgardascension.challenges.ChallengeSetup;
 import com.nekrosius.asgardascension.files.GodFoodFile;
 import com.nekrosius.asgardascension.handlers.FoodSetup;
+import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.inventories.MainInventory;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
@@ -28,6 +31,8 @@ public class SetupListener implements Listener {
 	public SetupListener(Main plugin) {
 		pl = plugin;
 	}
+	
+	public static Map<String, Boolean> withdrawal = new HashMap<>();
 	
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
@@ -51,6 +56,35 @@ public class SetupListener implements Listener {
 				event.setCancelled(true);
 				player.sendMessage(FoodSetup.MESSAGE_HEADER + "You've cancelled setup of Food of Gods!");
 			}
+		}
+		if(withdrawal.containsKey(player.getName())) {
+			event.setCancelled(true);
+			int amount;
+			try {
+				amount = Integer.parseInt(event.getMessage());
+			} catch (NumberFormatException e) {
+				player.sendMessage(GodTokens.MESSAGE_HEADER + "Type only a number!");
+				return;
+			}
+			if(amount > 20) {
+				player.sendMessage(GodTokens.MESSAGE_HEADER + "You can only withdraw up to 20 GT!");
+				return;
+			}
+			if(!pl.getPlayerManager().hasTokens(player, amount)) {
+				player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have " + amount + " tokens! (" + pl.getPlayerManager().getTokens(player) + ")");
+				return;
+			}
+			ItemStack item = ItemStackGenerator.createItem(Material.NETHER_STAR, amount, 0, 
+					ChatColor.LIGHT_PURPLE + "God Token",
+					Arrays.asList(ChatColor.RED + "Right-Click to deposit GT"));
+			if(ItemStackGenerator.isInventoryFull(player, item)) {
+				player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have enough inventory space for " + amount + " GT!");
+				return;
+			}
+			player.getInventory().addItem(item);
+			player.sendMessage(GodTokens.MESSAGE_HEADER + "You've successfully withdrawn " + amount + " GT!");
+			pl.getPlayerManager().withdrawTokens(player, amount);
+			withdrawal.remove(player.getName());
 		}
 		
 		// CHALLENGES

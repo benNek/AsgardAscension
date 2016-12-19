@@ -49,9 +49,9 @@ public class GodTokensInventory {
 		inv.setItem(9, ItemStackGenerator.createItem(Material.BOOK, 0, 0,
 				ChatColor.GRAY + "GT: " + ChatColor.RED + plugin.getPlayerManager().getTokens(player), null));
 		inv.setItem(8, ItemStackGenerator.createItem(Material.NETHER_STAR, 0, 0,
-				ChatColor.LIGHT_PURPLE + "Withdraw 1 GT", null));
+				ChatColor.LIGHT_PURPLE + "Withdraw ... GT", null));
 		inv.setItem(17, ItemStackGenerator.createItem(Material.NETHER_STAR, 0, 0,
-				ChatColor.LIGHT_PURPLE + "Withdraw 1 GT", null));
+				ChatColor.LIGHT_PURPLE + "Withdraw ... GT", null));
 		
 		if(canBuyPlot(player)) {
 			inv.setItem(1, ItemStackGenerator.createItem(Material.STONE_SPADE, 0, 0, ChatColor.LIGHT_PURPLE + "Additional plot access", 

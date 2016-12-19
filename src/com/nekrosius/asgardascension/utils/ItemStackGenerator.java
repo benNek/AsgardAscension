@@ -3,6 +3,7 @@ package com.nekrosius.asgardascension.utils;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -204,6 +205,19 @@ public class ItemStackGenerator {
 			default:
 				return false;
 		}
+	}
+	
+	public static boolean isInventoryFull(Player player, ItemStack itemToAdd) {
+		for (int i = 0; i < 36; i++) {
+			if(player.getInventory().getItem(i) == null) {
+				return false;
+			}
+			ItemStack item = player.getInventory().getItem(i);
+			if(item.getType().equals(itemToAdd.getType()) && item.getAmount() + itemToAdd.getAmount() <= itemToAdd.getMaxStackSize()) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public static boolean isRepairable(ItemStack item) {

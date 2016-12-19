@@ -131,19 +131,7 @@ public class PlayerListener implements Listener {
 			if(event.isCancelled()) return;
 			
 			ItemStack itemToAdd = new ItemStack(Material.DIAMOND);
-			boolean isFull = true;
-			for (int i = 0; i < 36; i++) {
-				if(event.getPlayer().getInventory().getItem(i) == null) {
-					isFull = false;
-					break;
-				}
-				ItemStack item = event.getPlayer().getInventory().getItem(i);
-				if(item.getType().equals(Material.DIAMOND) && item.getAmount() + 1 <= item.getMaxStackSize()) {
-					isFull = false;
-					break;
-				}
-			}
-			if (!isFull) {
+			if (!ItemStackGenerator.isInventoryFull(event.getPlayer(), itemToAdd)) {
 				event.getPlayer().getInventory().addItem(itemToAdd);
 			}
 			else {

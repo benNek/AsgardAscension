@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.challenges.Challenge;
@@ -439,16 +440,16 @@ public class InventoryListener implements Listener {
 			}
 			if(event.getCurrentItem().getType().equals(Material.NETHER_STAR)) {
 				player.closeInventory();
-				if(pl.getPlayerManager().hasTokens(player, 1)) {
-					player.getInventory().addItem(ItemStackGenerator.createItem(Material.NETHER_STAR, 1, 0, 
-							ChatColor.LIGHT_PURPLE + "God Token",
-							Arrays.asList(ChatColor.RED + "Right-Click to deposit GT")));
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "You've successfully withdrawn 1 GT!");
-					pl.getPlayerManager().withdrawTokens(player, 1);
-				}
-				else {
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have any GT to withdraw!");
-				}
+				player.sendMessage(GodTokens.MESSAGE_HEADER + "Type amount of GT to withdraw");
+				SetupListener.withdrawal.put(player.getName(), true);
+				new BukkitRunnable() {
+					public void run() {
+						if(SetupListener.withdrawal.containsKey(player.getName())) {
+							SetupListener.withdrawal.remove(player.getName());
+							player.sendMessage(GodTokens.MESSAGE_HEADER + "You didn't withdrawn any GT in time!");
+						}
+					}
+				}.runTaskLater(pl, 200L);
 			}
 			else if(event.getCurrentItem().getType().equals(Material.STONE_SPADE)) {
 				player.closeInventory();
