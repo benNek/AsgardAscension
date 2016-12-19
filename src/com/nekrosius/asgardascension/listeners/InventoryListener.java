@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.ItemStack;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.challenges.Challenge;
 import com.nekrosius.asgardascension.challenges.ChallengeSetup;
 import com.nekrosius.asgardascension.enums.TokenType;
 import com.nekrosius.asgardascension.files.GodFoodFile;
@@ -40,7 +41,8 @@ public class InventoryListener implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
-		if(event.getCurrentItem() == null) return;
+		if(event.getCurrentItem() == null)
+			return;
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Asgard Ascension")) {
 			event.setCancelled(true);
 			if(event.getCurrentItem().getType().equals(Material.NETHER_STAR)){
@@ -68,7 +70,7 @@ public class InventoryListener implements Listener {
 				player.closeInventory();
 				if(!Main.econ.has(player, pl.getChallengesFile().getPrice(pl.getPlayerManager().getRank(player) + 1) 
 						* 2 * (pl.getPlayerManager().getPrestige(player) + 1))){
-					player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You don't have enough money to buy rank-up! (" 
+					player.sendMessage(Challenge.MESSAGE_HEADER + "You don't have enough money to buy rank-up! (" 
 						+ pl.getChallengesFile().getPrice(pl.getPlayerManager().getRank(player) + 1) 
 						* 2 * (pl.getPlayerManager().getPrestige(player) + 1) + ")");
 					return;
@@ -81,7 +83,7 @@ public class InventoryListener implements Listener {
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Rank-ups and Challenges")) {
 			event.setCancelled(true);
 			if(ChallengeSetup.getStep(player) > 0){
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You are already in ChallengeSetup of challenge!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "You are already in ChallengeSetup of challenge!");
 				return;
 			}
 			if(event.getCurrentItem().getType().equals(Material.SLIME_BALL)) {
@@ -136,14 +138,14 @@ public class InventoryListener implements Listener {
 				ChallengeSetup.setType(player, "parkour");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(
-						pl.getChallenges().MESSAGE_HEADER + "You've created " + ChatColor.RED 
+						Challenge.MESSAGE_HEADER + "You've created " + ChatColor.RED 
 						+ pl.getChallengesFile().getChallengesAmount() + Convert.getOrdinalFor(pl.getChallengesFile().getChallengesAmount())
 						+ " Parkour"
 						+ ChatColor.GRAY +  " challenge");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Type amount of price for this challenge!");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "(number, like 5002.5)");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Type cancel to stop ChallengeSetup of Challenge!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Type amount of price for this challenge!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "(number, like 5002.5)");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Type cancel to stop ChallengeSetup of Challenge!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.TORCH)){
 				player.closeInventory();
@@ -153,14 +155,14 @@ public class InventoryListener implements Listener {
 				ChallengeSetup.setType(player, "maze");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(
-						pl.getChallenges().MESSAGE_HEADER + "You've created " + ChatColor.RED 
+						Challenge.MESSAGE_HEADER + "You've created " + ChatColor.RED 
 						+ pl.getChallengesFile().getChallengesAmount() + Convert.getOrdinalFor(pl.getChallengesFile().getChallengesAmount())
 						+ " Maze"
 						+ ChatColor.GRAY +  " challenge");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Type amount of price for this challenge!");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "(number, like 5002.5)");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Type cancel to stop ChallengeSetup of Challenge!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Type amount of price for this challenge!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "(number, like 5002.5)");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Type cancel to stop ChallengeSetup of Challenge!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.GOLD_SWORD)){
 				player.closeInventory();
@@ -170,14 +172,14 @@ public class InventoryListener implements Listener {
 				ChallengeSetup.setType(player, "fight");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(
-						pl.getChallenges().MESSAGE_HEADER + "You've created " + ChatColor.RED 
+						Challenge.MESSAGE_HEADER + "You've created " + ChatColor.RED 
 						+ pl.getChallengesFile().getChallengesAmount() + Convert.getOrdinalFor(pl.getChallengesFile().getChallengesAmount())
 						+ " Fight"
 						+ ChatColor.GRAY +  " challenge");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Type amount of price for this challenge!");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "(number, like " + ChatColor.RED + "5002.5" + ChatColor.GRAY + ")");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Type cancel to stop ChallengeSetup of Challenge!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Type amount of price for this challenge!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "(number, like " + ChatColor.RED + "5002.5" + ChatColor.GRAY + ")");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Type cancel to stop ChallengeSetup of Challenge!");
 			}
 		}
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Edit Challenge")){
@@ -219,9 +221,9 @@ public class InventoryListener implements Listener {
 				ChallengeSetup.setChallenge(player, challenge);
 				player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Type amount of price for this challenge!");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "(number, like " + ChatColor.RED + "5002.5" + ChatColor.GRAY + ")");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Type cancel to stop ChallengeSetup of Challenge!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Type amount of price for this challenge!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "(number, like " + ChatColor.RED + "5002.5" + ChatColor.GRAY + ")");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Type cancel to stop ChallengeSetup of Challenge!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.COAL)){
 				player.closeInventory();
@@ -231,7 +233,7 @@ public class InventoryListener implements Listener {
 				ChallengeSetup.setChallenge(player, challenge);
 				player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Right-Click with Iron Axe to set spawnpoint");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Right-Click with Iron Axe to set spawnpoint");
 				player.getInventory().addItem(ItemStackGenerator.createItem(Material.IRON_AXE, 0, 0,
 					ChatColor.GRAY + "Add Spawnpoint",
 					Arrays.asList(ChatColor.RED + "Right-Click to add spawnpoint of " + WordUtils.capitalize(ChallengeSetup.getType(player)) + " challenge!")));
@@ -247,7 +249,7 @@ public class InventoryListener implements Listener {
 						ChatColor.GRAY + "Select a Noteblock", 
 						Arrays.asList(ChatColor.RED + "Click a block to make it noteblock!")));
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Right-Click a block to make it Noteblock!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Right-Click a block to make it Noteblock!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.GOLD_HELMET)){
 				player.closeInventory();
@@ -260,7 +262,7 @@ public class InventoryListener implements Listener {
 						ChatColor.GRAY + "Set Victory Spawnpoint", 
 						Arrays.asList(ChatColor.RED + "Right-Click to set spawnpoint upon victory!")));
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Right-Click to set spawnpoint upon victory!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Right-Click to set spawnpoint upon victory!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.WATER_LILY)){
 				player.closeInventory();
@@ -270,15 +272,15 @@ public class InventoryListener implements Listener {
 				ChallengeSetup.setChallenge(player, challenge);
 				player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Type commands that are going to be executed after completion");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "%s " + ChatColor.GRAY + " - player; don't add '/' before command");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "For example: " + ChatColor.RED + "ban %s");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "To finish ChallengeSetup type " + ChatColor.RED + "finish");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Type commands that are going to be executed after completion");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "%s " + ChatColor.GRAY + " - player; don't add '/' before command");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "For example: " + ChatColor.RED + "ban %s");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "To finish ChallengeSetup type " + ChatColor.RED + "finish");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.BLAZE_POWDER)){
 				player.closeInventory();
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've removed all Commands!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "You've removed all Commands!");
 				pl.getChallengesFile().removeCommands(challenge);
 			}
 			else if(event.getCurrentItem().getType().equals(Material.STICK)) {
@@ -292,7 +294,7 @@ public class InventoryListener implements Listener {
 					ChatColor.GRAY + "Select Mobs' spawning region",
 					Arrays.asList(ChatColor.RED + "Select 2 points")));
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Select 2 points for area");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Select 2 points for area");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.MOB_SPAWNER)) {
 				player.closeInventory();
@@ -302,14 +304,14 @@ public class InventoryListener implements Listener {
 				ChallengeSetup.setChallenge(player, challenge);
 				player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Type anything to open selection menu");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "To finish ChallengeSetup type " + ChatColor.RED + "finish");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Type anything to open selection menu");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "To finish ChallengeSetup type " + ChatColor.RED + "finish");
 				MainInventory.setupMobSpawnInventory(player);
 			}
 			else if(event.getCurrentItem().getType().equals(Material.BLAZE_ROD)){
 				player.closeInventory();
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've removed all Mob Spawns!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "You've removed all Mob Spawns!");
 				pl.getChallengesFile().removeMonsterSpawns(challenge);
 			}
 		}
@@ -429,7 +431,8 @@ public class InventoryListener implements Listener {
 		// GOD TOKENS TYPE
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "God Tokens Type")) {
 			event.setCancelled(true);
-			if(event.getCurrentItem().getItemMeta() == null) return;
+			if(event.getCurrentItem().getItemMeta() == null)
+				return;
 			int tokens = pl.getPlayerManager().getTokens(player);
 			if(event.getCurrentItem().getType().equals(Material.BOOK)) {
 				return;
@@ -494,13 +497,14 @@ public class InventoryListener implements Listener {
 		// GOD TOKENS SELECTION
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "God Tokens")) {
 			event.setCancelled(true);
-			if(event.getCurrentItem().getItemMeta() == null) return;
+			if(event.getCurrentItem().getItemMeta() == null)
+				return;
 			if(event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
 				GodTokensInventory.setupTokensMenu((Player) event.getWhoClicked());
 				return;
 			}
 			GodToken token = GodTokens.findToken(event.getCurrentItem().getItemMeta().getDisplayName().substring(2));
-			if(token.getName().equalsIgnoreCase("Explosive") || token.getName().equalsIgnoreCase("Fortune")) {
+			if("Explosive".equalsIgnoreCase(token.getName()) || "Fortune".equalsIgnoreCase(token.getName())) {
 				event.getWhoClicked().sendMessage(GodTokens.MESSAGE_HEADER + "Currently disabled!");
 				return;
 			}
@@ -522,7 +526,8 @@ public class InventoryListener implements Listener {
 		// GOD TOKEN DURATION
 		else if(event.getInventory().getName().startsWith(ChatColor.BOLD + "BUY")) {
 			event.setCancelled(true);
-			if(event.getCurrentItem().getItemMeta() == null) return;
+			if(event.getCurrentItem().getItemMeta() == null)
+				return;
 			GodToken token = GodTokens.findToken(event.getInventory().getName().substring(6));
 			if(event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
 				GodTokensInventory.setupTokensShopMenu((Player) event.getWhoClicked(), token.getType());
@@ -597,13 +602,13 @@ public class InventoryListener implements Listener {
 		// CHALLENGES MENU
 		else if(event.getInventory().getName().equals(ChatColor.BOLD + "Challenges")) {
 			event.setCancelled(true);
-			int challenge = event.getRawSlot() + 1,
-				level = pl.getPlayerManager().getRank((Player)event.getWhoClicked());
+			int challenge = event.getRawSlot() + 1;
+			int level = pl.getPlayerManager().getRank((Player)event.getWhoClicked());
 			if(challenge > level + 1) {
-				event.getWhoClicked().sendMessage(pl.getChallenges().MESSAGE_HEADER + "Your rank is too low for this challenge!");
+				event.getWhoClicked().sendMessage(Challenge.MESSAGE_HEADER + "Your rank is too low for this challenge!");
 			}
 			else if(challenge <= level) {
-				event.getWhoClicked().sendMessage(pl.getChallenges().MESSAGE_HEADER + "You have already completed this challenge!");
+				event.getWhoClicked().sendMessage(Challenge.MESSAGE_HEADER + "You have already completed this challenge!");
 			}
 			else {
 				MainInventory.setupRankUpMenu((Player) event.getWhoClicked());

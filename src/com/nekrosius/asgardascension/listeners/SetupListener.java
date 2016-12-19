@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.challenges.Challenge;
 import com.nekrosius.asgardascension.challenges.ChallengeSetup;
 import com.nekrosius.asgardascension.files.GodFoodFile;
 import com.nekrosius.asgardascension.handlers.FoodSetup;
@@ -38,7 +39,7 @@ public class SetupListener implements Listener {
 				}
 				ChallengeSetup.finish(player);
 				event.setCancelled(true);
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've cancelled setup of Challenge!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "You've cancelled setup of Challenge!");
 			}
 		}
 		if(FoodSetup.getStep(player) > 0){
@@ -60,21 +61,21 @@ public class SetupListener implements Listener {
 			try{
 				price = Long.parseLong(event.getMessage());
 			}catch(NumberFormatException e){
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Please type number!");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Please type number!");
 				return;
 			}
 			pl.getChallengesFile().setPrice(ChallengeSetup.getChallenge(player), price);
 			ChallengeSetup.setStep(player, 2);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-			player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Price to enter this challenge will be " + ChatColor.RED + price);
+			player.sendMessage(Challenge.MESSAGE_HEADER + "Price to enter this challenge will be " + ChatColor.RED + price);
 			if(ChallengeSetup.isEditing(player)){
 				ChallengeSetup.finish(player);
 			}else{
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Right-Click with Iron Axe to set spawnpoint");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "Right-Click with Iron Axe to set spawnpoint");
 				player.getInventory().addItem(ItemStackGenerator.createItem(Material.IRON_AXE, 0, 0,
 					ChatColor.GRAY + "Add Spawnpoint",
-					Arrays.asList(pl.getChallenges().MESSAGE_HEADER + "Right-Click to add spawnpoint of " + WordUtils.capitalize(ChallengeSetup.getType(player)) + " challenge!")));
+					Arrays.asList(Challenge.MESSAGE_HEADER + "Right-Click to add spawnpoint of " + WordUtils.capitalize(ChallengeSetup.getType(player)) + " challenge!")));
 			}
 		}
 		else if(ChallengeSetup.getStep(player) == 5) {
@@ -82,7 +83,7 @@ public class SetupListener implements Listener {
 			if(event.getMessage().equalsIgnoreCase("finish")){
 				if(!ChallengeSetup.getType(player).equalsIgnoreCase("fight")){
 					player.sendMessage(
-							pl.getChallenges().MESSAGE_HEADER + "You have finished " 
+							Challenge.MESSAGE_HEADER + "You have finished " 
 							+ ChatColor.RED + WordUtils.capitalize(ChallengeSetup.getType(player)) + " Challenge" 
 							+ ChatColor.GRAY + " setup!");
 					ChallengeSetup.finish(player);
@@ -90,7 +91,7 @@ public class SetupListener implements Listener {
 					if(ChallengeSetup.isEditing(player)){
 						ChallengeSetup.finish(player);
 						player.sendMessage(
-								pl.getChallenges().MESSAGE_HEADER + "You have finished " 
+								Challenge.MESSAGE_HEADER + "You have finished " 
 								+ ChatColor.RED + WordUtils.capitalize(ChallengeSetup.getType(player)) + " Challenge" 
 								+ ChatColor.GRAY + " setup!");
 					}
@@ -100,12 +101,12 @@ public class SetupListener implements Listener {
 							ChatColor.GRAY + "Select Mobs' spawning region",
 							Arrays.asList(ChatColor.RED + "Select 2 points")));
 						player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Select 2 points for area");
+						player.sendMessage(Challenge.MESSAGE_HEADER + "Select 2 points for area");
 					}
 				}
 			}else{
 				pl.getChallengesFile().addCommand(ChallengeSetup.getChallenge(player), event.getMessage());
-				player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added a new command:");
+				player.sendMessage(Challenge.MESSAGE_HEADER + "You've added a new command:");
 				player.sendMessage(event.getMessage());
 			}
 		}
@@ -113,7 +114,7 @@ public class SetupListener implements Listener {
 			if(event.getMessage().equalsIgnoreCase("finish")){
 				event.setCancelled(true);
 				player.sendMessage(
-						pl.getChallenges().MESSAGE_HEADER + "You have finished " 
+						Challenge.MESSAGE_HEADER + "You have finished " 
 						+ ChatColor.RED + WordUtils.capitalize(ChallengeSetup.getType(player)) + " Challenge" 
 						+ ChatColor.GRAY + " setup!");
 				ChallengeSetup.finish(player);
@@ -124,7 +125,7 @@ public class SetupListener implements Listener {
 			event.setCancelled(true);
 			if(event.getMessage().equalsIgnoreCase("finish")){
 				player.sendMessage(
-						pl.getChallenges().MESSAGE_HEADER + "You have finished " 
+						Challenge.MESSAGE_HEADER + "You have finished " 
 						+ ChatColor.RED + WordUtils.capitalize(ChallengeSetup.getType(player)) + " Challenge" 
 						+ ChatColor.GRAY + " setup!");
 				ChallengeSetup.finish(player);
@@ -144,7 +145,7 @@ public class SetupListener implements Listener {
 			}
 			pl.getChallengesFile().addMob(ChallengeSetup.getChallenge(player), ChallengeSetup.getMob(player), amount);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-			player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+			player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 							+ ChatColor.RED + WordUtils.capitalize(ChallengeSetup.getMob(player).toLowerCase())
 							+ ChatColor.GRAY + " to spawn in area!");
 			ChallengeSetup.setStep(player, 7);
@@ -292,13 +293,13 @@ public class SetupListener implements Listener {
 						event.setCancelled(true);
 						ChallengeSetup.setFirstLocation(player, event.getClickedBlock().getLocation());
 						player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've set 1st location!");
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've set 1st location!");
 						if(ChallengeSetup.isReady(player)){
 							pl.getChallengesFile().setMobsLocation(ChallengeSetup.getChallenge(player), player);
 							if(ChallengeSetup.isEditing(player)){
 								player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 								player.sendMessage(
-										pl.getChallenges().MESSAGE_HEADER + "You have finished " 
+										Challenge.MESSAGE_HEADER + "You have finished " 
 										+ ChatColor.RED + WordUtils.capitalize(ChallengeSetup.getType(player)) + " Challenge" 
 										+ ChatColor.GRAY + " setup!");
 								ChallengeSetup.finish(player);
@@ -314,13 +315,13 @@ public class SetupListener implements Listener {
 						event.setCancelled(true);
 						ChallengeSetup.setSecondLocation(player, event.getClickedBlock().getLocation());
 						player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've set 2nd location!");
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've set 2nd location!");
 						if(ChallengeSetup.isReady(player)) {
 							pl.getChallengesFile().setMobsLocation(ChallengeSetup.getChallenge(player), player);
 							if(ChallengeSetup.isEditing(player)){
 								player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 								player.sendMessage(
-										pl.getChallenges().MESSAGE_HEADER + "You have finished " 
+										Challenge.MESSAGE_HEADER + "You have finished " 
 										+ ChatColor.RED + WordUtils.capitalize(ChallengeSetup.getType(player)) + " Challenge" 
 										+ ChatColor.GRAY + " setup!");
 								ChallengeSetup.finish(player);
@@ -347,7 +348,7 @@ public class SetupListener implements Listener {
 							pl.getChallengesFile().setSpawnpoint(player, ChallengeSetup.getChallenge(player));
 							ChallengeSetup.setStep(player, 3);
 							player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-							player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added spawnpoint!");
+							player.sendMessage(Challenge.MESSAGE_HEADER + "You've added spawnpoint!");
 							if(ChallengeSetup.isEditing(player)){
 								ChallengeSetup.finish(player);
 							}else{
@@ -355,7 +356,7 @@ public class SetupListener implements Listener {
 										ChatColor.GRAY + "Select a Noteblock", 
 										Arrays.asList(ChatColor.RED + "Click a block to make it noteblock!")));
 								player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-								player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Right-Click a block to make it Noteblock!");
+								player.sendMessage(Challenge.MESSAGE_HEADER + "Right-Click a block to make it Noteblock!");
 							}
 						}
 					}
@@ -368,7 +369,7 @@ public class SetupListener implements Listener {
 								event.getClickedBlock().setType(Material.NOTE_BLOCK);
 								ChallengeSetup.setStep(player, 4);
 								player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-								player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added Noteblock!");
+								player.sendMessage(Challenge.MESSAGE_HEADER + "You've added Noteblock!");
 								if(ChallengeSetup.isEditing(player)){
 									ChallengeSetup.finish(player);
 								}else{
@@ -376,7 +377,7 @@ public class SetupListener implements Listener {
 											ChatColor.GRAY + "Set Victory Spawnpoint", 
 											Arrays.asList(ChatColor.RED + "Right-Click to set spawnpoint upon victory!")));
 									player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-									player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Right-Click to set spawnpoint upon victory!");
+									player.sendMessage(Challenge.MESSAGE_HEADER + "Right-Click to set spawnpoint upon victory!");
 								}
 							}
 						}
@@ -394,10 +395,10 @@ public class SetupListener implements Listener {
 								ChallengeSetup.finish(player);
 							}else{
 								player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-								player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "Type commands that are going to be executed after completion");
-								player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "%s " + ChatColor.GRAY + " - player; don't add '/' before command");
-								player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "For example: " + ChatColor.RED + "ban %s");
-								player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "To finish setup type " + ChatColor.RED + "finish");
+								player.sendMessage(Challenge.MESSAGE_HEADER + "Type commands that are going to be executed after completion");
+								player.sendMessage(Challenge.MESSAGE_HEADER + "%s " + ChatColor.GRAY + " - player; don't add '/' before command");
+								player.sendMessage(Challenge.MESSAGE_HEADER + "For example: " + ChatColor.RED + "ban %s");
+								player.sendMessage(Challenge.MESSAGE_HEADER + "To finish setup type " + ChatColor.RED + "finish");
 							}
 						}
 					}
@@ -419,85 +420,85 @@ public class SetupListener implements Listener {
 					event.setCancelled(true);
 					if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Creeper")){
 						ChallengeSetup.setMob(player, "CREEPER");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Creeper" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Skeleton")){
 						ChallengeSetup.setMob(player, "SKELETON");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Skeleton" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Spider")){
 						ChallengeSetup.setMob(player, "SPIDER");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Spider" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Zombie")){
 						ChallengeSetup.setMob(player, "ZOMBIE");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Zombie" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Slime")){
 						ChallengeSetup.setMob(player, "SLIME");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Slime" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Ghast")){
 						ChallengeSetup.setMob(player, "GHAST");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Ghast" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Pigman")){
 						ChallengeSetup.setMob(player, "PIG_ZOMBIE");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Pigman" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Enderman")){
 						ChallengeSetup.setMob(player, "ENDERMAN");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Enderman" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Cave Spider")){
 						ChallengeSetup.setMob(player, "CAVE_SPIDER");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Cave Spider" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Silverfish")){
 						ChallengeSetup.setMob(player, "SILVERFISH");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Silverfish" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Blaze")){
 						ChallengeSetup.setMob(player, "BLAZE");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Blaze" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Magma Cube")){
 						ChallengeSetup.setMob(player, "MAGMA_CUBE");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Magma Cube" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Bat")){
 						ChallengeSetup.setMob(player, "BAT");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Bat" 
 								+ ChatColor.GRAY + " spawn");
 					}
 					else if(event.getCurrentItem().getItemMeta().getDisplayName().endsWith("Witch")){
 						ChallengeSetup.setMob(player, "WITCH");
-						player.sendMessage(pl.getChallenges().MESSAGE_HEADER + "You've added "
+						player.sendMessage(Challenge.MESSAGE_HEADER + "You've added "
 								+ ChatColor.RED + "Witch" 
 								+ ChatColor.GRAY + " spawn!");
 					}

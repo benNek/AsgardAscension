@@ -28,6 +28,8 @@ public class Challenge {
 	private Map<String, Float> exp = new HashMap<>();
 	private Map<String, Integer> level = new HashMap<>();
 	
+	private String metaData = "challenge";
+	
 	Main pl;
 	public Challenge(Main pl) {
 		this.pl = pl;
@@ -76,10 +78,8 @@ public class Challenge {
 	public void finishChallenge(Player player, boolean buy) {
 		if(!buy){
 			for(Entity e : player.getWorld().getEntities()){
-				if(e.hasMetadata("challenge")) {
-					if(e.getMetadata("challenge").get(0).asString().contains(player.getName())){
-						e.remove();
-					}
+				if(e.hasMetadata(metaData) && e.getMetadata(metaData).get(0).asString().contains(player.getName())) {
+					e.remove();
 				}
 			}
 			player.teleport(pl.getChallengesFile().getVictorySpawnpoint(getChallenge(player)));
@@ -112,10 +112,8 @@ public class Challenge {
 	
 	public void quitChallenge(Player player) {
 		for(Entity e : player.getWorld().getEntities()){
-			if(e.hasMetadata("challenge")) {
-				if(e.getMetadata("challenge").get(0).asString().contains(player.getName())){
-					e.remove();
-				}
+			if(e.hasMetadata("") && e.getMetadata(metaData).get(0).asString().contains(player.getName())) {
+				e.remove();
 			}
 		}
 		player.teleport(getLocation(player));

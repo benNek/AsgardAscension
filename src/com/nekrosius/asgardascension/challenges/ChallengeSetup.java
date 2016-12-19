@@ -90,13 +90,13 @@ public class ChallengeSetup {
 	}
 	
 	public static void finish(Player player) {
-		challengeIndex	.remove(player.getName());
-		setupStep		.remove(player.getName());
-		type			.remove(player.getName());
-		editing			.remove(player.getName());
-		loc1			.remove(player.getName());
-		loc2			.remove(player.getName());
-		mobType			.remove(player.getName());
+		challengeIndex.remove(player.getName());
+		setupStep.remove(player.getName());
+		type.remove(player.getName());
+		editing.remove(player.getName());
+		loc1.remove(player.getName());
+		loc2.remove(player.getName());
+		mobType	.remove(player.getName());
 	}
 
 }

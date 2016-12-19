@@ -1,22 +1,17 @@
 package com.nekrosius.asgardascension.commands;
 
-import java.util.Arrays;
-
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.enums.PrestigeType;
 import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.inventories.MainInventory;
-import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
 import net.md_5.bungee.api.ChatColor;
 

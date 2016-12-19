@@ -18,7 +18,7 @@ import com.nekrosius.asgardascension.utils.Convert;
 public class ChallengesFile {
 	
 	File file;
-	public FileConfiguration config;
+	FileConfiguration config;
 
 	private Main pl;
 	public ChallengesFile(Main plugin) {

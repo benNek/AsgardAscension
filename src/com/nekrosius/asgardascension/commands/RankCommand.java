@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.challenges.Challenge;
 
 public class RankCommand implements CommandExecutor {
 
@@ -37,14 +38,15 @@ public class RankCommand implements CommandExecutor {
 			sender.sendMessage(Main.MESSAGE_HEADER + args[0] + " is offline!");
 			return true;
 		}
+		int rankId;
 		try{
-			Integer.parseInt(args[1]);
+			rankId = Integer.parseInt(args[1]);
 		}catch(NumberFormatException e) {
 			sender.sendMessage(Main.MESSAGE_HEADER + "Type number for rankId!");
 			return true;
 		}
-		pl.getPlayerManager().setRank(Bukkit.getPlayer(args[0]), Integer.valueOf(args[1]));
-		Bukkit.getPlayer(args[0]).sendMessage(pl.getChallenges().MESSAGE_HEADER + "Your rank now is " + args[1] + "!");
+		pl.getPlayerManager().setRank(Bukkit.getPlayer(args[0]), rankId);
+		Bukkit.getPlayer(args[0]).sendMessage(Challenge.MESSAGE_HEADER + "Your rank now is " + args[1] + "!");
 		sender.sendMessage(Main.MESSAGE_HEADER + "You've set " + args[0] + " rank to " + args[1] + "!");
 		return true;
 	}
