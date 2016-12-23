@@ -35,11 +35,11 @@ public class ConfigFile {
 			config.addDefault("prestige.location", "world, 0, 0, 0, 0, 0");
 			config.addDefault("rankup.max_prestige", 2);
 			config.addDefault("rankup.fight_max_mobs", 20);
-			List<String> cmds = new ArrayList<String>();
+			List<String> cmds = new ArrayList<>();
 			cmds.add("give %player dirt");
 			cmds.add("give %player iron_ingot");
 			config.addDefault("lucky_blocks.commands", cmds);
-			List<String> msgs = new ArrayList<String>();
+			List<String> msgs = new ArrayList<>();
 			msgs.add("Better luck next time!");
 			msgs.add("You've won special iron ingot!");
 			config.addDefault("lucky_blocks.messages", msgs);
@@ -53,25 +53,16 @@ public class ConfigFile {
 			config.addDefault("tribes.4.members", 20);
 			config.addDefault("tribes.5.price", 500000);
 			config.addDefault("tribes.5.members", 25);
+			List<String> worlds = new ArrayList<>();
+			worlds.add("Plots");
+			config.addDefault("enchants.disabled_worlds", worlds);
 			config.options().copyDefaults(true);
 		}
 		else {
-			if(config.get("lucky_blocks.command") != null) {
-				List<String> cmds = new ArrayList<String>();
-				cmds.add("give %player dirt");
-				cmds.add("give %player iron_ingot");
-				config.set("lucky_blocks.commands", cmds);
-				List<String> msgs = new ArrayList<String>();
-				msgs.add("Better luck next time!");
-				msgs.add("You've won special iron ingot!");
-				config.set("lucky_blocks.messages", msgs);
-				config.set("lucky_blocks.command", null);
-			}
-			if(config.get("prestige.tokens_reward") == null) {
-				config.set("prestige.tokens_reward", 2);
-			}
-			if(config.get("prestige.command") == null) {
-				config.set("prestige.command", "give %player dirt");
+			if(config.get("enchants.disabled_worlds") == null) {
+				List<String> worlds = new ArrayList<>();
+				worlds.add("Plots");
+				config.set("enchants.disabled_worlds", worlds);
 			}
 		}
 		saveConfig();
@@ -129,6 +120,10 @@ public class ConfigFile {
 	public static void setPrestigeLocation(String location) {
 		config.set("prestige.location", location);
 		saveConfig();
+	}
+	
+	public static boolean isEnchantDisabled(String name) {
+		return config.getStringList("enchants.disabled_worlds").contains(name);
 	}
 	
 	public Main getPlugin() {

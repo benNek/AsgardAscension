@@ -13,6 +13,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.utils.Convert;
 
@@ -54,6 +55,8 @@ public class CustomEnchantsListener implements Listener {
 		if(player.getInventory().getItemInMainHand().getItemMeta().getLore() == null)
 			return;
 		if(player.getInventory().getItemInMainHand().getItemMeta().getLore().contains("2x2 Explosion")) {
+			if(ConfigFile.isEnchantDisabled(player.getWorld().getName()))
+				return;
 			BlockFace playerDir = Convert.yawToFace(player.getLocation().getYaw());
 			Block block = event.getBlock();
 			Block up = block.getRelative(BlockFace.UP);
