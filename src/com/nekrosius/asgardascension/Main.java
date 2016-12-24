@@ -196,6 +196,7 @@ public class Main extends JavaPlugin{
 						@Override
 						public String onPlaceholderReplace(
 								PlaceholderReplaceEvent event) {
+							if(econ == null) return ChatColor.GRAY + "0%";
 							Player player = event.getPlayer();
 							double percentage = ((double)econ.getBalance(player) /
 									(getChallengesFile().getPrice(getPlayerManager().getRank(player) + 1) * (getPlayerManager().getPrestige(player) + 1))) * 100;
