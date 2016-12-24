@@ -159,7 +159,6 @@ public class GodTokenListener implements Listener {
 				}
 				double damage = 6 + 2 * pl.getPlayerManager().getPrestige(damager);
 				event.setDamage(0D);
-				damager.sendMessage(damage + "");
 				if(victim.getHealth() > damage) {
 					victim.setHealth(victim.getHealth() - damage);
 				} else {

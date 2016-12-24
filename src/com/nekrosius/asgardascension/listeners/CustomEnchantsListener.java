@@ -32,6 +32,8 @@ public class CustomEnchantsListener implements Listener {
 			Player damager = (Player) event.getDamager();
 			if(damager.getInventory().getItemInMainHand() == null)
 				return;
+			if(!damager.getInventory().getItemInMainHand().hasItemMeta())
+				return;
 			if(damager.getInventory().getItemInMainHand().getItemMeta().getLore() == null)
 				return;
 			Player victim = (Player) event.getEntity();
@@ -54,6 +56,8 @@ public class CustomEnchantsListener implements Listener {
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
 		if(player.getInventory().getItemInMainHand() == null)
+			return;
+		if(!player.getInventory().getItemInMainHand().hasItemMeta())
 			return;
 		if(player.getInventory().getItemInMainHand().getItemMeta().getLore() == null)
 			return;
