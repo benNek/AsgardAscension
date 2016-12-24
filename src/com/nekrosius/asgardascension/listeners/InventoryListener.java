@@ -487,7 +487,9 @@ public class InventoryListener implements Listener {
 				}
 				pl.getPlayerManager().withdrawTokens(player, 1);
 				player.getInventory().addItem(
-					ItemStackGenerator.createItem(Material.GOLDEN_APPLE, 0, 1, ChatColor.LIGHT_PURPLE + "Odins Apple", null));
+					ItemStackGenerator.createItem(Material.GOLDEN_APPLE, 0, 1,
+							ChatColor.LIGHT_PURPLE + "" + ChatColor.UNDERLINE + "Odins Apple",
+							Arrays.asList(ChatColor.GRAY + "Genuine apple of Odin")));
 				player.sendMessage(GodTokens.MESSAGE_HEADER + "You've bought a Odins Apple!");
 			}
 			else {
