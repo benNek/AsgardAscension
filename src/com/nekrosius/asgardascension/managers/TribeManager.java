@@ -139,6 +139,9 @@ public class TribeManager {
 	}
 	
 	public static boolean canAttack(Player one, Player two) {
+		if(!(Main.isPVPEnabled(one) || Main.isPVPEnabled(two))) {
+			return false;
+		}
 		if(!hasTribe(one.getName()) || !hasTribe(two.getName())) {
 			return true;
 		}
@@ -148,7 +151,7 @@ public class TribeManager {
 		if(isAllies(getPlayerTribe(one.getName()), getPlayerTribe(two.getName()))) {
 			return false;
 		}
-		return Main.isPVPEnabled(one) && Main.isPVPEnabled(two);
+		return true;
 	}
 	
 	public static boolean canRankUp(Tribe tribe) {
