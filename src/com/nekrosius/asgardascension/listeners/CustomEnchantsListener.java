@@ -1,5 +1,7 @@
 package com.nekrosius.asgardascension.listeners;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -35,13 +37,14 @@ public class CustomEnchantsListener implements Listener {
 			Player victim = (Player) event.getEntity();
 			if(!TribeManager.canAttack(damager, victim)) 
 				return;
-			if(damager.getInventory().getItemInMainHand().getItemMeta().getLore().contains("Wither Damage")) {
+			List<String> lore = damager.getInventory().getItemInMainHand().getItemMeta().getLore();
+			if(contains(lore, "Wither Damage")) {
 				victim.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 1));
 			}
-			else if(damager.getInventory().getItemInMainHand().getItemMeta().getLore().contains("Fire Damage")) {
+			if(contains(lore,"Fire Damage")) {
 				victim.setFireTicks(100);
 			}
-			else if(damager.getInventory().getItemInMainHand().getItemMeta().getLore().contains("Poison Damage")) {
+			if(contains(lore,"Poison Damage")) {
 				victim.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 0));
 			}
 		}
@@ -54,7 +57,8 @@ public class CustomEnchantsListener implements Listener {
 			return;
 		if(player.getInventory().getItemInMainHand().getItemMeta().getLore() == null)
 			return;
-		if(player.getInventory().getItemInMainHand().getItemMeta().getLore().contains("2x2 Explosion")) {
+		List<String> lore = player.getInventory().getItemInMainHand().getItemMeta().getLore();
+		if(contains(lore,"2x2 Explosion")) {
 			if(ConfigFile.isEnchantDisabled(player.getWorld().getName()))
 				return;
 			BlockFace playerDir = Convert.yawToFace(player.getLocation().getYaw());
@@ -83,6 +87,15 @@ public class CustomEnchantsListener implements Listener {
 				right.setType(Material.AIR);
 			}
 		}
+	}
+	
+	boolean contains(List<String> lore, String search) {
+		for(String line : lore) {
+			if(line.contains(search)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
