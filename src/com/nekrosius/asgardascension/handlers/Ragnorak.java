@@ -96,6 +96,7 @@ public class Ragnorak {
 				for(Player p : Bukkit.getOnlinePlayers()) {
 					p.sendMessage(MESSAGE_HEADER + "Voting has been unsuccessful! Next voting will begin in " + minutesLeft + " min.");
 				}
+				voted.clear();
 				eventStarted = false;
 				voteStarted = false;
 				startTimer();
