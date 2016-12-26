@@ -66,6 +66,10 @@ public class SetupListener implements Listener {
 				player.sendMessage(GodTokens.MESSAGE_HEADER + "Type only a number!");
 				return;
 			}
+			if(amount < 1) {
+				player.sendMessage(GodTokens.MESSAGE_HEADER + "You can not withdraw less than 1 token!");
+				return;
+			}
 			if(amount > 20) {
 				player.sendMessage(GodTokens.MESSAGE_HEADER + "You can only withdraw up to 20 GT!");
 				return;
