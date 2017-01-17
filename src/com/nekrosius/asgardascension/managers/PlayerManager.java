@@ -47,6 +47,8 @@ public class PlayerManager {
 	}
 	
 	public int getRank(Player player) {
+		if(rank.get(player.getName()) == null)
+			return 0;
 		return rank.get(player.getName());
 	}
 	
@@ -55,6 +57,8 @@ public class PlayerManager {
 	}
 	
 	public int getPrestige(Player player) {
+		if(prestige.get(player.getName()) == null)
+			return 0;
 		return prestige.get(player.getName());
 	}
 	

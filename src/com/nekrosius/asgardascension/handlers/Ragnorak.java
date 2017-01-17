@@ -67,6 +67,10 @@ public class Ragnorak {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(eventStarted) {
+					this.cancel();
+					return;
+				}
 				minutesLeft--;
 				if(minutesLeft == 0) {
 					startVoting();
@@ -140,31 +144,24 @@ public class Ragnorak {
 	}
 	
 	public void start() {
-		effects = new ArrayList<>();
-		
 		if(eventStarted){
 			return;
 		}
+		effects = new ArrayList<>();
 		voted.clear();
 		eventStarted = true;
 		voteStarted = false;
-	    
-		/* TODO find alternative
-		TitleBar title = new TitleBar(ChatColor.RED + "" + ChatColor.BOLD + "Ragnorak!",
-				ChatColor.GRAY + "Get to the pvp zone to get awesome loot!");
-		title.broadcast();
-		*/
 		
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_THUNDER, 1F, 1F);
 			p.sendMessage(MESSAGE_HEADER + "Ragnorak" + ChatColor.GRAY + " has started!");
 		}
-		
 		spawnItems();
 		
 		minutesLeft = 0;
 		new BukkitRunnable() {
 			public void run() {
+				minutesLeft++;
 				if(minutesLeft >= RagnorakFile.getDuration()) {
 					for(Player p : Bukkit.getOnlinePlayers()){
 						p.sendMessage(MESSAGE_HEADER + "Ragnorak has finished!");
@@ -196,7 +193,6 @@ public class Ragnorak {
 				block.getInventory().addItem(item);
 			}
 		}
-		// TODO maybe remove empty chests?
 	}
 	
 	public void finishEvent() {
