@@ -171,7 +171,6 @@ public class Ragnorak {
 					startTimer();
 					cancel();
 				}
-				minutesLeft++;
 			}
 		}.runTaskTimer(plugin, 1200L, 1200L);
 	}
