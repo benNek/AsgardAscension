@@ -24,6 +24,15 @@ public class ChallengesFile {
 	public ChallengesFile(Main plugin) {
 		pl = plugin;
 		createConfig();
+		for(String key : config.getKeys(false)) {
+			if(config.get(key + ".title") == null) {
+				config.set(key + ".title", key);
+			}
+			else {
+				break;
+			}
+		}
+		saveConfig();
 	}
 	
 	public void createConfig() {
@@ -66,6 +75,11 @@ public class ChallengesFile {
 	
 	public void addChallenge(String type) {
 		config.set(String.valueOf(getChallengesAmount() + 1) + ".type", type);
+		saveConfig();
+	}
+	
+	public void setTitle(int challenge, String title) {
+		config.set(String.valueOf(challenge), title);
 		saveConfig();
 	}
 	
@@ -120,6 +134,22 @@ public class ChallengesFile {
 	
 	public String getType(int challenge) {
 		return config.getString(String.valueOf(challenge) + ".type");
+	}
+	
+	public String getTitle(int challenge) {
+		if(config.get(String.valueOf(challenge) + ".title") == null) 
+			return "A";
+		return config.getString(String.valueOf(challenge) + ".title");
+	}
+	
+	public int getChallengeId(String title) {
+		for(String key : config.getKeys(false)) {
+			int id = Integer.parseInt(key);
+			if(title.equalsIgnoreCase(getTitle(id))) {
+				return id;
+			}
+		}
+		return -1;
 	}
 	
 	public Material getTypeMaterial(int challenge) {

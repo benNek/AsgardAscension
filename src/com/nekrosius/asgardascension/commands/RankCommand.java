@@ -27,7 +27,7 @@ public class RankCommand implements CommandExecutor {
 				return true;
 			}
 			sender.sendMessage(Main.MESSAGE_HEADER + Bukkit.getPlayer(args[0]).getName() + " rank is " 
-					+ pl.getPlayerManager().getRank(Bukkit.getPlayer(args[0])) + "!");
+					+ pl.getChallengesFile().getTitle(pl.getPlayerManager().getRank(Bukkit.getPlayer(args[0]))) + "!");
 			return true;
 		}
 		else if(args.length != 2){
@@ -42,7 +42,15 @@ public class RankCommand implements CommandExecutor {
 		try{
 			rankId = Integer.parseInt(args[1]);
 		}catch(NumberFormatException e) {
-			sender.sendMessage(Main.MESSAGE_HEADER + "Type number for rankId!");
+			String rankName = args[1];
+			rankId = pl.getChallengesFile().getChallengeId(rankName);
+			if(rankId == -1) {
+				sender.sendMessage(Main.MESSAGE_HEADER + "Unknown rank name or id!");
+				return true;
+			}
+			pl.getPlayerManager().setRank(Bukkit.getPlayer(args[0]), rankId);
+			Bukkit.getPlayer(args[0]).sendMessage(Challenge.MESSAGE_HEADER + "Your rank now is " + args[1] + "!");
+			sender.sendMessage(Main.MESSAGE_HEADER + "You've set " + args[0] + " rank to " + args[1] + "!");
 			return true;
 		}
 		pl.getPlayerManager().setRank(Bukkit.getPlayer(args[0]), rankId);

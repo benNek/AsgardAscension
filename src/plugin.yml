@@ -1,6 +1,6 @@
 name: AsgardAscension
 author: benNek
-version: 1.02
+version: 2.01.01
 main: com.nekrosius.asgardascension.Main
 depend: [Vault, WorldGuard]
 softdepend: [DeluxeChat]

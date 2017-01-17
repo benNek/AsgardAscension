@@ -130,7 +130,6 @@ public class Main extends JavaPlugin{
 	}
 	
 	public void onDisable() {
-		
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			if(getChallenges().getChallenge(p) != 0) {
 				getChallenges().quitChallenge(p);

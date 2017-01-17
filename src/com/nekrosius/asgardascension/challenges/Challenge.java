@@ -71,7 +71,7 @@ public class Challenge {
 			player.setExp(0F);
 		}
 		player.sendMessage(MESSAGE_HEADER + "You've started " 		
-				+ ChatColor.RED + challenge + Convert.getOrdinalFor(challenge)
+				+ ChatColor.RED + pl.getChallengesFile().getTitle(challenge)
 				+ ChatColor.GRAY + " challenge! (" + Convert.toPrice(price) + ")");
 	}
 	
@@ -103,7 +103,7 @@ public class Challenge {
 		if(!isTesting(player)){
 			pl.getPlayerManager().setRank(player, getChallenge(player));
 			player.sendMessage(MESSAGE_HEADER+ "You have completed the challenge! Your Rank now is "
-			+ ChatColor.RED + getChallenge(player) + ChatColor.GRAY + "!");
+			+ ChatColor.RED + pl.getChallengesFile().getTitle(getChallenge(player)) + ChatColor.GRAY + "!");
 		}else{
 			player.sendMessage(MESSAGE_HEADER + "Test completed. If you see this message challenge works fine!");
 		}
@@ -121,7 +121,7 @@ public class Challenge {
 			Main.econ.depositPlayer(player, pl.getChallengesFile().getPrice(getChallenge(player)) 
 					* (pl.getPlayerManager().getPrestige(player) + 1));
 			player.sendMessage(MESSAGE_HEADER + "You've left "
-					+ ChatColor.RED + getChallenge(player) + Convert.getOrdinalFor(getChallenge(player))
+					+ pl.getChallengesFile().getTitle(getChallenge(player))
 					+ " Challenge" + ChatColor.GRAY + "! You got your money back!");
 		}else{
 			player.sendMessage(MESSAGE_HEADER + "Test completed. If you see this message challenge works fine!");
