@@ -124,11 +124,13 @@ public class PlayerListener implements Listener {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onBlockBreak(final BlockBreakEvent event) {
 		// Diamond for every block
 		if(diamondMiner.get(event.getPlayer().getName()) != null) {
-			if(event.isCancelled()) return;
+			if(event.isCancelled())
+				return;
 			
 			ItemStack itemToAdd = new ItemStack(Material.DIAMOND);
 			if (!ItemStackGenerator.isInventoryFull(event.getPlayer(), itemToAdd)) {
@@ -139,7 +141,8 @@ public class PlayerListener implements Listener {
 			}
 		}
 		// Lucky blocks
-		if(!event.getBlock().getType().equals(Material.TNT)) return;
+		if(!event.getBlock().getType().equals(Material.TNT))
+			return;
 		event.setCancelled(true);
 		event.getBlock().setType(Material.AIR);
 		final Player player = event.getPlayer();
@@ -153,7 +156,8 @@ public class PlayerListener implements Listener {
 		// 10% 10x10 explosion
 		else if (random <= 34 - 25) {
 			Mine mine = getTargetMine(event.getBlock().getLocation());
-			if(mine == null) return;
+			if(mine == null)
+				return;
 			int maxX = (event.getBlock().getLocation().getBlockX() + 5 > mine.getMaxX()) ? mine.getMaxX() : event.getBlock().getLocation().getBlockX() + 5;
 			int maxY = (event.getBlock().getLocation().getBlockY() + 5 > mine.getMaxY()) ? mine.getMaxY() : event.getBlock().getLocation().getBlockY() + 5;
 			int maxZ = (event.getBlock().getLocation().getBlockZ() + 5 > mine.getMaxZ()) ? mine.getMaxZ() : event.getBlock().getLocation().getBlockZ() + 5;
@@ -167,7 +171,7 @@ public class PlayerListener implements Listener {
 					for(int y = minY; y <= maxY; y++) {
 						Block block = event.getBlock().getLocation().getWorld().getBlockAt(new Location(event.getBlock().getWorld(), x, y, height));
 						if(!block.getType().equals(Material.TNT))
-							player.getInventory().addItem(new ItemStack(block.getType()));
+							player.getInventory().addItem(new ItemStack(block.getType(), 1, block.getData()));
 						block.setType(Material.AIR);
 					}
 				}
@@ -222,7 +226,8 @@ public class PlayerListener implements Listener {
 			final boolean hasTool = ItemStackGenerator.isTool(player.getInventory().getItemInMainHand());
 			boolean temp = true;
 			if(hasTool) {
-				if(item.containsEnchantment(Enchantment.DIG_SPEED)) temp = false;
+				if(item.containsEnchantment(Enchantment.DIG_SPEED))
+					temp = false;
 				else {
 					item.addUnsafeEnchantment(Enchantment.DIG_SPEED, 2);
 					speedMiner.put(player.getName(), item);
@@ -236,7 +241,8 @@ public class PlayerListener implements Listener {
 				@Override
 				public void run() {
 					if(hasTool) {
-						if(!player.isOnline()) return;
+						if(!player.isOnline())
+							return;
 						if(remove) {
 							item.removeEnchantment(Enchantment.DIG_SPEED);
 							speedMiner.remove(player.getName());
@@ -256,7 +262,8 @@ public class PlayerListener implements Listener {
 				
 				@Override
 				public void run() {
-					if(!player.isOnline()) return;
+					if(!player.isOnline())
+							return;
 					diamondMiner.remove(player.getName());
 					player.sendMessage(Main.MESSAGE_HEADER + MessagesFile.getMessage("lucky_blocks.diamond_miner.end"));
 				}
@@ -270,7 +277,8 @@ public class PlayerListener implements Listener {
 			final boolean hasTool = ItemStackGenerator.isTool(player.getInventory().getItemInMainHand());
 			boolean temp = true;
 			if(hasTool) {
-				if(item.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) temp = false;
+				if(item.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS))
+					temp = false;
 				else {
 					item.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
 					rainbowMiner.put(player.getName(), item);
@@ -284,7 +292,8 @@ public class PlayerListener implements Listener {
 				@Override
 				public void run() {
 					if(hasTool) {
-						if(!player.isOnline()) return;
+						if(!player.isOnline())
+							return;
 						if(remove) {
 							item.removeEnchantment(Enchantment.LOOT_BONUS_BLOCKS);
 							rainbowMiner.remove(player.getName());
@@ -301,7 +310,8 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onItemDrop(PlayerDropItemEvent event) {
-		if(event.getItemDrop() == null) return;
+		if(event.getItemDrop() == null)
+			return;
 		// Removing Speed Miner effect
 		if(speedMiner.get(event.getPlayer().getName()) != null) {
 			ItemStack dropped = event.getItemDrop().getItemStack();
@@ -330,7 +340,8 @@ public class PlayerListener implements Listener {
 			}
 		}
 		if(event.getItemDrop().getItemStack().getType().equals(Material.GOLD_SWORD)) {
-			if(event.getItemDrop().getItemStack().getItemMeta().getDisplayName() == null) return;
+			if(event.getItemDrop().getItemStack().getItemMeta().getDisplayName() == null)
+				return;
 			if(event.getItemDrop().getItemStack().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Ultimate Skill")){
 				event.getItemDrop().remove();
 			}
@@ -348,9 +359,6 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		pl.getPlayerManager().loadData(event.getPlayer());
-		
-		//fixRank(event.getPlayer());
-		
 		if(event.getPlayer().hasPermission("asgardascension.staff")) {
 			event.getPlayer().setPlayerListName(ChatColor.YELLOW + event.getPlayer().getDisplayName());
 		}
@@ -359,10 +367,8 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onExplosionPrime(ExplosionPrimeEvent event) {
 		event.setFire(false);
-		if (event.getEntity() instanceof Fireball){
-			if(event.getEntity().hasMetadata("ultimate")){
-				event.setRadius(0);
-			}
+		if (event.getEntity() instanceof Fireball && event.getEntity().hasMetadata("ultimate")){
+			event.setRadius(0);
 		}
 	}
 
@@ -450,7 +456,8 @@ public class PlayerListener implements Listener {
 	
 	private Mine getTargetMine(Location loc) {
 		for(Mine mine : MineResetLite.instance.mines) {
-			if(mine.isInside(loc)) return mine;
+			if(mine.isInside(loc))
+				return mine;
 		}
 		return null;
 	}
