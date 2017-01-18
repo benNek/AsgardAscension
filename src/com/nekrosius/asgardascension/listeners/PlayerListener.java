@@ -362,6 +362,17 @@ public class PlayerListener implements Listener {
 		if(event.getPlayer().hasPermission("asgardascension.staff")) {
 			event.getPlayer().setPlayerListName(ChatColor.YELLOW + event.getPlayer().getDisplayName());
 		}
+		// Restoring location, level and experience in case server crashed
+		pl.getPlayerFile().createConfig(event.getPlayer());
+		if(pl.getPlayerFile().isInChallenge()) {
+			Player player = event.getPlayer();
+			player.teleport(pl.getPlayerFile().getChallengeLocation());
+			player.setLevel(pl.getPlayerFile().getChallengeLevel());
+			player.setExp(pl.getPlayerFile().getChallengeExperience());
+			Main.econ.depositPlayer(player, pl.getPlayerFile().getChallengePrice());
+			pl.getPlayerFile().removeChallenge();
+			pl.getPlayerFile().saveConfig();
+		}
 	}
 	
 	@EventHandler

@@ -48,9 +48,7 @@ public class Challenge {
 			return;
 		}
 		Main.econ.withdrawPlayer(player, price);
-		setChallenge(player, challenge);
-		setLocation(player, player.getLocation());
-		setLevel(player);
+		saveData(player, challenge, price);
 		player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
 		if("fight".equalsIgnoreCase(pl.getChallengesFile().getType(challenge))) {
 			new BukkitRunnable() {
@@ -83,18 +81,8 @@ public class Challenge {
 				}
 			}
 			player.teleport(pl.getChallengesFile().getVictorySpawnpoint(getChallenge(player)));
+			loadData(player);
 			player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_TWINKLE, 1F, 1F);
-			player.setFireTicks(0);
-			player.setHealth(20);
-			player.setLevel(level.get(player.getName()));
-			player.setExp(exp.get(player.getName()));
-			playerLocation.remove(player.getName());
-			testing.remove(player.getName());
-			armor.remove(player.getName());
-			inventory.remove(player.getName());
-			killsLeft.remove(player.getName());
-			exp.remove(player.getName());
-			level.remove(player.getName());
 		}
 		for(String cmd : pl.getChallengesFile().getCommands(getChallenge(player))){
 			cmd = cmd.replaceAll("%s", player.getName());
@@ -126,11 +114,26 @@ public class Challenge {
 		}else{
 			player.sendMessage(MESSAGE_HEADER + "Test completed. If you see this message challenge works fine!");
 		}
+		loadData(player);
+	}
+	
+	private void saveData(Player player, int challenge, long price) {
+		setChallenge(player, challenge);
+		setLocation(player, player.getLocation());
+		setLevel(player);
+		pl.getPlayerFile().createConfig(player);
+		pl.getPlayerFile().setChallengeLocation(player.getLocation());
+		pl.getPlayerFile().setChallengeLevel(player.getLevel());
+		pl.getPlayerFile().setChallengeExperience(player.getExp());
+		pl.getPlayerFile().setChallengePrice(price);
+		pl.getPlayerFile().saveConfig();
+	}
+	
+	private void loadData(Player player) {
 		player.setFireTicks(0);
 		player.setHealth(20);
 		player.setLevel(level.get(player.getName()));
 		player.setExp(exp.get(player.getName()));
-		playerChallenge.remove(player.getName());
 		playerLocation.remove(player.getName());
 		testing.remove(player.getName());
 		armor.remove(player.getName());
@@ -138,6 +141,9 @@ public class Challenge {
 		killsLeft.remove(player.getName());
 		exp.remove(player.getName());
 		level.remove(player.getName());
+		pl.getPlayerFile().createConfig(player);
+		pl.getPlayerFile().removeChallenge();
+		pl.getPlayerFile().saveConfig();
 	}
 	
 	public void setChallenge(Player player, int challenge) {
