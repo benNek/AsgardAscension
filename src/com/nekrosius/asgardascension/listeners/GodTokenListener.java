@@ -63,6 +63,9 @@ public class GodTokenListener implements Listener {
 			else if("Lightning".equals(GodTokens.getSkill(player.getName()))) {
 				@SuppressWarnings("deprecation")
 				Block block = player.getTargetBlock((HashSet<Byte>) null, 15);
+				if(!Main.isPVPEnabled(block.getLocation())) {
+					return;
+				}
 				block.getWorld().strikeLightning(block.getLocation());
 				for(Entity e : block.getWorld().getEntities()){
 					if(e instanceof Player) {

@@ -2,6 +2,7 @@ package com.nekrosius.asgardascension;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -266,11 +267,15 @@ public class Main extends JavaPlugin{
 	}
 	
 	public static boolean isPVPEnabled(Player player) {
+		return isPVPEnabled(player.getLocation());
+	}
+	
+	public static boolean isPVPEnabled(Location location) {
 		String global = "__global__";
-		if(Main.wg.getRegionManager(player.getWorld()) == null)	
+		if(Main.wg.getRegionManager(location.getWorld()) == null)	
 			return true;
-		RegionManager regionManager = Main.wg.getRegionManager(player.getWorld());
-		ApplicableRegionSet arset = regionManager.getApplicableRegions(player.getLocation());
+		RegionManager regionManager = Main.wg.getRegionManager(location.getWorld());
+		ApplicableRegionSet arset = regionManager.getApplicableRegions(location);
 		ProtectedRegion region = regionManager.getRegion(global);
 		int priority = -10000;
 		for(ProtectedRegion r : arset.getRegions()) { 

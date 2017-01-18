@@ -103,6 +103,9 @@ public class SetupListener implements Listener {
 				return;
 			}
 			pl.getChallengesFile().setPrice(ChallengeSetup.getChallenge(player), price);
+			if(!pl.getChallengesFile().hasTitle(ChallengeSetup.getChallenge(player))) {
+				pl.getChallengesFile().setTitle(ChallengeSetup.getChallenge(player), String.valueOf(ChallengeSetup.getChallenge(player)));
+			}
 			ChallengeSetup.setStep(player, 2);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 			player.sendMessage(Challenge.MESSAGE_HEADER + "Price to enter this challenge will be " + ChatColor.RED + price);

@@ -142,6 +142,10 @@ public class ChallengesFile {
 		return config.getString(String.valueOf(challenge) + ".title");
 	}
 	
+	public boolean hasTitle(int challenge) {
+		return config.get(String.valueOf(challenge) + ".title") != null;
+	}
+	
 	public int getChallengeId(String title) {
 		for(String key : config.getKeys(false)) {
 			int id = Integer.parseInt(key);
