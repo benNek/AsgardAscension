@@ -1,7 +1,8 @@
 name: AsgardAscension
-author: benNek
 version: 2.01.03
 main: com.nekrosius.asgardascension.Main
+description: Fully unique plugin with custom RankUps, Food of the Gods, Tribes, Lucky blocks and much more.
+author: benNek
 depend: [Vault, WorldGuard, EffectLib]
 softdepend: [DeluxeChat, PlotSquared]
 commands:

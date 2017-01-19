@@ -33,7 +33,21 @@ public class AsgardAscensionCommand implements CommandExecutor {
 			return true;
 		}
 		Player player = (Player) sender;
-		if(args.length == 2) {
+		if(args.length == 1) {
+			if("info".equalsIgnoreCase(args[0])) {
+				player.sendMessage(ChatColor.GRAY + "----------------------");
+				player.sendMessage(ChatColor.RED + pl.getDescription().getName());
+				player.sendMessage(ChatColor.GRAY + "Author: " + ChatColor.RED + pl.getDescription().getAuthors().get(0));
+				player.sendMessage(ChatColor.GRAY + "Version: " + ChatColor.RED + pl.getDescription().getVersion());
+				player.sendMessage(ChatColor.GRAY + "Description: " + ChatColor.RED + pl.getDescription().getDescription());
+				player.sendMessage(ChatColor.GRAY + "----------------------");
+			}
+			else {
+				player.sendMessage(Main.MESSAGE_HEADER + "Unknown command! Are you looking for /" + cmdLabel + " info?");
+			}
+			return true;
+		}
+		else if(args.length == 2) {
 			if(Bukkit.getPlayer(args[0]) != null) {
 				String prefix = args[1];
 				prefix = ChatColor.translateAlternateColorCodes('&', prefix);
@@ -49,7 +63,7 @@ public class AsgardAscensionCommand implements CommandExecutor {
 		else if(args.length == 3) {
 			if("prestige".equalsIgnoreCase(args[0])) {
 				if(Bukkit.getPlayer(args[1]) == null) {	
-					player.sendMessage(Main.MESSAGE_HEADER + "player not found!");
+					player.sendMessage(Main.MESSAGE_HEADER + "Player not found!");
 					return true;
 				}
 				Player target = Bukkit.getPlayer(args[1]);
