@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="C:/Programming/Java/lib/worldguard-6.1.jar"/>
 	<classpathentry kind="lib" path="C:/Programming/Java/lib/EffectLib-5.0.jar"/>
 	<classpathentry kind="lib" path="C:/Programming/Java/lib/ProtocolLib.jar"/>
+	<classpathentry kind="lib" path="C:/Programming/Java/lib/PlotSquared.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

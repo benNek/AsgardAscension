@@ -27,17 +27,16 @@ public class ChallengeListener implements Listener {
 
 	@EventHandler
 	public void onNoteBlockInteract(PlayerInteractEvent event) {
-		if(event.getClickedBlock() != null){
-			if(event.getClickedBlock().getType().equals(Material.NOTE_BLOCK)) {
-				if(pl.getChallenges().getChallenge(event.getPlayer()) == 0) return;
-				if(pl.getChallengesFile().getType(pl.getChallenges().getChallenge(event.getPlayer())).equalsIgnoreCase("fight")) {
-					return;
-				}
-				if(pl.getChallengesFile().getNoteblockLocation(pl.getChallenges().getChallenge(event.getPlayer()))
-						.equals(event.getClickedBlock().getLocation())){
-					event.setCancelled(true);
-					pl.getChallenges().finishChallenge(event.getPlayer(), false);
-				}
+		if(event.getClickedBlock() != null && event.getClickedBlock().getType().equals(Material.NOTE_BLOCK)){
+			if(pl.getChallenges().getChallenge(event.getPlayer()) == 0)
+				return;
+			if("fight".equalsIgnoreCase(pl.getChallengesFile().getType(pl.getChallenges().getChallenge(event.getPlayer())))) {
+				return;
+			}
+			if(pl.getChallengesFile().getNoteblockLocation(pl.getChallenges().getChallenge(event.getPlayer()))
+					.equals(event.getClickedBlock().getLocation())){
+				event.setCancelled(true);
+				pl.getChallenges().finishChallenge(event.getPlayer(), false);
 			}
 		}
 	}
@@ -81,13 +80,15 @@ public class ChallengeListener implements Listener {
 	
 	@EventHandler
 	public void onEXP(PlayerExpChangeEvent event) {
-		if(pl.getChallenges().getChallenge(event.getPlayer()) == 0) return;
+		if(pl.getChallenges().getChallenge(event.getPlayer()) == 0)
+			return;
 		event.setAmount(0);
 	}
 	
 	@EventHandler
 	public void onDie(PlayerDeathEvent event) {
-		if(pl.getChallenges().getChallenge(event.getEntity()) == 0) return;
+		if(pl.getChallenges().getChallenge(event.getEntity()) == 0)
+			return;
 		pl.getChallenges().saveInventory(event.getEntity());
 		event.getDrops().clear();
 		event.getEntity().spigot().respawn();
@@ -95,7 +96,8 @@ public class ChallengeListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onRespawn(final PlayerRespawnEvent event) {
-		if(pl.getChallenges().getChallenge(event.getPlayer()) == 0) return;
+		if(pl.getChallenges().getChallenge(event.getPlayer()) == 0)
+			return;
 		event.setRespawnLocation(pl.getChallengesFile().getSpawnpoint(pl.getChallenges().getChallenge(event.getPlayer())));
 		new BukkitRunnable() {
 			public void run() {

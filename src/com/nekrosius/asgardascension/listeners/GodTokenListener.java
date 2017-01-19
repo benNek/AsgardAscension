@@ -210,23 +210,24 @@ public class GodTokenListener implements Listener {
 		Block up = block.getRelative(BlockFace.UP);
 		Block left = block.getRelative(BlockFace.EAST);
 		Block right = block.getRelative(BlockFace.WEST);
+				
 		if(playerDir.equals(BlockFace.EAST) || playerDir.equals(BlockFace.WEST)) {
 			left = block.getRelative(BlockFace.NORTH);
 			right = block.getRelative(BlockFace.SOUTH);
 		}
-		if(Main.wg.canBuild(player, block)) {
+		if(Main.wg.canBuild(player, block) && Main.canBreak(player, block.getLocation())) {
 			player.getInventory().addItem(new ItemStack(block.getType()));
 			block.setType(Material.AIR);
 		}
-		if(Main.wg.canBuild(player, up)) {
+		if(Main.wg.canBuild(player, up) && Main.canBreak(player, up.getLocation())) {
 			player.getInventory().addItem(new ItemStack(up.getType()));
 			up.setType(Material.AIR);
 		}
-		if(Main.wg.canBuild(player, left)) {
+		if(Main.wg.canBuild(player, left) && Main.canBreak(player, left.getLocation())) {
 			player.getInventory().addItem(new ItemStack(left.getType()));
 			left.setType(Material.AIR);
 		}
-		if(Main.wg.canBuild(player, right)) {
+		if(Main.wg.canBuild(player, right) && Main.canBreak(player, right.getLocation())) {
 			player.getInventory().addItem(new ItemStack(right.getType()));
 			right.setType(Material.AIR);
 		}

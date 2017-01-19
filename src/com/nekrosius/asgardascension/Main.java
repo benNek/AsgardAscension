@@ -8,6 +8,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.intellectualcrafters.plot.api.PlotAPI;
+import com.intellectualcrafters.plot.object.Plot;
 import com.nekrosius.asgardascension.challenges.Challenge;
 import com.nekrosius.asgardascension.commands.AsgardAscensionCommand;
 import com.nekrosius.asgardascension.commands.ChallengesExecutor;
@@ -63,6 +65,7 @@ public class Main extends JavaPlugin{
 	
 	public static Economy econ = null;
 	public static Chat chat = null;
+	public static PlotAPI API = null;
 	
 	private Logger logger;
 	private Ragnorak ragnorak;
@@ -99,6 +102,7 @@ public class Main extends JavaPlugin{
 		pm = new PlayerManager(this);
 		em = new EffectManager(lib);
 		wg = getWorldGuard();
+		API = new PlotAPI();
 	}
 	
 	private void setupClasses() {
@@ -292,6 +296,21 @@ public class Main extends JavaPlugin{
 		if(region.getFlag(DefaultFlag.PVP) == null)
 			return true;
 		return "ALLOW".equalsIgnoreCase(region.getFlag(DefaultFlag.PVP).toString());
+	}
+	
+	public static boolean canBreak(Player player, Location location) {
+		Plot plot = API.getPlot(location);
+		
+		if(plot == null) {
+			return true;
+			
+		}
+		if(plot.isAdded(player.getUniqueId())) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 }

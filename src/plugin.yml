@@ -1,9 +1,9 @@
 name: AsgardAscension
 author: benNek
-version: 2.01.02
+version: 2.01.03
 main: com.nekrosius.asgardascension.Main
-depend: [Vault, WorldGuard]
-softdepend: [DeluxeChat]
+depend: [Vault, WorldGuard, EffectLib]
+softdepend: [DeluxeChat, PlotSquared]
 commands:
     asgardascension:
         aliases: [aa, asg]
