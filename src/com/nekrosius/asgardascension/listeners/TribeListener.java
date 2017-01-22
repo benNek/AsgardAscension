@@ -21,6 +21,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.objects.Tribe;
 import com.nekrosius.asgardascension.utils.Cooldowns;
@@ -55,19 +56,19 @@ public class TribeListener implements Listener {
 				if(directDamage == 0){
 					victim.setHealth(0);
 				}
-				else if(victim.getHealth() >= directDamage){
+				else if(victim.getHealth() >= directDamage) {
 					victim.setHealth(victim.getHealth() - directDamage);
-				}else{
+				}else {
 					victim.setHealth(0);
 				}
 			}
 		}
-		for(Entity e : fb.getNearbyEntities(5, 5, 5)){
-			if(e instanceof Player){
+		for(Entity e : fb.getNearbyEntities(5, 5, 5)) {
+			if(e instanceof Player) {
 				victim = (Player) e;
-				if(victim.getHealth() >= explosionDamage){
+				if(victim.getHealth() >= explosionDamage) {
 					victim.setHealth(victim.getHealth() - explosionDamage);
-				}else{
+				}else {
 					victim.setHealth(0);
 				}
 			}
@@ -81,10 +82,10 @@ public class TribeListener implements Listener {
 			if(event.getPlayer().getInventory().getItemInMainHand() == null) {
 				return;
 			}
-			if(!event.getPlayer().isSneaking()){
+			if(!event.getPlayer().isSneaking()) {
 				return;
 			}
-			if(!TribeManager.hasTribe(event.getPlayer().getName())){
+			if(!TribeManager.hasTribe(event.getPlayer().getName())) {
 				return;
 			}
 			if(!Main.isPVPEnabled(event.getPlayer())) {
@@ -101,29 +102,29 @@ public class TribeListener implements Listener {
 					if(tribe.getLevel() == 2) {
 						player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 300, 0));
 						Cooldowns.setCooldown(player, "action", 7200000);
-						player.sendMessage(TribeManager.MESSAGE_HEADER + "You've used Tribe's Action skill!");
+						player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've used Tribe's Action skill!");
 					}
 					else if(tribe.getLevel() == 3) {
 						player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 300, 0));
 						player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 300, 0));
 						Cooldowns.setCooldown(player, "action", 7200000);
-						player.sendMessage(TribeManager.MESSAGE_HEADER + "You've used Tribe's Action skill!");
+						player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've used Tribe's Action skill!");
 					}
 					else if(tribe.getLevel() == 4) {
 						player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 600, 0));
 						player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 0));
 						player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 600, 0));
 						Cooldowns.setCooldown(player, "action", 7200000);
-						player.sendMessage(TribeManager.MESSAGE_HEADER + "You've used Tribe's Action skill!");
+						player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've used Tribe's Action skill!");
 					}
 					else if(tribe.getLevel() == 5) {
 						player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 1200, 1));
 						player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 1200, 1));
 						Cooldowns.setCooldown(player, "action", 7200000);
-						player.sendMessage(TribeManager.MESSAGE_HEADER + "You've used Tribe's Action skill!");
+						player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've used Tribe's Action skill!");
 					}
 				}else{
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You can use Tribe's Action skill in " + Cooldowns.getCooldown(player, "action") / 60000 + " min.");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You can use Tribe's Action skill in " + Cooldowns.getCooldown(player, "action") / 60000 + " min.");
 				}
 			}
 			else if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.GOLD_SWORD)) {
@@ -139,7 +140,7 @@ public class TribeListener implements Listener {
 				Player player = event.getPlayer();
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
 				if(Cooldowns.getCooldown(player, "ultimate") >= 0){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You can use Tribe's Ultimate skill in " + Cooldowns.getCooldown(player, "ultimate") / 60000 + " min.");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You can use Tribe's Ultimate skill in " + Cooldowns.getCooldown(player, "ultimate") / 60000 + " min.");
 					return;
 				}
 				if(tribe.getType().equalsIgnoreCase("aesir")) {

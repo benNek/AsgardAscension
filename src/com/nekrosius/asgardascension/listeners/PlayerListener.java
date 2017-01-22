@@ -35,6 +35,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.koletar.jj.mineresetlite.Mine;
 import com.koletar.jj.mineresetlite.MineResetLite;
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.files.MessagesFile;
 import com.nekrosius.asgardascension.handlers.GodTokens;
@@ -107,7 +108,7 @@ public class PlayerListener implements Listener {
 			if(dropped.getType().equals(speedMiner.get(event.getWhoClicked().getName()).getType() )
 					&& dropped.getEnchantmentLevel(Enchantment.DIG_SPEED) == speedMiner.get(event.getWhoClicked().getName()).getEnchantmentLevel(Enchantment.DIG_SPEED))
 			{
-				event.getWhoClicked().sendMessage(Main.MESSAGE_HEADER + "You can't remove this item from your inventory!");
+				event.getWhoClicked().sendMessage(Lang.HEADERS_MAIN.toString() + "You can't remove this item from your inventory!");
 				event.setCancelled(true);
 			}
 		}
@@ -117,7 +118,7 @@ public class PlayerListener implements Listener {
 			if(dropped.getType().equals(rainbowMiner.get(event.getWhoClicked().getName()).getType() )
 					&& dropped.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS) == rainbowMiner.get(event.getWhoClicked().getName()).getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS))
 			{
-				event.getWhoClicked().sendMessage(Main.MESSAGE_HEADER + "You can't remove this item from your inventory!");
+				event.getWhoClicked().sendMessage(Lang.HEADERS_MAIN.toString() + "You can't remove this item from your inventory!");
 				event.setCancelled(true);
 			}
 		}
@@ -137,7 +138,7 @@ public class PlayerListener implements Listener {
 				event.getPlayer().getInventory().addItem(itemToAdd);
 			}
 			else {
-				event.getPlayer().sendMessage(Main.MESSAGE_HEADER + "Your inventory is full!");
+				event.getPlayer().sendMessage(Lang.HEADERS_MAIN.toString() + "Your inventory is full!");
 			}
 		}
 		// Lucky blocks
@@ -151,7 +152,7 @@ public class PlayerListener implements Listener {
 		// 5% lava
 		if (random <= 29 - 25) {
 			event.getBlock().setType(Material.LAVA);
-			player.sendMessage(Main.MESSAGE_HEADER + MessagesFile.getMessage("lucky_blocks.lava"));
+			player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.lava"));
 		}
 		// 10% 10x10 explosion
 		else if (random <= 34 - 25) {
@@ -177,7 +178,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 			
-			player.sendMessage(Main.MESSAGE_HEADER + MessagesFile.getMessage("lucky_blocks.explosion"));
+			player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.explosion"));
 		}
 		// 5% BOB
 		else if (random <= 44 - 25) {
@@ -188,13 +189,13 @@ public class PlayerListener implements Listener {
 			ee.setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
 			ee.setBoots(new ItemStack(Material.DIAMOND_BOOTS));
 			ee.setItemInMainHand(new ItemStack(Material.DIAMOND_SWORD));
-			player.sendMessage(Main.MESSAGE_HEADER + MessagesFile.getMessage("lucky_blocks.zombie"));
+			player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.zombie"));
 		}
 		// 5% decoy chest
 		else if(random <= 49 - 25) {
 			event.getBlock().setType(Material.CHEST);
 			final Player target = event.getPlayer();
-			player.sendMessage(Main.MESSAGE_HEADER + MessagesFile.getMessage("lucky_blocks.trap_chest"));
+			player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.trap_chest"));
 			new BukkitRunnable() {
 				public void run() {
 					if(event.getBlock().getType().equals(Material.CHEST)) {
@@ -213,7 +214,7 @@ public class PlayerListener implements Listener {
 		else if (random <= 54 - 25) {
 			int rnd = randomGen.nextInt(ConfigFile.getLuckyCommands().size());
 			String cmd = ConfigFile.getLuckyCommands().get(rnd);
-			String msg = Main.MESSAGE_HEADER + ConfigFile.getLuckyCommandMessages().get(rnd);
+			String msg = Lang.HEADERS_MAIN.toString() + ConfigFile.getLuckyCommandMessages().get(rnd);
 			cmd = cmd.replaceAll("%player", player.getName());
 			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd);
 			player.sendMessage(msg);
@@ -235,7 +236,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 			final boolean remove = temp;
-			player.sendMessage(Main.MESSAGE_HEADER + MessagesFile.getMessage("lucky_blocks.speed_miner.start"));
+			player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.speed_miner.start"));
 			new BukkitRunnable() {
 				
 				@Override
@@ -249,14 +250,14 @@ public class PlayerListener implements Listener {
 							player.updateInventory();
 						}
 					}
-					player.sendMessage(Main.MESSAGE_HEADER + MessagesFile.getMessage("lucky_blocks.speed_miner.end"));
+					player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.speed_miner.end"));
 				}
 				
 			}.runTaskLater(pl, 300L);
 		}
 		// 12% Diamond miner
 		else if(random <= 76 - 25) {
-			player.sendMessage(Main.MESSAGE_HEADER + MessagesFile.getMessage("lucky_blocks.diamond_miner.start"));
+			player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.diamond_miner.start"));
 			diamondMiner.put(player.getName(), true);
 			new BukkitRunnable() {
 				
@@ -265,7 +266,7 @@ public class PlayerListener implements Listener {
 					if(!player.isOnline())
 							return;
 					diamondMiner.remove(player.getName());
-					player.sendMessage(Main.MESSAGE_HEADER + MessagesFile.getMessage("lucky_blocks.diamond_miner.end"));
+					player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.diamond_miner.end"));
 				}
 				
 			}.runTaskLater(pl, 300L);
@@ -286,7 +287,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 			final boolean remove = temp;
-			player.sendMessage(Main.MESSAGE_HEADER + MessagesFile.getMessage("lucky_blocks.rainbow_miner.start"));
+			player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.rainbow_miner.start"));
 			new BukkitRunnable() {
 				
 				@Override
@@ -300,7 +301,7 @@ public class PlayerListener implements Listener {
 							player.updateInventory();
 						}
 					}
-					player.sendMessage(Main.MESSAGE_HEADER + MessagesFile.getMessage("lucky_blocks.rainbow_miner.end"));
+					player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.rainbow_miner.end"));
 				}
 				
 			}.runTaskLater(pl, 300L);

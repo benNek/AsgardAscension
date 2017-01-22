@@ -14,8 +14,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.files.GodFoodFile;
-import com.nekrosius.asgardascension.handlers.FoodSetup;
 
 import de.slikey.effectlib.effect.LoveEffect;
 import de.slikey.effectlib.util.ParticleEffect;
@@ -64,7 +64,7 @@ public class GodFoodListener implements Listener {
 									he.cancel();
 								}
 							}.runTaskLater(pl, maxDuration);
-							player.sendMessage(FoodSetup.MESSAGE_HEADER + "You used " 
+							player.sendMessage(Lang.HEADERS_FOG.toString() + "You used " 
 									+ ChatColor.RED + GodFoodFile.getName(id) + ChatColor.GRAY + "!");
 						}
 					}

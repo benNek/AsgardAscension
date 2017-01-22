@@ -16,6 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.enums.TokenType;
 import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.objects.GodToken;
@@ -35,14 +36,12 @@ public class GodTokens {
 	private static Map<String, String> skill = new HashMap<>();
 	private static Map<String, Effect> effect = new HashMap<>();
 	
-	public static final String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard Tokens" + ChatColor.GRAY + "] ";
-
 	public static List<GodToken> tokens;
 	
 	public static void startSkill(final String player, final GodToken token) {
 		setSkill(player, token.getName());
 		startEffect(player, token.getName());
-		Bukkit.getPlayer(player).sendMessage(MESSAGE_HEADER + ChatColor.RED + token.getName() + ChatColor.GRAY + " is now activated!");
+		Bukkit.getPlayer(player).sendMessage(Lang.HEADERS_TOKENS.toString() + ChatColor.RED + token.getName() + ChatColor.GRAY + " is now activated!");
 		
 		if(token.getDuration() != -1) {
 			new BukkitRunnable() {
@@ -121,7 +120,7 @@ public class GodTokens {
 			return;
 		if(!Bukkit.getPlayer(player).isOnline())
 			return;
-		Bukkit.getPlayer(player).sendMessage(MESSAGE_HEADER + ChatColor.RED + getSkill(player) 
+		Bukkit.getPlayer(player).sendMessage(Lang.HEADERS_TOKENS.toString() + ChatColor.RED + getSkill(player) 
 			+ ChatColor.GRAY + " has ended! You can use it again in " + findToken(getSkill(player)).getCooldown() + " minutes!");
 		Cooldowns.setCooldown(Bukkit.getPlayer(player), getSkill(player), (long)findToken(getSkill(player)).getCooldown() * 60000);
 		skill.remove(player);

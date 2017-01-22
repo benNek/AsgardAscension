@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.files.RagnorakFile;
 import com.nekrosius.asgardascension.utils.Convert;
 
@@ -31,8 +32,6 @@ public class Ragnorak {
 	
 	private static List<Effect> effects;
 	
-	public static final String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard Ragnorak" + ChatColor.GRAY + "] ";
-	
 	private Main plugin;
 	public Ragnorak(Main plugin) {
 		this.plugin = plugin;
@@ -45,21 +44,21 @@ public class Ragnorak {
 	
 	public void addVote(Player player) {
 		if(eventStarted) {
-			player.sendMessage(MESSAGE_HEADER + "Ragnorak is already in progress!");
+			player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "Ragnorak is already in progress!");
 			return;
 		}
 		if(!voteStarted) {
-			player.sendMessage(MESSAGE_HEADER + "Voting is currently not in progress!" + 
+			player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "Voting is currently not in progress!" + 
 					" The voting will start in " + minutesLeft + " min.");
 			return;
 		}
 		if(voted.containsKey(player.getName())) {
-			player.sendMessage(MESSAGE_HEADER + "You've already voted! Current progress is " + voted.size() + "/" + Bukkit.getOnlinePlayers().size());
+			player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You've already voted! Current progress is " + voted.size() + "/" + Bukkit.getOnlinePlayers().size());
 			return;
 		}
 		voted.put(player.getName(), true);
 		int required = Math.max(Bukkit.getOnlinePlayers().size() / 2 - 1, RagnorakFile.getMinimumAmountOfPlayers());
-		player.sendMessage(MESSAGE_HEADER + "You've sucessfully voted! (" + voted.size() + "/" + required + ")");
+		player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You've sucessfully voted! (" + voted.size() + "/" + required + ")");
 		checkForTrigger();
 	}
 	
@@ -84,7 +83,7 @@ public class Ragnorak {
 		voteStarted = true;
 		final int minCount = RagnorakFile.getMinimumAmountOfPlayers();
 		for(Player p : Bukkit.getOnlinePlayers()) {
-			p.sendMessage(MESSAGE_HEADER + "Are you prepared for epic Ragnorak? Type /ragnorak to vote!");
+			p.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "Are you prepared for epic Ragnorak? Type /ragnorak to vote!");
 			p.playSound(p.getLocation(), Sound.ENTITY_ENDERDRAGON_GROWL, 1F, 1F);
 		}
 		
@@ -98,7 +97,7 @@ public class Ragnorak {
 				}
 				minutesLeft = RagnorakFile.getTimerAfterUnsuccessfulVote();
 				for(Player p : Bukkit.getOnlinePlayers()) {
-					p.sendMessage(MESSAGE_HEADER + "Voting has been unsuccessful! Next voting will begin in " + minutesLeft + " min.");
+					p.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "Voting has been unsuccessful! Next voting will begin in " + minutesLeft + " min.");
 				}
 				voted.clear();
 				eventStarted = false;
@@ -121,7 +120,7 @@ public class Ragnorak {
 					int required = Bukkit.getOnlinePlayers().size() / 2 - 1;
 					required = Math.max(required, minCount);
 					for(Player p : Bukkit.getOnlinePlayers()) {
-						String base = MESSAGE_HEADER + previousCount + "/" + required + " players have already voted!";
+						String base = Lang.HEADERS_RAGNORAK.toString() + previousCount + "/" + required + " players have already voted!";
 						if(!hasVoted(p)) {
 							base += " Type /ragnorak to vote!";
 						}
@@ -154,7 +153,7 @@ public class Ragnorak {
 		
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_THUNDER, 1F, 1F);
-			p.sendMessage(MESSAGE_HEADER + "Ragnorak" + ChatColor.GRAY + " has started!");
+			p.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "Ragnorak" + ChatColor.GRAY + " has started!");
 		}
 		spawnItems();
 		
@@ -164,7 +163,7 @@ public class Ragnorak {
 				minutesLeft++;
 				if(minutesLeft >= RagnorakFile.getDuration()) {
 					for(Player p : Bukkit.getOnlinePlayers()){
-						p.sendMessage(MESSAGE_HEADER + "Ragnorak has finished!");
+						p.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "Ragnorak has finished!");
 					}
 					finishEvent();
 					minutesLeft = RagnorakFile.getTimerAfterSuccessfulVote();

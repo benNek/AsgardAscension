@@ -1,8 +1,13 @@
 package com.nekrosius.asgardascension;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -21,6 +26,7 @@ import com.nekrosius.asgardascension.commands.RankUpCommand;
 import com.nekrosius.asgardascension.commands.TokenCommand;
 import com.nekrosius.asgardascension.commands.TribeCommand;
 import com.nekrosius.asgardascension.commands.WarpsExecutor;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.files.ChallengesFile;
 import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.files.GodFoodFile;
@@ -54,8 +60,10 @@ import net.milkbowl.vault.economy.Economy;
 
 public class Main extends JavaPlugin{
 	
-	public static final String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard" + ChatColor.GRAY + "] ";
 	public static WorldGuardPlugin wg;
+	
+	public static YamlConfiguration LANG;
+	public static File LANG_FILE;
 	
 	private ListenerManager lm;
 	private TribeManager tm;
@@ -78,6 +86,7 @@ public class Main extends JavaPlugin{
         setupChat();
 		logger = new Logger(this);
 		setupFiles();
+		loadLang();
         setupManagers();
         setupClasses();
 		setupCommands();
@@ -103,6 +112,61 @@ public class Main extends JavaPlugin{
 		em = new EffectManager(lib);
 		wg = getWorldGuard();
 		API = new PlotAPI();
+	}
+	
+	public void loadLang() {
+	    File lang = new File(getDataFolder(), "lang.yml");
+	    if (!lang.exists()) {
+	        try {
+	            getDataFolder().mkdir();
+	            lang.createNewFile();
+	            InputStream defConfigStream = this.getResource("lang.yml");
+	            if (defConfigStream != null) {
+	                @SuppressWarnings("deprecation")
+					YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+	                defConfig.save(lang);
+	                Lang.setFile(defConfig);
+	                //return defConfig;
+	            }
+	        } catch(IOException e) {
+	            e.printStackTrace(); // So they notice
+	            logger.log("Couldn't create language file.");
+	            logger.log("This is a fatal error. Now disabling");
+	            this.setEnabled(false);
+	        }
+	    }
+	    YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
+	    for(Lang item : Lang.values()) {
+	        if (conf.getString(item.getPath()) == null) {
+	            conf.set(item.getPath(), item.getDefault());
+	        }
+	    }
+	    Lang.setFile(conf);
+	    Main.LANG = conf;
+	    Main.LANG_FILE = lang;
+	    try {
+	        conf.save(getLangFile());
+	    } catch(IOException e) {
+	        logger.log("Failed to save lang.yml.");
+	        logger.log("Report this stacktrace.");
+	        e.printStackTrace();
+	    }
+	}
+	
+	/**
+	* Gets the lang.yml config.
+	* @return The lang.yml config.
+	*/
+	public YamlConfiguration getLang() {
+	    return LANG;
+	}
+	 
+	/**
+	* Get the lang.yml file.
+	* @return The lang.yml file.
+	*/
+	public File getLangFile() {
+	    return LANG_FILE;
 	}
 	
 	private void setupClasses() {

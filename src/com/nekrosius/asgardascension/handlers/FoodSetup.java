@@ -3,7 +3,6 @@ package com.nekrosius.asgardascension.handlers;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class FoodSetup {
@@ -15,8 +14,6 @@ public class FoodSetup {
 	private static Map<String, String> effectType = new HashMap<>();
 	private static Map<String, Integer> effectDuration = new HashMap<>();
 	private static Map<String, Integer> effectAmplifier = new HashMap<>();
-	
-	public static final String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard FoG" + ChatColor.GRAY + "] ";
 	
 	private FoodSetup() {
 	

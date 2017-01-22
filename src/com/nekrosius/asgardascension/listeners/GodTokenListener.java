@@ -28,6 +28,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.utils.Convert;
@@ -95,9 +96,9 @@ public class GodTokenListener implements Listener {
 				eff.setTargetEntity(target);
 				eff.particle = ParticleEffect.SNOW_SHOVEL;
 				eff.start();
-				player.sendMessage(GodTokens.MESSAGE_HEADER + "You've frozen " + ChatColor.RED + target.getName());
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've frozen " + ChatColor.RED + target.getName());
 				target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 6));
-				target.sendMessage(GodTokens.MESSAGE_HEADER + "You were frozen by God Token of " + ChatColor.RED + player.getName());
+				target.sendMessage(Lang.HEADERS_TOKENS.toString() + "You were frozen by God Token of " + ChatColor.RED + player.getName());
 				remove = true;
 			}
 			if(remove) {
@@ -131,7 +132,7 @@ public class GodTokenListener implements Listener {
 		}
 		player.getInventory().setItemInMainHand(item);
 		pl.getPlayerManager().addTokens(player, 1);
-		player.sendMessage(GodTokens.MESSAGE_HEADER + "You've successfully deposited 1 GT!");
+		player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've successfully deposited 1 GT!");
 	}
 	
 	@EventHandler
@@ -141,7 +142,7 @@ public class GodTokenListener implements Listener {
 		if(event.getEntity() instanceof Player){
 			if("Dodge".equals(GodTokens.getSkill(((Player)event.getEntity()).getName()))){
 				if(getRandom(1, 100) <= 30) {
-					((Player)event.getEntity()).sendMessage(GodTokens.MESSAGE_HEADER + "You've dodged an attack!");
+					((Player)event.getEntity()).sendMessage(Lang.HEADERS_TOKENS.toString() + "You've dodged an attack!");
 					event.setCancelled(true);
 				}
 			}
@@ -175,8 +176,8 @@ public class GodTokenListener implements Listener {
 			if(GodTokens.getSkill(damager.getName()).equalsIgnoreCase("wither")){
 				if(GodTokens.canUse(damager.getName())){
 					((Player)event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 100, pl.getPlayerManager().getPrestige((Player)event.getEntity())));
-					((Player)event.getEntity()).sendMessage(GodTokens.MESSAGE_HEADER + "You got Wither effect from " + ChatColor.RED + damager.getName());
-					damager.sendMessage(GodTokens.MESSAGE_HEADER + "You've withered " + ChatColor.RED + ((Player)event.getEntity()).getName());
+					((Player)event.getEntity()).sendMessage(Lang.HEADERS_TOKENS.toString() + "You got Wither effect from " + ChatColor.RED + damager.getName());
+					damager.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've withered " + ChatColor.RED + ((Player)event.getEntity()).getName());
 					GodTokens.addCooldown(damager.getName(), 20);
 				}
 			}

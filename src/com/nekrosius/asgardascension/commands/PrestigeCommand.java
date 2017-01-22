@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.enums.PrestigeType;
 import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.utils.Convert;
@@ -32,11 +33,11 @@ public class PrestigeCommand implements CommandExecutor {
 		if(args.length == 1) {
 			if(args[0].equalsIgnoreCase("location")) {
 				if(!sender.hasPermission("asgardascension.admin")){
-					sender.sendMessage(Main.MESSAGE_HEADER + "This command is available only for OPs!");
+					sender.sendMessage(Lang.HEADERS_MAIN.toString() + "This command is available only for OPs!");
 					return true;
 				}
 				ConfigFile.setPrestigeLocation(Convert.locationToString(player.getLocation(), true));
-				player.sendMessage(Main.MESSAGE_HEADER + "You've succesfully added prestige teleport location!");
+				player.sendMessage(Lang.HEADERS_MAIN.toString() + "You've succesfully added prestige teleport location!");
 				return true;
 			}
 		}

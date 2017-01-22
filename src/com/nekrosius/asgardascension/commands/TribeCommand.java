@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.files.TribeFile;
 import com.nekrosius.asgardascension.inventories.TribesInventory;
@@ -37,45 +38,45 @@ public class TribeCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
-		if(!(sender instanceof Player)){
-			sender.sendMessage(TribeManager.MESSAGE_HEADER + "This command is only available for players!");
+		if(!(sender instanceof Player)) {
+			sender.sendMessage(Lang.HEADERS_TRIBES.toString() + "This command is only available for players!");
 			return true;
 		}
 		Player player = (Player) sender;
-		if(args.length > 1){
-			if(args[0].equalsIgnoreCase("description") || args[0].equalsIgnoreCase("desc")){
-				if(!TribeManager.isLeader(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're not leader of tribe!");
+		if(args.length > 1) {
+			if(args[0].equalsIgnoreCase("description") || args[0].equalsIgnoreCase("desc")) {
+				if(!TribeManager.isLeader(player.getName())) {
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're not leader of tribe!");
 					return true;
 				}
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
 				String desc = "";
-				for(int i = 1; i < args.length; i++){
+				for(int i = 1; i < args.length; i++) {
 					desc += args[i] + " ";
 				}
 				tribe.setDescription(desc);
 				TribeFile.createConfig(tribe.getName());
 				TribeFile.setDescription(desc);
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've set description to: " + ChatColor.RED + desc);
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've set description to: " + ChatColor.RED + desc);
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("chat")) {
-				if(!TribeManager.hasTribe(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You don't have tribe!");
+				if(!TribeManager.hasTribe(player.getName())) {
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You don't have tribe!");
 					return true;
 				}
 				String msg = "";
-				for(int i = 1; i < args.length; i++){
+				for(int i = 1; i < args.length; i++) {
 					msg += args[i] + " ";
 				}
-				if(TribeManager.isLeader(player.getName())){
+				if(TribeManager.isLeader(player.getName())) {
 					TribeManager.sendChatMessage(TribeManager.getPlayerTribe(player.getName()), 
-							TribeManager.MESSAGE_HEADER + "[" + ChatColor.GREEN + player.getName() + ChatColor.GRAY + "] " +
+							Lang.HEADERS_TRIBES.toString() + "[" + ChatColor.GREEN + player.getName() + ChatColor.GRAY + "] " +
 							ChatColor.RED + msg);
 				}
 				else {
 					TribeManager.sendChatMessage(TribeManager.getPlayerTribe(player.getName()), 
-							TribeManager.MESSAGE_HEADER + "[" + ChatColor.RED + player.getName() + ChatColor.GRAY + "] " +
+							Lang.HEADERS_TRIBES.toString() + "[" + ChatColor.RED + player.getName() + ChatColor.GRAY + "] " +
 							ChatColor.RED + msg);	
 				}
 				return true;
@@ -89,34 +90,34 @@ public class TribeCommand implements CommandExecutor {
 			}
 		}
 		else if(args.length == 1) {
-			if(args[0].equalsIgnoreCase("leave")){
+			if(args[0].equalsIgnoreCase("leave")) {
 				if(!TribeManager.hasTribe(player.getName())) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You don't have tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You don't have tribe!");
 					return true;
 				}
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
-				if(!TribeManager.isLeader(player.getName())){
+				if(!TribeManager.isLeader(player.getName())) {
 					tribe.removeMember(player.getUniqueId().toString());
-					TribeManager.sendMessage(tribe, TribeManager.MESSAGE_HEADER + ChatColor.RED + player.getName() + ChatColor.GRAY + " has left your tribe!");
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You've left your tribe!");
+					TribeManager.sendMessage(tribe, Lang.HEADERS_TRIBES.toString() + ChatColor.RED + player.getName() + ChatColor.GRAY + " has left your tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've left your tribe!");
 					return true;
 				}
 				tribe.delete();
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've disbanded your tribe!");
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've disbanded your tribe!");
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("socialspy") || args[0].equalsIgnoreCase("ss")) {
 				if(!(player.hasPermission("asgardascension.admin") || player.hasPermission("asgardascension.staff"))) {
-					sender.sendMessage(Main.MESSAGE_HEADER + "This command is only available for staff members!");
+					sender.sendMessage(Lang.HEADERS_MAIN.toString() + "This command is only available for staff members!");
 					return true;
 				}
 				if(socialSpy.get(player.getName()) == null) {
 					socialSpy.put(player.getName(), true);
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You've turned on Social Spy!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've turned on Social Spy!");
 				}
 				else {
 					socialSpy.remove(player.getName());
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You've turned off Social Spy!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've turned off Social Spy!");
 				}
 				
 			}
@@ -131,33 +132,33 @@ public class TribeCommand implements CommandExecutor {
 			}
 			else if(args[0].equalsIgnoreCase("type")) {
 				if(!TribeManager.isLeader(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're not leader of tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're not leader of tribe!");
 					return true;
 				}
 				TribesInventory.setupTypeSelectionMenu(player);
 			}
 			else if(args[0].equalsIgnoreCase("rankup")){
 				if(!TribeManager.isLeader(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're not leader of tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're not leader of tribe!");
 					return true;
 				}
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
 				if(tribe.getLevel() >= 5) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Your tribe reached maximum level! (5)");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Your tribe reached maximum level! (5)");
 					return true;
 				}
 				if(!TribeManager.canRankUp(tribe)) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Your tribe can't rankup yet! It costs " + ConfigFile.getRankUpPrice(tribe.getLevel() + 1) + " to rankup!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Your tribe can't rankup yet! It costs " + ConfigFile.getRankUpPrice(tribe.getLevel() + 1) + " to rankup!");
 					return true;
 				}
 				tribe.setLevel(tribe.getLevel() + 1);
 				TribeFile.createConfig(tribe.getName());
 				TribeFile.setLevel(tribe.getLevel());
-				TribeManager.sendMessage(tribe, TribeManager.MESSAGE_HEADER + "You tribe has ranked up! It's now has level of " + ChatColor.RED + tribe.getLevel());
+				TribeManager.sendMessage(tribe, Lang.HEADERS_TRIBES.toString() + "You tribe has ranked up! It's now has level of " + ChatColor.RED + tribe.getLevel());
 			}
 			else if(args[0].equalsIgnoreCase("chest")) {
 				if(!TribeManager.hasTribe(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You don't have tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You don't have tribe!");
 					return true;
 				}
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
@@ -165,11 +166,11 @@ public class TribeCommand implements CommandExecutor {
 			}
 			else if(args[0].equalsIgnoreCase("desc") || args[0].equalsIgnoreCase("description")) {
 				if(!TribeManager.hasTribe(player.getName())) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You don't have tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You don't have tribe!");
 					return true;
 				}
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "" + ChatColor.BOLD + "▲▼▲▼▲▼▲▼▲▼▲▼▲▼");
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "" + ChatColor.BOLD + "▲▼▲▼▲▼▲▼▲▼▲▼▲▼");
 				player.sendMessage(addLinebreaks(tribe.getDescription(), 20));
 			}
 			else if(args[0].equalsIgnoreCase("help")) {
@@ -177,14 +178,14 @@ public class TribeCommand implements CommandExecutor {
 			}
 			else if(args[0].equalsIgnoreCase("info")) {
 				if(!TribeManager.hasTribe(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You don't have tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You don't have tribe!");
 					return true;
 				}
 				printTribeInfo(player, TribeManager.getPlayerTribe(player.getName()));
 			}
 			else if(args[0].equalsIgnoreCase("sword")) {
 				if(!TribeManager.hasTribe(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You don't have tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You don't have tribe!");
 					return true;
 				}
 				for(ItemStack item : player.getInventory().getContents()){
@@ -192,7 +193,7 @@ public class TribeCommand implements CommandExecutor {
 						if(item.getType().equals(Material.GOLD_SWORD)){
 							if(item.getItemMeta().getDisplayName() != null){
 								if(item.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Ultimate Skill")){
-									player.sendMessage(TribeManager.MESSAGE_HEADER + "You already have Tribe's Sword!");
+									player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You already have Tribe's Sword!");
 									return true;
 								}
 							}
@@ -209,19 +210,19 @@ public class TribeCommand implements CommandExecutor {
 		else if(args.length == 2) {
 			if(args[0].equalsIgnoreCase("create")) {
 				if(TribeManager.hasTribe(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You already have tribe! Leave it to create new one!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You already have tribe! Leave it to create new one!");
 					return true;
 				}
 				if(!Main.econ.has(player, ConfigFile.getTribePrice())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You don't have enough money! To create tribe it costs " + ConfigFile.getTribePrice());
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You don't have enough money! To create tribe it costs " + ConfigFile.getTribePrice());
 					return true;
 				}
 				if(TribeManager.getTribe(args[1]) != null){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "There is already tribe named " + args[1] + ". Choose another name!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "There is already tribe named " + args[1] + ". Choose another name!");
 					return true;
 				}
 				String name = args[1];
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've created new Tribe named " + ChatColor.RED + name);
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've created new Tribe named " + ChatColor.RED + name);
 				Tribe tribe = new Tribe(name);
 				tribe.setLeader(player.getUniqueId().toString());
 				tribe.addMember(player.getUniqueId().toString());
@@ -232,43 +233,43 @@ public class TribeCommand implements CommandExecutor {
 			}
 			else if(args[0].equalsIgnoreCase("invite")) {
 				if(!TribeManager.isLeader(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're not leader of tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're not leader of tribe!");
 					return true;
 				}
 				if(Bukkit.getPlayer(args[1]) == null) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + args[1] + " is not online!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + args[1] + " is not online!");
 					return true;
 				}
 				Player target = Bukkit.getPlayer(args[1]);
 				if(TribeManager.hasTribe(target.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + args[1] + " already has tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + args[1] + " already has tribe!");
 					return true;
 				}
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
 				if(tribe.isInvited(target.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You've already invited " + target.getName() + " to tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've already invited " + target.getName() + " to tribe!");
 					return true;
 				}
 				if(tribe.getMembers().size() >= ConfigFile.getMaxMembers(tribe.getLevel())) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You reached cap of members! " + ConfigFile.getMaxMembers(tribe.getLevel()) + ". Rankup to get new slots!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You reached cap of members! " + ConfigFile.getMaxMembers(tribe.getLevel()) + ". Rankup to get new slots!");
 					return true;
 				}
 				tribe.invitePlayer(target.getName());
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've invited " + ChatColor.RED + args[1] + ChatColor.GRAY + " to your tribe!");
-				target.sendMessage(TribeManager.MESSAGE_HEADER + "You've been invited to tribe " + ChatColor.RED + TribeManager.getPlayerTribe(player.getName()).getName());
-				target.sendMessage(TribeManager.MESSAGE_HEADER + "Type " + ChatColor.RED + "/tribe accept " + tribe.getName() + ChatColor.GRAY + " or " + ChatColor.RED + "/tribe decline " + tribe.getName());
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've invited " + ChatColor.RED + args[1] + ChatColor.GRAY + " to your tribe!");
+				target.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've been invited to tribe " + ChatColor.RED + TribeManager.getPlayerTribe(player.getName()).getName());
+				target.sendMessage(Lang.HEADERS_TRIBES.toString() + "Type " + ChatColor.RED + "/tribe accept " + tribe.getName() + ChatColor.GRAY + " or " + ChatColor.RED + "/tribe decline " + tribe.getName());
 			}
 			else if(args[0].equalsIgnoreCase("list")) {
 				int page;
 				try{
 					page = Integer.parseInt(args[1]);
 				} catch (NumberFormatException e) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Type page number!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Type page number!");
 					return true;
 				}
 				List<String> list = TribeManager.getTribeListDescription();
 				if(page < 1 || page > list.size() / 5) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Non-Existant page number! (1-" + list.size() / 5 + ")!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Non-Existant page number! (1-" + list.size() / 5 + ")!");
 					return true;
 				}
 				Pager pager = new Pager();
@@ -280,82 +281,82 @@ public class TribeCommand implements CommandExecutor {
 			}
 			else if(args[0].equalsIgnoreCase("kick")) {
 				if(!TribeManager.isLeader(player.getName())) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're not leader of tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're not leader of tribe!");
 					return true;
 				}
 				if(Bukkit.getPlayer(args[1]) == null) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + args[1] + " is not online!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + args[1] + " is not online!");
 					return true;
 				}
 				Player target = Bukkit.getPlayer(args[1]);
 				if(!(TribeManager.getPlayerTribe(args[1]).equals(TribeManager.getPlayerTribe(player.getName())))){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + args[1] + " is not from your tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + args[1] + " is not from your tribe!");
 					return true;
 				}
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
-				target.sendMessage(TribeManager.MESSAGE_HEADER + "You've been kicked from tribe!");
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've kicked " + ChatColor.RED + args[1] + ChatColor.GRAY + " from your tribe!");
+				target.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've been kicked from tribe!");
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've kicked " + ChatColor.RED + args[1] + ChatColor.GRAY + " from your tribe!");
 				tribe.removeMember(target.getUniqueId().toString());
-				TribeManager.sendMessage(tribe, TribeManager.MESSAGE_HEADER + ChatColor.RED + args[1] + ChatColor.GRAY + " has been kicked from your tribe!");
+				TribeManager.sendMessage(tribe, Lang.HEADERS_TRIBES.toString() + ChatColor.RED + args[1] + ChatColor.GRAY + " has been kicked from your tribe!");
 				TribeFile.createConfig(tribe.getName());
 				TribeFile.removeMember(target.getUniqueId().toString());
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("promote")){
 				if(!TribeManager.isLeader(player.getName())) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're not leader of tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're not leader of tribe!");
 					return true;
 				}
 				if(Bukkit.getPlayer(args[1]) == null) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + args[1] + " is not online!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + args[1] + " is not online!");
 					return true;
 				}
 				Player target = Bukkit.getPlayer(args[1]);
 				if(!(TribeManager.getPlayerTribe(args[1]).equals(TribeManager.getPlayerTribe(player.getName())))){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + args[1] + " is not from your tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + args[1] + " is not from your tribe!");
 					return true;
 				}
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
 				tribe.setLeader(target.getUniqueId().toString());
-				target.sendMessage(TribeManager.MESSAGE_HEADER + "You're new leader of your tribe!");
-				TribeManager.sendMessage(tribe, TribeManager.MESSAGE_HEADER + ChatColor.RED + target.getName() + ChatColor.GRAY + " is new leader of your tribe!");
+				target.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're new leader of your tribe!");
+				TribeManager.sendMessage(tribe, Lang.HEADERS_TRIBES.toString() + ChatColor.RED + target.getName() + ChatColor.GRAY + " is new leader of your tribe!");
 				TribeFile.createConfig(tribe.getName());
 				TribeFile.setLeader(target.getName());
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("accept")){
 				if(TribeManager.getTribe(args[1]) == null) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER+ args[1] + " hasn't invited you!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString()+ args[1] + " hasn't invited you!");
 					return true;
 				}
 				Tribe tribe = TribeManager.getTribe(args[1]);
 				if(!tribe.isInvited(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + args[1] + " hasn't invited you!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + args[1] + " hasn't invited you!");
 					return true;
 				}
 				TribeManager.sendMessage(tribe, ChatColor.RED + player.getName() + ChatColor.GRAY + " has joined your tribe!");
 				tribe.removeInvite(player.getName());
 				tribe.addMember(player.getUniqueId().toString());
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've joined " + ChatColor.RED + tribe.getName());
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've joined " + ChatColor.RED + tribe.getName());
 				TribeFile.createConfig(tribe.getName());
 				TribeFile.addMember(player.getUniqueId().toString());
 			}
 			else if(args[0].equalsIgnoreCase("decline")){
 				if(TribeManager.getTribe(args[1]) == null) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + args[1] + " hasn't invited you!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + args[1] + " hasn't invited you!");
 					return true;
 				}
 				Tribe tribe = TribeManager.getTribe(args[1]);
 				if(!tribe.isInvited(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + args[1] + " hasn't invited you!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + args[1] + " hasn't invited you!");
 					return true;
 				}
 				tribe.removeInvite(player.getName());
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've declined request to join " + ChatColor.RED + tribe.getName());
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've declined request to join " + ChatColor.RED + tribe.getName());
 			}
 			else if(args[0].equalsIgnoreCase("balance")) {
 				if(TribeManager.getTribe(args[1]) == null){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Tribe " + args[1] + " wasn't found! Check your spelling!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Tribe " + args[1] + " wasn't found! Check your spelling!");
 					return true;
 				}
 				Tribe tribe = TribeManager.getTribe(args[1]);
@@ -366,22 +367,22 @@ public class TribeCommand implements CommandExecutor {
 			}
 			else if(args[0].equalsIgnoreCase("pay")) {
 				if(!TribeManager.hasTribe(player.getName())){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You don't have tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You don't have tribe!");
 					return true;
 				}
 				double amount;
 				try{
 					amount = Double.parseDouble(args[1]);
 				}catch(NumberFormatException e){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Please type number (Like 50.48)!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Please type number (Like 50.48)!");
 					return true;
 				}
 				if(amount <= 0) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Amount must be greater than 0");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Amount must be greater than 0");
 					return true;
 				}
 				if(!Main.econ.has(player, amount)){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Insufficient funds! (" + amount + ")");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Insufficient funds! (" + amount + ")");
 					return true;
 				}
 				Main.econ.withdrawPlayer(player, amount);
@@ -389,29 +390,29 @@ public class TribeCommand implements CommandExecutor {
 				tribe.setBalance(tribe.getBalance() + amount);
 				TribeFile.createConfig(tribe.getName());
 				TribeFile.setBalance(TribeFile.getBalance() + amount);
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've donated " + ChatColor.RED + amount + ChatColor.GRAY + " to " + ChatColor.RED + tribe.getName());
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've donated " + ChatColor.RED + amount + ChatColor.GRAY + " to " + ChatColor.RED + tribe.getName());
 				if(amount > 100){
-					TribeManager.sendMessage(tribe, TribeManager.MESSAGE_HEADER + ChatColor.RED + player.getName() + ChatColor.GRAY + " has donated " + ChatColor.RED + amount + ChatColor.GRAY + " to your tribe's balance!");
+					TribeManager.sendMessage(tribe, Lang.HEADERS_TRIBES.toString() + ChatColor.RED + player.getName() + ChatColor.GRAY + " has donated " + ChatColor.RED + amount + ChatColor.GRAY + " to your tribe's balance!");
 				}
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("ally")) {
 				if(!TribeManager.isLeader(player.getName())) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're not leader of tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're not leader of tribe!");
 					return true;
 				}
 				if(TribeManager.getTribe(args[1]) == null){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Tribe " + args[1] + " wasn't found! Check your spelling!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Tribe " + args[1] + " wasn't found! Check your spelling!");
 					return true;
 				}
 				Tribe t1 = TribeManager.getPlayerTribe(player.getName());
 				Tribe t2 = TribeManager.getTribe(args[1]);
 				if(t1.equals(t2)){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You can't be allies with your tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You can't be allies with your tribe!");
 					return true;
 				}
 				if(t1.isAllyRequested(t2.getName())) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You've already sent ally request to " + t2.getName());
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've already sent ally request to " + t2.getName());
 					return true;
 				}
 				if(t2.isAllyRequested(t1.getName())) {
@@ -419,8 +420,8 @@ public class TribeCommand implements CommandExecutor {
 					t1.addAlly(t2.getName());
 					t2.removeAllyRequest(t1.getName());
 					t1.removeAllyRequest(t2.getName());
-					TribeManager.sendMessage(t1, TribeManager.MESSAGE_HEADER + "You'are now allies with " + ChatColor.RED + t2.getName());
-					TribeManager.sendMessage(t2, TribeManager.MESSAGE_HEADER + "You'are now allies with " + ChatColor.RED + t1.getName());
+					TribeManager.sendMessage(t1, Lang.HEADERS_TRIBES.toString() + "You'are now allies with " + ChatColor.RED + t2.getName());
+					TribeManager.sendMessage(t2, Lang.HEADERS_TRIBES.toString() + "You'are now allies with " + ChatColor.RED + t1.getName());
 					TribeFile.createConfig(t1.getName());
 					TribeFile.addAlly(t2.getName());
 					TribeFile.createConfig(t2.getName());
@@ -428,38 +429,38 @@ public class TribeCommand implements CommandExecutor {
 					return true;
 				}
 				if(t1.isAlly(t2)) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're already allies with " + t2.getName());
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're already allies with " + t2.getName());
 					return true;
 				}
 				if(t1.isEnemy(t2)) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're enemies with " + t2.getName() + "! You need to end war firstly!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're enemies with " + t2.getName() + "! You need to end war firstly!");
 					return true;
 				}
 				if(Bukkit.getPlayer(t2.getLeader()) != null) {
-					Bukkit.getPlayer(t2.getLeader()).sendMessage(TribeManager.MESSAGE_HEADER +
+					Bukkit.getPlayer(t2.getLeader()).sendMessage(Lang.HEADERS_TRIBES.toString() +
 									t1.getName() + ChatColor.GRAY + " sent you ally request! Type " + 
 									ChatColor.RED + "/tribe ally " + t1.getName() + ChatColor.GRAY + " to accept");
 				}
 				t1.addAllyRequest(t2.getName());
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've succesfully sent ally request for " + ChatColor.RED + t2.getName());
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've succesfully sent ally request for " + ChatColor.RED + t2.getName());
 			}
 			else if(args[0].equalsIgnoreCase("neutral")) {
 				if(!TribeManager.isLeader(player.getName())) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're not leader of tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're not leader of tribe!");
 					return true;
 				}
 				if(TribeManager.getTribe(args[1]) == null){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Tribe " + args[1] + " wasn't found! Check your spelling!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Tribe " + args[1] + " wasn't found! Check your spelling!");
 					return true;
 				}
 				Tribe t1 = TribeManager.getPlayerTribe(player.getName());
 				Tribe t2 = TribeManager.getTribe(args[1]);
 				if(t1.equals(t2)){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You can't be neutral with your tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You can't be neutral with your tribe!");
 					return true;
 				}
 				if(t1.isNeutralRequested(t2.getName())) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You've already sent neutrality request to " + t2.getName());
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've already sent neutrality request to " + t2.getName());
 					return true;
 				}
 				if(t2.isNeutralRequested(t1.getName())) {
@@ -469,8 +470,8 @@ public class TribeCommand implements CommandExecutor {
 					t1.removeEnemy(t2.getName());
 					t2.removeNeutralRequest(t1.getName());
 					t1.removeNeutralRequest(t2.getName());
-					TribeManager.sendMessage(t1, TribeManager.MESSAGE_HEADER + "You're now neutral with " + ChatColor.RED + t2.getName());
-					TribeManager.sendMessage(t2, TribeManager.MESSAGE_HEADER + "You're now neutral with " + ChatColor.RED + t1.getName());
+					TribeManager.sendMessage(t1, Lang.HEADERS_TRIBES.toString() + "You're now neutral with " + ChatColor.RED + t2.getName());
+					TribeManager.sendMessage(t2, Lang.HEADERS_TRIBES.toString() + "You're now neutral with " + ChatColor.RED + t1.getName());
 					TribeFile.createConfig(t1.getName());
 					TribeFile.removeAlly(t2.getName());
 					TribeFile.removeEnemy(t2.getName());
@@ -484,8 +485,8 @@ public class TribeCommand implements CommandExecutor {
 					t1.removeAlly(t2.getName());
 					t2.removeNeutralRequest(t1.getName());
 					t1.removeNeutralRequest(t2.getName());
-					TribeManager.sendMessage(t1, TribeManager.MESSAGE_HEADER + "You're no longer allies with " + ChatColor.RED + t2.getName());
-					TribeManager.sendMessage(t2, TribeManager.MESSAGE_HEADER + "You're no longer allies with " + ChatColor.RED + t1.getName());
+					TribeManager.sendMessage(t1, Lang.HEADERS_TRIBES.toString() + "You're no longer allies with " + ChatColor.RED + t2.getName());
+					TribeManager.sendMessage(t2, Lang.HEADERS_TRIBES.toString() + "You're no longer allies with " + ChatColor.RED + t1.getName());
 					TribeFile.createConfig(t1.getName());
 					TribeFile.removeAlly(t2.getName());
 					TribeFile.createConfig(t2.getName());
@@ -493,44 +494,44 @@ public class TribeCommand implements CommandExecutor {
 					return true;
 				}
 				else if(!t1.isEnemy(t2)){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're already at neutral state with " + t2.getName());
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're already at neutral state with " + t2.getName());
 					return true;
 				}
 				if(Bukkit.getPlayer(t2.getLeader()) != null) {
-					Bukkit.getPlayer(t2.getLeader()).sendMessage(TribeManager.MESSAGE_HEADER +
+					Bukkit.getPlayer(t2.getLeader()).sendMessage(Lang.HEADERS_TRIBES.toString() +
 									t1.getName() + ChatColor.GRAY + " sent you neutral request! Type " + 
 									ChatColor.RED + "/tribe neutral " + t1.getName() + ChatColor.GRAY + " to accept");
 				}
 				t1.addNeutralRequest(t2.getName());
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've succesfully sent neutrality request for " + ChatColor.RED + t2.getName());
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've succesfully sent neutrality request for " + ChatColor.RED + t2.getName());
 			}
 			else if(args[0].equalsIgnoreCase("enemy")) {
 				if(!TribeManager.isLeader(player.getName())) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're not leader of tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're not leader of tribe!");
 					return true;
 				}
 				if(TribeManager.getTribe(args[1]) == null){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Tribe " + args[1] + " wasn't found! Check your spelling!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Tribe " + args[1] + " wasn't found! Check your spelling!");
 					return true;
 				}
 				Tribe t1 = TribeManager.getPlayerTribe(player.getName());
 				Tribe t2 = TribeManager.getTribe(args[1]);
 				if(t1.equals(t2)){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You can't be neutral with your tribe!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You can't be neutral with your tribe!");
 					return true;
 				}
 				if(t1.isAlly(t2)) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "You're allies with " + t2.getName() + ". You need to become neutral to start war!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You're allies with " + t2.getName() + ". You need to become neutral to start war!");
 					return true;
 				}
 				t1.addEnemy(t2.getName());
 				t2.addEnemy(t1.getName());
-				TribeManager.sendMessage(t1, TribeManager.MESSAGE_HEADER + "You're now at war with " + ChatColor.RED + t2.getName());
-				TribeManager.sendMessage(t2, TribeManager.MESSAGE_HEADER + "You're now at war with " + ChatColor.RED + t1.getName());
+				TribeManager.sendMessage(t1, Lang.HEADERS_TRIBES.toString() + "You're now at war with " + ChatColor.RED + t2.getName());
+				TribeManager.sendMessage(t2, Lang.HEADERS_TRIBES.toString() + "You're now at war with " + ChatColor.RED + t1.getName());
 			}
 			else if(args[0].equalsIgnoreCase("info")) {
 				if(TribeManager.getTribe(args[1]) == null) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Tribe not found! Check your spelling!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Tribe not found! Check your spelling!");
 					return true;
 				}
 				printTribeInfo(player, TribeManager.getTribe(args[1]));
@@ -542,22 +543,22 @@ public class TribeCommand implements CommandExecutor {
 		else if(args.length == 3) {
 			if(args[0].equalsIgnoreCase("pay")) {
 				if(TribeManager.getTribe(args[1]) == null){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Tribe " + args[1] + " wasn't found! Check your spelling!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Tribe " + args[1] + " wasn't found! Check your spelling!");
 					return true;
 				}
 				double amount;
 				try{
 					amount = Double.parseDouble(args[2]);
 				}catch(NumberFormatException e){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Please type number (Like 50.48)!");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Please type number (Like 50.48)!");
 					return true;
 				}
 				if(amount <= 0) {
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Amount must be greater than 0");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Amount must be greater than 0");
 					return true;
 				}
 				if(!Main.econ.has(player, amount)){
-					player.sendMessage(TribeManager.MESSAGE_HEADER + "Insufficient funds! (" + amount + ")");
+					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Insufficient funds! (" + amount + ")");
 					return true;
 				}
 				Main.econ.withdrawPlayer(player, amount);
@@ -565,9 +566,9 @@ public class TribeCommand implements CommandExecutor {
 				tribe.setBalance(tribe.getBalance() + amount);
 				TribeFile.createConfig(tribe.getName());
 				TribeFile.setBalance(TribeFile.getBalance() + amount);
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've donated " + ChatColor.RED + amount + ChatColor.GRAY + " to " + ChatColor.RED + tribe.getName());
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've donated " + ChatColor.RED + amount + ChatColor.GRAY + " to " + ChatColor.RED + tribe.getName());
 				if(amount > 100){
-					TribeManager.sendMessage(tribe, TribeManager.MESSAGE_HEADER + ChatColor.RED + player.getName() + ChatColor.GRAY + " has donated " + ChatColor.RED + amount + ChatColor.GRAY + " to your tribe's balance!");
+					TribeManager.sendMessage(tribe, Lang.HEADERS_TRIBES.toString() + ChatColor.RED + player.getName() + ChatColor.GRAY + " has donated " + ChatColor.RED + amount + ChatColor.GRAY + " to your tribe's balance!");
 				}
 				return true;
 			}
@@ -576,11 +577,11 @@ public class TribeCommand implements CommandExecutor {
 	}
 	
 	private void notFound(Player player) {
-		player.sendMessage(TribeManager.MESSAGE_HEADER + "Command wans't found! Check your syntax!\nType /tribe help for more info!");
+		player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Command wans't found! Check your syntax!\nType /tribe help for more info!");
 	}
 	
 	private void helpList(Player player) {
-		player.sendMessage(TribeManager.MESSAGE_HEADER + "Tribe Commands");
+		player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Tribe Commands");
 		player.sendMessage(ChatColor.RED + "/tribe create <tribeName>" + ChatColor.GRAY + " - creates a tribe");
 		player.sendMessage(ChatColor.RED + "/tribe list" + ChatColor.GRAY + " - shows all tribes");
 		player.sendMessage(ChatColor.RED + "/tribe chat" + ChatColor.GRAY + " - sends message to tribe members");

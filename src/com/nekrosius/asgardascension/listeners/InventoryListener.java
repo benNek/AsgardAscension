@@ -17,12 +17,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.challenges.Challenge;
 import com.nekrosius.asgardascension.challenges.ChallengeSetup;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.enums.TokenType;
 import com.nekrosius.asgardascension.files.GodFoodFile;
 import com.nekrosius.asgardascension.files.RagnorakFile;
 import com.nekrosius.asgardascension.handlers.FoodSetup;
 import com.nekrosius.asgardascension.handlers.GodTokens;
-import com.nekrosius.asgardascension.handlers.Ragnorak;
 import com.nekrosius.asgardascension.inventories.GodTokensInventory;
 import com.nekrosius.asgardascension.inventories.MainInventory;
 import com.nekrosius.asgardascension.managers.TribeManager;
@@ -58,7 +58,7 @@ public class InventoryListener implements Listener {
 			else if(event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)){
 				pl.setupFiles();
 				player.closeInventory();
-				player.sendMessage(Main.MESSAGE_HEADER + "You've reloaded config files!");
+				player.sendMessage(Lang.HEADERS_MAIN.toString() + "You've reloaded config files!");
 			}
 		}
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Rank-Up")) { 
@@ -99,19 +99,19 @@ public class InventoryListener implements Listener {
 			if(event.getCurrentItem().getType().equals(Material.LEVER)) {
 				player.closeInventory();
 				if(pl.getRagnorak().eventStarted){
-					player.sendMessage(Ragnorak.MESSAGE_HEADER + "Ragnorak has already started!");
+					player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "Ragnorak has already started!");
 				}else{
-					player.sendMessage(Ragnorak.MESSAGE_HEADER + "You've force started Ragnorak!");
+					player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You've force started Ragnorak!");
 					pl.getRagnorak().start();
 				}
 			}
 			else if(event.getCurrentItem().getType().equals(Material.DIAMOND_SWORD)) {
 				player.closeInventory();
 				if(player.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
-					player.sendMessage(Ragnorak.MESSAGE_HEADER + "You don't have any item in your hand!");
+					player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You don't have any item in your hand!");
 				}else{
 					RagnorakFile.addItem(player.getInventory().getItemInMainHand());
-					player.sendMessage(Ragnorak.MESSAGE_HEADER + "You've succesfully added item to Ragnorak!");
+					player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You've succesfully added item to Ragnorak!");
 				}
 			}
 			else if(event.getCurrentItem().getType().equals(Material.CHEST)) {
@@ -121,12 +121,12 @@ public class InventoryListener implements Listener {
 						RagnorakFile.addItem(item);
 					}
 				}
-				player.sendMessage(Ragnorak.MESSAGE_HEADER + "You've added all your items from inventory to Ragnorak!");
+				player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You've added all your items from inventory to Ragnorak!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.COAL)) {
 				player.closeInventory();
 				RagnorakFile.addLocation(player.getLocation());
-				player.sendMessage(Ragnorak.MESSAGE_HEADER + "You've succesfully added new drop location!");
+				player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You've succesfully added new drop location!");
 			}
 		}
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Challenge type")) {
@@ -322,7 +322,7 @@ public class InventoryListener implements Listener {
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Food of the Gods")) {
 			event.setCancelled(true);
 			if(FoodSetup.getStep(player) > 0) {
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "You are already in setup of Food of the Gods!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "You are already in setup of Food of the Gods!");
 				return;
 			}
 			if(event.getCurrentItem().getType().equals(Material.SLIME_BALL)) {
@@ -330,8 +330,8 @@ public class InventoryListener implements Listener {
 				FoodSetup.setStep(player, 1);
 				FoodSetup.setFoodIndex(player, GodFoodFile.getEffectAmount() + 1);
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type the name of this food!");
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type cancel to stop setup of Food of the Gods!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type the name of this food!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type cancel to stop setup of Food of the Gods!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.BOOK_AND_QUILL)) {
 				MainInventory.setupFoodEditListMenu(player);
@@ -367,7 +367,7 @@ public class InventoryListener implements Listener {
 				FoodSetup.setFoodIndex(player, foodId);
 				FoodSetup.setStep(player, 1);
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type the name of this food!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type the name of this food!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.WORKBENCH)) {
 				player.closeInventory();
@@ -375,7 +375,7 @@ public class InventoryListener implements Listener {
 				FoodSetup.setFoodIndex(player, foodId);
 				FoodSetup.setStep(player, 2);
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type ID of item, which represents this Food of Gods!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type ID of item, which represents this Food of Gods!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.ARROW)) {
 				player.closeInventory();
@@ -383,7 +383,7 @@ public class InventoryListener implements Listener {
 				FoodSetup.setFoodIndex(player, foodId);
 				FoodSetup.setStep(player, 3);
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type amount of this required to be used!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type amount of this required to be used!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.STICK)) {
 				player.closeInventory();
@@ -391,7 +391,7 @@ public class InventoryListener implements Listener {
 				FoodSetup.setFoodIndex(player, foodId);
 				FoodSetup.setStep(player, 4);
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type data value of item (0 for default)!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type data value of item (0 for default)!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.WATER_LILY)) {
 				player.closeInventory();
@@ -399,7 +399,7 @@ public class InventoryListener implements Listener {
 				FoodSetup.setFoodIndex(player, foodId);
 				FoodSetup.setStep(player, 5);
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Select Effect Type!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Select Effect Type!");
 				MainInventory.setupFoodEffectTypeInventory(player);
 			}
 			else if(event.getCurrentItem().getType().equals(Material.BLAZE_POWDER)) {
@@ -421,12 +421,12 @@ public class InventoryListener implements Listener {
 			if(event.getCurrentItem().getType().equals(Material.DIAMOND_SWORD)){
 				player.closeInventory();
 				tribe.setType("aesir");
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've set tribe's type to " + ChatColor.RED + "Aesir");
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've set tribe's type to " + ChatColor.RED + "Aesir");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.FIREBALL)){
 				player.closeInventory();
 				tribe.setType("vanir");
-				player.sendMessage(TribeManager.MESSAGE_HEADER + "You've set tribe's type to " + ChatColor.RED + "Vanir");
+				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've set tribe's type to " + ChatColor.RED + "Vanir");
 			}
 		}
 		// GOD TOKENS TYPE
@@ -440,13 +440,13 @@ public class InventoryListener implements Listener {
 			}
 			if(event.getCurrentItem().getType().equals(Material.NETHER_STAR)) {
 				player.closeInventory();
-				player.sendMessage(GodTokens.MESSAGE_HEADER + "Type amount of GT to withdraw");
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "Type amount of GT to withdraw");
 				SetupListener.withdrawal.put(player.getName(), true);
 				new BukkitRunnable() {
 					public void run() {
 						if(SetupListener.withdrawal.containsKey(player.getName())) {
 							SetupListener.withdrawal.remove(player.getName());
-							player.sendMessage(GodTokens.MESSAGE_HEADER + "You didn't withdrawn any GT in time!");
+							player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You didn't withdrawn any GT in time!");
 						}
 					}
 				}.runTaskLater(pl, 200L);
@@ -454,27 +454,27 @@ public class InventoryListener implements Listener {
 			else if(event.getCurrentItem().getType().equals(Material.STONE_SPADE)) {
 				player.closeInventory();
 				if(!GodTokensInventory.canBuyPlot(player)) {
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "No more upgrades!");
+					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "No more upgrades!");
 					return;
 				}
 				if(tokens < 25) {
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have enough god tokens! (" + tokens + ")");
+					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough god tokens! (" + tokens + ")");
 					return;
 				}
 				pl.getPlayerManager().setTokens(player, tokens - 25);
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + player.getName() + " remove plots.plot.1");
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + player.getName() + " add plots.plot.2");
-				player.sendMessage(GodTokens.MESSAGE_HEADER + "You now have one more available plot!");
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You now have one more available plot!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.CHEST)) {	
 				player.closeInventory();
 				if(tokens < 8) {
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have enough god tokens! (" + tokens + ")");
+					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough god tokens! (" + tokens + ")");
 					return;
 				}
 				pl.getPlayerManager().setTokens(player, tokens - 8);
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "cr givekey " + player.getName() + " key 1");
-				player.sendMessage(GodTokens.MESSAGE_HEADER + "You've bought a crate!");
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've bought a crate!");
 			}
 			else if(event.getCurrentItem().getType().equals(Material.ANVIL)) {
 				GodTokensInventory.setupRepairMenu(player);
@@ -482,7 +482,7 @@ public class InventoryListener implements Listener {
 			else if(event.getCurrentItem().getType().equals(Material.GOLDEN_APPLE)) {	
 				player.closeInventory();
 				if(tokens < 1) {
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have enough god tokens! (" + tokens + ")");
+					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough god tokens! (" + tokens + ")");
 					return;
 				}
 				pl.getPlayerManager().withdrawTokens(player, 1);
@@ -490,7 +490,7 @@ public class InventoryListener implements Listener {
 					ItemStackGenerator.createItem(Material.GOLDEN_APPLE, 0, 1,
 							ChatColor.LIGHT_PURPLE + "" + ChatColor.UNDERLINE + "Odins Apple",
 							Arrays.asList(ChatColor.GRAY + "Genuine apple of Odin")));
-				player.sendMessage(GodTokens.MESSAGE_HEADER + "You've bought a Odins Apple!");
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've bought a Odins Apple!");
 			}
 			else {
 				GodTokensInventory.setupTokensShopMenu((Player) event.getWhoClicked(),
@@ -508,12 +508,12 @@ public class InventoryListener implements Listener {
 			}
 			GodToken token = GodTokens.findToken(event.getCurrentItem().getItemMeta().getDisplayName().substring(2));
 			if("Fortune".equalsIgnoreCase(token.getName())) {
-				event.getWhoClicked().sendMessage(GodTokens.MESSAGE_HEADER + "Currently disabled!");
+				event.getWhoClicked().sendMessage(Lang.HEADERS_TOKENS.toString() + "Currently disabled!");
 				return;
 			}
 			if(Cooldowns.getCooldown((Player) event.getWhoClicked(), token.getName()) > 0) {
 				event.getWhoClicked().closeInventory();
-				event.getWhoClicked().sendMessage(GodTokens.MESSAGE_HEADER + "You can use this token in " 
+				event.getWhoClicked().sendMessage(Lang.HEADERS_TOKENS.toString() + "You can use this token in " 
 						+ ChatColor.RED + Convert.timeToString((int)(Cooldowns.getCooldown((Player) event.getWhoClicked(), token.getName()) / 1000))
 						+ ChatColor.GRAY + "!");
 				return;
@@ -539,7 +539,7 @@ public class InventoryListener implements Listener {
 			if(event.getCurrentItem().getType().equals(Material.PAPER)) {
 				player.closeInventory();
 				if(pl.getPlayerManager().getTokens(player) < token.getTempPrice()) {
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have enough tokens! (" + token.getTempPrice() + ")");
+					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough tokens! (" + token.getTempPrice() + ")");
 					return;
 				}
 				pl.getPlayerManager().setTokens(player, pl.getPlayerManager().getTokens(player) - token.getTempPrice());
@@ -548,13 +548,13 @@ public class InventoryListener implements Listener {
 			else if(event.getCurrentItem().getType().equals(Material.BOOK)) {
 				if(pl.getPlayerManager().getTokens(player) < token.getPermPrice()) {
 					player.closeInventory();
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have enough tokens! (" + token.getPermPrice() + ")");
+					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough tokens! (" + token.getPermPrice() + ")");
 					return;
 				}
 				player.closeInventory();
 				pl.getPlayerManager().setTokens(player, pl.getPlayerManager().getTokens(player) - token.getPermPrice());
 				pl.getPlayerManager().addPurchasedToken(player, token.getName());
-				player.sendMessage(GodTokens.MESSAGE_HEADER + "You've permanently bought " + ChatColor.RED + token.getName() + ChatColor.GRAY + " ability!");
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've permanently bought " + ChatColor.RED + token.getName() + ChatColor.GRAY + " ability!");
 			}
 			
 		}
@@ -566,18 +566,18 @@ public class InventoryListener implements Listener {
 			}
 			else if(event.getCurrentItem().getType().equals(Material.STRING)) {
 				player.closeInventory();
-				player.sendMessage(GodTokens.MESSAGE_HEADER + event.getCurrentItem().getItemMeta().getDisplayName().substring(2));
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + event.getCurrentItem().getItemMeta().getDisplayName().substring(2));
 			}
 			else if(event.getCurrentItem().hasItemMeta()
 					&& event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Repair item in main hand")) {
 				player.closeInventory();
 				if(pl.getPlayerManager().hasTokens(player, 1)) {
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "Your item in hand was successfully repaired!");
+					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "Your item in hand was successfully repaired!");
 					pl.getPlayerManager().withdrawTokens(player, 1);
 					player.getInventory().getItemInMainHand().setDurability((short)0);
 				}
 				else {
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have enough GT! It costs" + ChatColor.RED + " 1 GT");
+					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough GT! It costs" + ChatColor.RED + " 1 GT");
 				}
 			}
 			else if(event.getCurrentItem().getType().equals(Material.CHEST)) {
@@ -594,10 +594,10 @@ public class InventoryListener implements Listener {
 	                        item.setDurability((short) 0);
 	                }
 	                pl.getPlayerManager().withdrawTokens(player, 5);
-	                player.sendMessage(GodTokens.MESSAGE_HEADER + "All items in your inventory were successfully repaired!");
+	                player.sendMessage(Lang.HEADERS_TOKENS.toString() + "All items in your inventory were successfully repaired!");
 				}
 				else {
-					player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have enough GT! It costs" + ChatColor.RED + " 5 GT");
+					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough GT! It costs" + ChatColor.RED + " 5 GT");
 				}
 			}
 		}

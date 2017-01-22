@@ -22,8 +22,6 @@ public class TribeManager {
 	private static List<Tribe> tribes = new ArrayList<>();
 	private static Map<String, Tribe> playerTribe = new HashMap<>();
 	
-	public static final String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Tribes" + ChatColor.GRAY + "] ";
-	
 	private Main pl;
 	public TribeManager(Main plugin) {
 		pl = plugin;

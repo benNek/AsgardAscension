@@ -19,9 +19,9 @@ import org.bukkit.inventory.ItemStack;
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.challenges.Challenge;
 import com.nekrosius.asgardascension.challenges.ChallengeSetup;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.files.GodFoodFile;
 import com.nekrosius.asgardascension.handlers.FoodSetup;
-import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.inventories.MainInventory;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
@@ -54,7 +54,7 @@ public class SetupListener implements Listener {
 				}
 				FoodSetup.finish(player);
 				event.setCancelled(true);
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "You've cancelled setup of Food of Gods!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "You've cancelled setup of Food of Gods!");
 			}
 		}
 		if(withdrawal.containsKey(player.getName())) {
@@ -63,30 +63,30 @@ public class SetupListener implements Listener {
 			try {
 				amount = Integer.parseInt(event.getMessage());
 			} catch (NumberFormatException e) {
-				player.sendMessage(GodTokens.MESSAGE_HEADER + "Type only a number!");
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "Type only a number!");
 				return;
 			}
 			if(amount < 1) {
-				player.sendMessage(GodTokens.MESSAGE_HEADER + "You can not withdraw less than 1 token!");
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You can not withdraw less than 1 token!");
 				return;
 			}
 			if(amount > 20) {
-				player.sendMessage(GodTokens.MESSAGE_HEADER + "You can only withdraw up to 20 GT!");
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You can only withdraw up to 20 GT!");
 				return;
 			}
 			if(!pl.getPlayerManager().hasTokens(player, amount)) {
-				player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have " + amount + " tokens! (" + pl.getPlayerManager().getTokens(player) + ")");
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have " + amount + " tokens! (" + pl.getPlayerManager().getTokens(player) + ")");
 				return;
 			}
 			ItemStack item = ItemStackGenerator.createItem(Material.NETHER_STAR, amount, 0, 
 					ChatColor.LIGHT_PURPLE + "God Token",
 					Arrays.asList(ChatColor.RED + "Right-Click to deposit GT"));
 			if(ItemStackGenerator.isInventoryFull(player, item)) {
-				player.sendMessage(GodTokens.MESSAGE_HEADER + "You don't have enough inventory space for " + amount + " GT!");
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough inventory space for " + amount + " GT!");
 				return;
 			}
 			player.getInventory().addItem(item);
-			player.sendMessage(GodTokens.MESSAGE_HEADER + "You've successfully withdrawn " + amount + " GT!");
+			player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've successfully withdrawn " + amount + " GT!");
 			pl.getPlayerManager().withdrawTokens(player, amount);
 			withdrawal.remove(player.getName());
 		}
@@ -199,21 +199,21 @@ public class SetupListener implements Listener {
 			if(event.getMessage().equalsIgnoreCase("finish")){
 				FoodSetup.finish(player);
 				event.setCancelled(true);
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "You've finished setup of Food of the Gods!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "You've finished setup of Food of the Gods!");
 			}
 		}
 		if(FoodSetup.getStep(player) == 1) {
 			event.setCancelled(true);
 			GodFoodFile.setName(FoodSetup.getFoodIndex(player), event.getMessage());
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-			player.sendMessage(FoodSetup.MESSAGE_HEADER + "Name of Food of the Goods is " + ChatColor.RED + event.getMessage());
+			player.sendMessage(Lang.HEADERS_FOG.toString() + "Name of Food of the Goods is " + ChatColor.RED + event.getMessage());
 			if(FoodSetup.isEditing(player)){
 				FoodSetup.finish(player);
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "You've finished setup of Food of the Gods!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "You've finished setup of Food of the Gods!");
 			}else{
 				FoodSetup.setStep(player, 2);
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type ID of item, which represents this Food of Gods!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type ID of item, which represents this Food of Gods!");
 			}
 		}
 		else if(FoodSetup.getStep(player) == 2) {
@@ -227,14 +227,14 @@ public class SetupListener implements Listener {
 			}
 			GodFoodFile.setItemId(FoodSetup.getFoodIndex(player), id);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-			player.sendMessage(FoodSetup.MESSAGE_HEADER + "You've set ID to " + ChatColor.RED + id);
+			player.sendMessage(Lang.HEADERS_FOG.toString() + "You've set ID to " + ChatColor.RED + id);
 			if(FoodSetup.isEditing(player)){
 				FoodSetup.finish(player);
-				player.sendMessage(FoodSetup.MESSAGE_HEADER+ "You've finished setup of Food of the Gods!");
+				player.sendMessage(Lang.HEADERS_FOG.toString()+ "You've finished setup of Food of the Gods!");
 			}else{
 				FoodSetup.setStep(player, 3);
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type data value of item (0 for default)!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type data value of item (0 for default)!");
 			}
 		}
 		else if(FoodSetup.getStep(player) == 3) {
@@ -248,14 +248,14 @@ public class SetupListener implements Listener {
 			}
 			GodFoodFile.setData(FoodSetup.getFoodIndex(player), data);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-			player.sendMessage(FoodSetup.MESSAGE_HEADER + "You've set item's data value to " + ChatColor.RED + data);
+			player.sendMessage(Lang.HEADERS_FOG.toString() + "You've set item's data value to " + ChatColor.RED + data);
 			if(FoodSetup.isEditing(player)){
 				FoodSetup.finish(player);
-				player.sendMessage(FoodSetup.MESSAGE_HEADER+ "You've finished setup of Food of the Gods!");
+				player.sendMessage(Lang.HEADERS_FOG.toString()+ "You've finished setup of Food of the Gods!");
 			}else{
 				FoodSetup.setStep(player, 4);
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type amount of this required to be used!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type amount of this required to be used!");
 			}
 		}
 		
@@ -265,19 +265,19 @@ public class SetupListener implements Listener {
 			try{
 				amount = Integer.parseInt(event.getMessage());
 			}catch(NumberFormatException e) {
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type required amount of item!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type required amount of item!");
 				return;
 			}
 			GodFoodFile.setAmount(FoodSetup.getFoodIndex(player), amount);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-			player.sendMessage(FoodSetup.MESSAGE_HEADER + "You've set required amount of item to " + ChatColor.RED + amount);
+			player.sendMessage(Lang.HEADERS_FOG.toString() + "You've set required amount of item to " + ChatColor.RED + amount);
 			if(FoodSetup.isEditing(player)){
 				FoodSetup.finish(player);
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "You've finished setup of Food of the Gods!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "You've finished setup of Food of the Gods!");
 			}else{
 				FoodSetup.setStep(player, 5);
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Select Effect Type!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Select Effect Type!");
 				MainInventory.setupFoodEffectTypeInventory(player);
 			}
 		}
@@ -290,16 +290,16 @@ public class SetupListener implements Listener {
 			try{
 				duration = Integer.parseInt(event.getMessage());
 			}catch(NumberFormatException e) {
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type duration of effect in seconds!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type duration of effect in seconds!");
 				return;
 			}
 			FoodSetup.setDuration(player, duration);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-			player.sendMessage(FoodSetup.MESSAGE_HEADER + "You've set effect duration to " + ChatColor.RED + duration);
+			player.sendMessage(Lang.HEADERS_FOG.toString() + "You've set effect duration to " + ChatColor.RED + duration);
 			FoodSetup.setStep(player, 7);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-			player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type Amplifier of this effect!");
-			player.sendMessage(FoodSetup.MESSAGE_HEADER + "(number, like " + ChatColor.RED + "2" + ChatColor.GRAY + ")");
+			player.sendMessage(Lang.HEADERS_FOG.toString() + "Type Amplifier of this effect!");
+			player.sendMessage(Lang.HEADERS_FOG.toString() + "(number, like " + ChatColor.RED + "2" + ChatColor.GRAY + ")");
 		}
 		else if(FoodSetup.getStep(player) == 7) {
 			event.setCancelled(true);
@@ -307,18 +307,18 @@ public class SetupListener implements Listener {
 			try{
 				amplifier = Integer.parseInt(event.getMessage());
 			}catch(NumberFormatException e) {
-				player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type amplifier of effect!");
+				player.sendMessage(Lang.HEADERS_FOG.toString() + "Type amplifier of effect!");
 				return;
 			}
 			FoodSetup.setAmplifier(player, amplifier);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-			player.sendMessage(FoodSetup.MESSAGE_HEADER + "You've set effect amplifier to " + ChatColor.RED + amplifier);
+			player.sendMessage(Lang.HEADERS_FOG.toString() + "You've set effect amplifier to " + ChatColor.RED + amplifier);
 			GodFoodFile.addEffect(player, FoodSetup.getFoodIndex(player));
 			FoodSetup.setStep(player, 5);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-			player.sendMessage(FoodSetup.MESSAGE_HEADER + "Select Effect Type!");
+			player.sendMessage(Lang.HEADERS_FOG.toString() + "Select Effect Type!");
 			MainInventory.setupFoodEffectTypeInventory(player);
-			player.sendMessage(FoodSetup.MESSAGE_HEADER + "Type " + ChatColor.RED + "finish" + ChatColor.RED + " to finish setup!");
+			player.sendMessage(Lang.HEADERS_FOG.toString() + "Type " + ChatColor.RED + "finish" + ChatColor.RED + " to finish setup!");
 		}
 	}
 	
@@ -348,7 +348,7 @@ public class SetupListener implements Listener {
 							}
 							ChallengeSetup.setStep(player, 7);
 							player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-							player.sendMessage(FoodSetup.MESSAGE_HEADER + "Select mob type!");
+							player.sendMessage(Lang.HEADERS_FOG.toString() + "Select mob type!");
 							MainInventory.setupMobSpawnInventory(player);
 						}
 					}
@@ -371,7 +371,7 @@ public class SetupListener implements Listener {
 							ChallengeSetup.setStep(player, 7);
 							player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 							player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
-							player.sendMessage(FoodSetup.MESSAGE_HEADER + "Select mob type!");
+							player.sendMessage(Lang.HEADERS_FOG.toString() + "Select mob type!");
 							MainInventory.setupMobSpawnInventory(player);
 						}
 					}

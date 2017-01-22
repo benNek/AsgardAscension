@@ -6,8 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.files.RagnorakFile;
-import com.nekrosius.asgardascension.handlers.Ragnorak;
 
 public class RagnorakCommand implements CommandExecutor {
 	
@@ -19,7 +19,7 @@ public class RagnorakCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		if(!(sender instanceof Player)) {
-			sender.sendMessage(Ragnorak.MESSAGE_HEADER + "This command is available only for players!");
+			sender.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "This command is available only for players!");
 			return true;
 		}
 		Player player = (Player) sender;
@@ -29,34 +29,34 @@ public class RagnorakCommand implements CommandExecutor {
 		}
 		else if(args.length == 1) {
 			if(!sender.isOp()){
-				player.sendMessage(Ragnorak.MESSAGE_HEADER + "This command is available only for OP!");
+				player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "This command is available only for OP!");
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("additem")){
 				if(player.getInventory().getItemInMainHand() == null) {
-					player.sendMessage(Ragnorak.MESSAGE_HEADER + "You don't have any item in your hand!");
+					player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You don't have any item in your hand!");
 					return true;
 				}
 				RagnorakFile.addItem(player.getInventory().getItemInMainHand());
-				player.sendMessage(Ragnorak.MESSAGE_HEADER + "You've succesfully added item to Ragnorak!");
+				player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You've succesfully added item to Ragnorak!");
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("addlocation")) {
 				RagnorakFile.addLocation(player.getLocation());
-				player.sendMessage(Ragnorak.MESSAGE_HEADER + "You've succesfully added new drop location!");
+				player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You've succesfully added new drop location!");
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("start")) {
-				player.sendMessage(Ragnorak.MESSAGE_HEADER + "You've started Ragnorak!");
+				player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You've started Ragnorak!");
 				pl.getRagnorak().start();
 				return true;
 			}
 			else{
-				player.sendMessage(Ragnorak.MESSAGE_HEADER + "Unknown command!");
+				player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "Unknown command!");
 				return true;
 			}
 		}else{
-			player.sendMessage(Ragnorak.MESSAGE_HEADER + "Unknown command!");
+			player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "Unknown command!");
 			return true;
 		}
 	}
