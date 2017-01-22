@@ -86,7 +86,6 @@ public class Main extends JavaPlugin{
         setupChat();
 		logger = new Logger(this);
 		setupFiles();
-		loadLang();
         setupManagers();
         setupClasses();
 		setupCommands();
@@ -177,11 +176,12 @@ public class Main extends JavaPlugin{
 	public void setupFiles() {
 		pf = new PlayerFile(this);
 		cf = new ChallengesFile(this);
-		
+		loadLang();
 		new ConfigFile(this);
 		new GodFoodFile(this);
 		new RagnorakFile(this);
 		new WarpsFile(this);
+		// TODO remove this
 		new MessagesFile(this);
 	}
 	

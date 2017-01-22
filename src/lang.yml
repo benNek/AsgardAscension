@@ -1,7 +1,17 @@
 # Use & for color codes.
 headers:
   main: "&7[&cAsgard&7]"
+  challenges: "&7[&cChallenges&7]"
   fog: "&7[&cFoG&7]"
   tokens: "&7[&cTokens&7]"
   ragnorak: "&7[&cRagnorak&7]"
   tribes: "&7[&cTribes&7]"
+# Variables:
+# %t - challenge title
+# %p - price
+challenges:
+  not_enough_money: "&7You don't have enough money! It costs %p"
+  start: "&7You've started &c%t &7challenge! (%p)"
+  complete: "&7You have completed the challenge! Your Rank now is &c%t&7!"
+  test_complete: "&7Test completed. If you see this message challenge works fine!"
+  leave: "&7You've left &c%t &7Challenge! Your money was refunded!"

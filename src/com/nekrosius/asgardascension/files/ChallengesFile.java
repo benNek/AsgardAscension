@@ -79,7 +79,7 @@ public class ChallengesFile {
 	}
 	
 	public void setTitle(int challenge, String title) {
-		config.set(String.valueOf(challenge), title);
+		config.set(String.valueOf(challenge) + ".title", title);
 		saveConfig();
 	}
 	

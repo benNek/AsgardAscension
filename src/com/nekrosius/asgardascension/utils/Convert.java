@@ -238,7 +238,8 @@ public class Convert {
 	
 	public static String toPrice(double price) {
 		DecimalFormat formatter = new DecimalFormat("#,###.00");
-		return ChatColor.GRAY + "$" + ChatColor.RED + formatter.format(price) + ChatColor.GRAY;
+		System.out.println(formatter.format(price));
+		return ChatColor.GRAY + "\\$" + ChatColor.RED + formatter.format(price) + ChatColor.GRAY;
 	}
     
 }

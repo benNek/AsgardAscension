@@ -8,11 +8,19 @@ import org.bukkit.configuration.file.YamlConfiguration;
 * @author gomeow
 */
 public enum Lang {
+	
 	HEADERS_MAIN("headers.main", "&7[&cAsgard&7]"),
+	HEADERS_CHALLENGES("headers.challenges", "&7[&cChallenges&7]"),
 	HEADERS_FOG("headers.fog", "&7[&cFoG&7]"),
 	HEADERS_TOKENS("headers.tokens", "&7[&cTokens&7]"),
 	HEADERS_RAGNORAK("headers.ragnorak", "&7[&cRagnorak&7]"),
-	HEADERS_TRIBES("headers.tribes", "&7[&cTribes&7]");
+	HEADERS_TRIBES("headers.tribes", "&7[&cTribes&7]"),
+	
+	CHALLENGES_NOT_ENOUGH_MONEY("challenges.not_enough_money", "&7You don't have enough money! It costs %p"),
+	CHALLENGES_START("challenges.start", "&7You've started &c%t &7challenge! (%p)"),
+	CHALLENGES_COMPLETE("challenges.complete", "&7You have completed the challenge! Your Rank now is &c%t&7!"),
+	CHALLENGES_TEST_COMPLETE("challenges.test_complete", "&7Test completed. If you see this message challenge works fine!"),
+	CHALLENGES_LEAVE("challenges.leave", "&7You've left &c%t &7Challenge! Your money was refunded!");
  
     private String path;
     private String def;
@@ -40,7 +48,7 @@ public enum Lang {
     public String toString() {
         if (this == HEADERS_MAIN || this == HEADERS_RAGNORAK
         		|| this == Lang.HEADERS_TOKENS || this == Lang.HEADERS_TRIBES
-        		|| this == Lang.HEADERS_FOG)
+        		|| this == Lang.HEADERS_FOG || this == Lang.HEADERS_CHALLENGES)
             return ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def)) + " ";
         return ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def));
     }

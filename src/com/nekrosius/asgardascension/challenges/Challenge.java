@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -13,11 +12,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.utils.Convert;
 
 public class Challenge {
-	
-	public static final String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard Challenges" + ChatColor.GRAY + "] ";
 	
 	private Map<String, Integer> playerChallenge = new HashMap<>();
 	private Map<String, Location> playerLocation = new HashMap<>();
@@ -37,14 +35,15 @@ public class Challenge {
 
 	public void startChallenge(final Player player) {
 		final int challenge;
-		if(isTesting(player)){
+		if(isTesting(player)) {
 			challenge = getChallenge(player);
-		}else{
+		} else {
 			challenge = pl.getPlayerManager().getRank(player) + 1;
 		}
 		long price = pl.getChallengesFile().getPrice(challenge) * (pl.getPlayerManager().getPrestige(player) + 1);
-		if(!Main.econ.has(player, price)){
-			player.sendMessage(MESSAGE_HEADER + "You don't have enough money! It costs " + Convert.toPrice(price));
+		if(!Main.econ.has(player, price)) {
+			player.sendMessage(Lang.HEADERS_CHALLENGES.toString() +
+					Lang.CHALLENGES_NOT_ENOUGH_MONEY.toString().replaceAll("%p", Convert.toPrice(price)));
 			return;
 		}
 		Main.econ.withdrawPlayer(player, price);
@@ -53,9 +52,9 @@ public class Challenge {
 		if("fight".equalsIgnoreCase(pl.getChallengesFile().getType(challenge))) {
 			new BukkitRunnable() {
 				public void run() {
-					if(pl.getChallengesFile().getMonsters(challenge) != null){
+					if(pl.getChallengesFile().getMonsters(challenge) != null) {
 						String[] split;
-						for(String mob : pl.getChallengesFile().getMonsters(challenge)){
+						for(String mob : pl.getChallengesFile().getMonsters(challenge)) {
 							split = mob.split(", ");
 							addMobs(player, Integer.parseInt(split[1]));
 							Convert.spawnEntity(player.getName(), challenge, split[0], Integer.parseInt(split[1]));
@@ -68,14 +67,15 @@ public class Challenge {
 			player.setLevel(getKillsLeft(player));
 			player.setExp(0F);
 		}
-		player.sendMessage(MESSAGE_HEADER + "You've started " 		
-				+ ChatColor.RED + pl.getChallengesFile().getTitle(challenge)
-				+ ChatColor.GRAY + " challenge! (" + Convert.toPrice(price) + ")");
+		player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
+				+ Lang.CHALLENGES_START.toString()
+					.replaceAll("%t", pl.getChallengesFile().getTitle(challenge))
+					.replaceAll("%p", Convert.toPrice(price)));
 	}
 	
 	public void finishChallenge(Player player, boolean buy) {
-		if(!buy){
-			for(Entity e : player.getWorld().getEntities()){
+		if(!buy) {
+			for(Entity e : player.getWorld().getEntities()) {
 				if(e.hasMetadata(metaData) && e.getMetadata(metaData).get(0).asString().contains(player.getName())) {
 					e.remove();
 				}
@@ -84,16 +84,18 @@ public class Challenge {
 			loadData(player);
 			player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_TWINKLE, 1F, 1F);
 		}
-		for(String cmd : pl.getChallengesFile().getCommands(getChallenge(player))){
+		for(String cmd : pl.getChallengesFile().getCommands(getChallenge(player))) {
 			cmd = cmd.replaceAll("%s", player.getName());
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 		}
-		if(!isTesting(player)){
+		if(!isTesting(player)) {
 			pl.getPlayerManager().setRank(player, getChallenge(player));
-			player.sendMessage(MESSAGE_HEADER+ "You have completed the challenge! Your Rank now is "
-			+ ChatColor.RED + pl.getChallengesFile().getTitle(getChallenge(player)) + ChatColor.GRAY + "!");
-		}else{
-			player.sendMessage(MESSAGE_HEADER + "Test completed. If you see this message challenge works fine!");
+			player.sendMessage(Lang.HEADERS_CHALLENGES.toString() 
+					+ Lang.CHALLENGES_COMPLETE.toString()
+						.replaceAll("%t", pl.getChallengesFile().getTitle(getChallenge(player))));
+		} else {
+			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
+					+ Lang.CHALLENGES_TEST_COMPLETE.toString());
 		}
 		playerChallenge.remove(player.getName());
 	}
@@ -108,12 +110,14 @@ public class Challenge {
 		if(!isTesting(player)){
 			Main.econ.depositPlayer(player, pl.getChallengesFile().getPrice(getChallenge(player)) 
 					* (pl.getPlayerManager().getPrestige(player) + 1));
-			player.sendMessage(MESSAGE_HEADER + "You've left "
-					+ pl.getChallengesFile().getTitle(getChallenge(player))
-					+ " Challenge" + ChatColor.GRAY + "! You got your money back!");
-		}else{
-			player.sendMessage(MESSAGE_HEADER + "Test completed. If you see this message challenge works fine!");
+			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
+					+ Lang.CHALLENGES_LEAVE.toString()
+						.replaceAll("%t", pl.getChallengesFile().getTitle(getChallenge(player))));
+		} else {
+			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
+					+ Lang.CHALLENGES_TEST_COMPLETE.toString());
 		}
+		playerChallenge.remove(player.getName());
 		loadData(player);
 	}
 	

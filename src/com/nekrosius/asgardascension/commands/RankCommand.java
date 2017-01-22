@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import com.nekrosius.asgardascension.Main;
-import com.nekrosius.asgardascension.challenges.Challenge;
 import com.nekrosius.asgardascension.enums.Lang;
 
 public class RankCommand implements CommandExecutor {
@@ -50,12 +49,12 @@ public class RankCommand implements CommandExecutor {
 				return true;
 			}
 			pl.getPlayerManager().setRank(Bukkit.getPlayer(args[0]), rankId);
-			Bukkit.getPlayer(args[0]).sendMessage(Challenge.MESSAGE_HEADER + "Your rank now is " + args[1] + "!");
+			Bukkit.getPlayer(args[0]).sendMessage(Lang.HEADERS_CHALLENGES.toString() + "Your rank now is " + args[1] + "!");
 			sender.sendMessage(Lang.HEADERS_MAIN.toString() + "You've set " + args[0] + " rank to " + args[1] + "!");
 			return true;
 		}
 		pl.getPlayerManager().setRank(Bukkit.getPlayer(args[0]), rankId);
-		Bukkit.getPlayer(args[0]).sendMessage(Challenge.MESSAGE_HEADER + "Your rank now is " + args[1] + "!");
+		Bukkit.getPlayer(args[0]).sendMessage(Lang.HEADERS_CHALLENGES.toString() + "Your rank now is " + args[1] + "!");
 		sender.sendMessage(Lang.HEADERS_MAIN.toString() + "You've set " + args[0] + " rank to " + args[1] + "!");
 		return true;
 	}
