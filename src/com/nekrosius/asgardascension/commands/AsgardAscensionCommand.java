@@ -25,11 +25,13 @@ public class AsgardAscensionCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		if(!(sender instanceof Player)){
-			sender.sendMessage(Lang.HEADERS_MAIN.toString() + "This command is available only for players!");
+			sender.sendMessage(Lang.HEADERS_MAIN.toString()
+					+ Lang.COMMANDS_ONLY_PLAYER.toString());
 			return true;
 		}
 		if(!sender.hasPermission("asgardascension.admin")){
-			sender.sendMessage(Lang.HEADERS_MAIN.toString() + "This command is available only for OPs!");
+			sender.sendMessage(Lang.HEADERS_MAIN.toString()
+					+ Lang.COMMANDS_NO_PERMISSION.toString());
 			return true;
 		}
 		Player player = (Player) sender;
@@ -43,7 +45,8 @@ public class AsgardAscensionCommand implements CommandExecutor {
 				player.sendMessage(ChatColor.GRAY + "----------------------");
 			}
 			else {
-				player.sendMessage(Lang.HEADERS_MAIN.toString() + "Unknown command! Are you looking for /" + cmdLabel + " info?");
+				player.sendMessage(Lang.HEADERS_MAIN.toString()
+						+ Lang.COMMANDS_UNKNOWN_COMMAND.toString());
 			}
 			return true;
 		}
@@ -63,7 +66,8 @@ public class AsgardAscensionCommand implements CommandExecutor {
 		else if(args.length == 3) {
 			if("prestige".equalsIgnoreCase(args[0])) {
 				if(Bukkit.getPlayer(args[1]) == null) {	
-					player.sendMessage(Lang.HEADERS_MAIN.toString() + "Player not found!");
+					player.sendMessage(Lang.HEADERS_MAIN.toString()
+							+ Lang.COMMANDS_PLAYER_NOT_FOUND.toString());
 					return true;
 				}
 				Player target = Bukkit.getPlayer(args[1]);
@@ -72,17 +76,24 @@ public class AsgardAscensionCommand implements CommandExecutor {
 					amount = Integer.parseInt(args[2]);
 				}catch(NumberFormatException e){
 					sender.sendMessage(Lang.HEADERS_MAIN.toString());
-					sender.sendMessage(Lang.HEADERS_TOKENS.toString() + "Please type number (Like 6)!");
+					sender.sendMessage(Lang.HEADERS_TOKENS.toString()
+							+ Lang.PRESTIGE_SET_NOT_NUMBER.toString());
 					return true;
 				}
 				if(amount < 0 || amount > ConfigFile.getMaxPrestige()) {
-					sender.sendMessage(Lang.HEADERS_TOKENS.toString() + "Amount must be greater than -1 and lower than " 
-							+ ConfigFile.getMaxPrestige() + "!");
+					sender.sendMessage(Lang.HEADERS_TOKENS.toString()
+							+ Lang.PRESTIGE_SET_NOT_IN_RANGE.toString()
+								.replaceAll("%p", String.valueOf(ConfigFile.getMaxPrestige())));
 					return true;
 				}
 				pl.getPlayerManager().setPrestige(target, amount, PrestigeType.COMMAND);
-				target.sendMessage(Lang.HEADERS_MAIN.toString() + "Your prestige has been set to " + amount + "!");
-				player.sendMessage(Lang.HEADERS_MAIN.toString() + "You've set " + target.getDisplayName() + ChatColor.GRAY + "'s prestige to " + amount + "!");
+				target.sendMessage(Lang.HEADERS_MAIN.toString()
+						+ Lang.PRESTIGE_SET_FOR_TARGET.toString()
+							.replaceAll("%p", String.valueOf(amount)));
+				player.sendMessage(Lang.HEADERS_MAIN.toString()
+						+ Lang.PRESTIGE_SET_FOR_SENDER.toString()
+							.replaceAll("%s", target.getDisplayName())
+							.replaceAll("%p", String.valueOf(amount)));
 				return true;
 			}
 				

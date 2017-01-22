@@ -117,8 +117,8 @@ public class Challenge {
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 					+ Lang.CHALLENGES_TEST_COMPLETE.toString());
 		}
-		playerChallenge.remove(player.getName());
 		loadData(player);
+		playerChallenge.remove(player.getName());
 	}
 	
 	private void saveData(Player player, int challenge, long price) {

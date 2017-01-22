@@ -19,7 +19,8 @@ public class ChallengesExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		if(!(sender instanceof Player)){
-			sender.sendMessage(Lang.HEADERS_MAIN.toString() + "This command is available only for players!");
+			sender.sendMessage(Lang.HEADERS_MAIN.toString()
+					+ Lang.COMMANDS_ONLY_PLAYER.toString());
 			return true;
 		}
 		ChallengesMenu.setup((Player) sender);

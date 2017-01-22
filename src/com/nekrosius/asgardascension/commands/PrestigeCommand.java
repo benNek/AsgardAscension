@@ -1,7 +1,6 @@
 package com.nekrosius.asgardascension.commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,12 +19,10 @@ public class PrestigeCommand implements CommandExecutor {
 		pl = plugin;
 	}
 
-	public static String MESSAGE_HEADER = ChatColor.GRAY + "[" + ChatColor.RED + "Asgard RankUp" + ChatColor.GRAY + "] ";
-	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		if(!(sender instanceof Player)) {
-			sender.sendMessage(MESSAGE_HEADER + "This command is available only for players!");
+			sender.sendMessage(Lang.HEADERS_CHALLENGES.toString() + Lang.COMMANDS_ONLY_PLAYER.toString());
 			return true;
 		}
 		Player player = (Player) sender;
@@ -33,31 +30,34 @@ public class PrestigeCommand implements CommandExecutor {
 		if(args.length == 1) {
 			if(args[0].equalsIgnoreCase("location")) {
 				if(!sender.hasPermission("asgardascension.admin")){
-					sender.sendMessage(Lang.HEADERS_MAIN.toString() + "This command is available only for OPs!");
+					sender.sendMessage(Lang.HEADERS_MAIN.toString() + Lang.COMMANDS_NO_PERMISSION.toString());
 					return true;
 				}
 				ConfigFile.setPrestigeLocation(Convert.locationToString(player.getLocation(), true));
-				player.sendMessage(Lang.HEADERS_MAIN.toString() + "You've succesfully added prestige teleport location!");
+				player.sendMessage(Lang.HEADERS_MAIN.toString() + Lang.PRESTIGE_SET_LOCATION.toString());
 				return true;
 			}
 		}
-		
-		if(pl.getPlayerManager().getRank(player) != pl.getChallengesFile().getChallengesAmount()) {
-			player.sendMessage(MESSAGE_HEADER + "Your Rank is too low for Prestige! Maximum Rank level is "
-					+ ChatColor.RED + pl.getChallengesFile().getChallengesAmount());
+		if(pl.getPlayerManager().getPrestige(player) >= ConfigFile.getMaxPrestige()){
+			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
+					+ Lang.PRESTIGE_REACHED_MAX.toString());
 			return true;
 		}
-		if(pl.getPlayerManager().getPrestige(player) >= ConfigFile.getMaxPrestige()){
-			player.sendMessage(MESSAGE_HEADER + "You've reached maximum level of Prestige!");
+		if(pl.getPlayerManager().getRank(player) != pl.getChallengesFile().getChallengesAmount()) {
+			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
+					+ Lang.PRESTIGE_RANK_INSUFFICIENT.toString()
+						.replaceAll("%t", pl.getChallengesFile().getTitle(pl.getChallengesFile().getChallengesAmount())));
 			return true;
 		}
 		if(args.length == 0){
-			player.sendMessage(MESSAGE_HEADER + "You're ready to ascend! Type " + ChatColor.RED + "/prestige confirm" + ChatColor.GRAY + " to ascend!");
+			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
+					+ Lang.PRESTIGE_READY.toString());
 			return true;
 		}
 		if(args.length == 1){
 			if(!args[0].equalsIgnoreCase("confirm")){
-				player.sendMessage(MESSAGE_HEADER + "You're ready to ascend! Type " + ChatColor.RED + "/prestige confirm" + ChatColor.GRAY + " to ascend!");
+				player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
+						+ Lang.PRESTIGE_READY.toString());
 				return true;
 			}
 			else {
@@ -70,11 +70,13 @@ public class PrestigeCommand implements CommandExecutor {
 				String comm = ConfigFile.getPrestigeCommand();
 				comm = comm.replaceAll("%player", player.getName());
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), comm);
-				player.sendMessage(MESSAGE_HEADER + "You've ascended! Your Prestige is " + ChatColor.RED 
-						+ pl.getPlayerManager().getPrestige(player) + ChatColor.GRAY + "!");
+				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() 
+						+ Lang.PRESTIGE_ASCENDED.toString()
+							.replaceAll("%p", String.valueOf(pl.getPlayerManager().getPrestige(player))));
 				if(ConfigFile.getTokensReward() > 0) {
-					player.sendMessage(MESSAGE_HEADER + "As a reward for hard work you got " + ConfigFile.getTokensReward() 
-						+ " token " + Convert.addSuffix(ConfigFile.getTokensReward()) + "!");
+					player.sendMessage(Lang.HEADERS_CHALLENGES.toString() 
+							+ Lang.PRESTIGE_TOKEN_REWARD.toString()
+								.replaceAll("%p", String.valueOf(ConfigFile.getTokensReward())));
 				}
 			}
 			return true;
