@@ -18,9 +18,9 @@ public class PlayerFile {
 	static File file;
 	public static FileConfiguration config;
 	
-	Main pl;
-	public PlayerFile(Main pl) {
-		this.pl = pl;
+	Main plugin;
+	public PlayerFile(Main plugin) {
+		this.plugin = plugin;
 	}
 	
 	public void createConfig(Player player) {

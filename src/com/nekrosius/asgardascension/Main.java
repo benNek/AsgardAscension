@@ -37,6 +37,7 @@ import com.nekrosius.asgardascension.files.TribeFile;
 import com.nekrosius.asgardascension.files.WarpsFile;
 import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.handlers.Ragnorak;
+import com.nekrosius.asgardascension.managers.AbilityManager;
 import com.nekrosius.asgardascension.managers.ListenerManager;
 import com.nekrosius.asgardascension.managers.PlayerManager;
 import com.nekrosius.asgardascension.managers.TribeManager;
@@ -60,26 +61,32 @@ import net.milkbowl.vault.economy.Economy;
 
 public class Main extends JavaPlugin{
 	
-	public static WorldGuardPlugin wg;
+	// Managers
 	
-	public static YamlConfiguration LANG;
-	public static File LANG_FILE;
+	private ListenerManager listenerManager;
+	private TribeManager tribeManager;
+	private PlayerManager playerManager;
+	private AbilityManager abilityManager;
+	private EffectManager effectManager;
 	
-	private ListenerManager lm;
-	private TribeManager tm;
-	private PlayerManager pm;
+	// Files
 	
-	public static EffectManager em;
+	private PlayerFile playerFile;
+	private ChallengesFile challengesFile;
 	
-	public static Economy econ = null;
-	public static Chat chat = null;
-	public static PlotAPI API = null;
+	// Libraries
 	
+	private static WorldGuardPlugin worldGuard;
+	private static PlotAPI plots;
+	private Economy economy;
+	private Chat chat;
+	
+	// Other
+	
+	private YamlConfiguration LANG;
+	private File LANG_FILE;
 	private Logger logger;
 	private Ragnorak ragnorak;
-	private PlayerFile pf;
-	private ChallengesFile cf;
-	
 	private Challenge challenges;
 	
 	public void onEnable(){
@@ -96,6 +103,8 @@ public class Main extends JavaPlugin{
         }
         enablePlaceholders();
 		GodTokens.setupTokens();
+		
+		// Loading players' data
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			getPlayerManager().loadData(p);
 		}
@@ -103,14 +112,48 @@ public class Main extends JavaPlugin{
 		getLogs().log("AA initialized succesfully!");
 	}
 	
+	public void onDisable() {
+		// Quitting challenges for those who are doing it
+		for(Player p : Bukkit.getOnlinePlayers()) {
+			if(getChallenges().getChallenge(p) != 0) {
+				getChallenges().quitChallenge(p);
+			}
+			getPlayerManager().saveData(p);
+		}
+		
+		// Saving tribes data
+		for(Tribe t : TribeManager.getTribes()) {
+			TribeFile.createConfig(t.getName());
+			TribeFile.setChest(t.getContent());
+			TribeFile.setAllies(t.getAllies());
+			TribeFile.setBalance(t.getBalance());
+			TribeFile.setDescription(t.getDescription());
+			TribeFile.setEnemies(t.getEnemies());
+			TribeFile.setLeader(t.getLeader());
+			TribeFile.setLevel(t.getLevel());
+			TribeFile.setMembers(t.getMembers());
+			TribeFile.setName(t.getName());
+			TribeFile.setType(t.getType());
+		}
+		
+		// Finishing the ragnorak
+		if(getRagnorak().eventStarted) {
+			getRagnorak().finishEvent();
+		}
+		
+		// Unregistering libraries and hooks
+		PlaceholderHandler.unregisterPlaceholderHook(this);
+	}
+	
 	private void setupManagers() {
 		EffectLib lib = EffectLib.instance();
-		lm = new ListenerManager(this);
-		tm = new TribeManager(this);
-		pm = new PlayerManager(this);
-		em = new EffectManager(lib);
-		wg = getWorldGuard();
-		API = new PlotAPI();
+		listenerManager = new ListenerManager(this);
+		tribeManager = new TribeManager(this);
+		playerManager = new PlayerManager(this);
+		abilityManager = new AbilityManager(this);
+		effectManager = new EffectManager(lib);
+		worldGuard = registerWorldGuard();
+		plots = new PlotAPI();
 	}
 	
 	public void loadLang() {
@@ -141,8 +184,8 @@ public class Main extends JavaPlugin{
 	        }
 	    }
 	    Lang.setFile(conf);
-	    Main.LANG = conf;
-	    Main.LANG_FILE = lang;
+	    LANG = conf;
+	    LANG_FILE = lang;
 	    try {
 	        conf.save(getLangFile());
 	    } catch(IOException e) {
@@ -174,8 +217,8 @@ public class Main extends JavaPlugin{
 	}
 	
 	public void setupFiles() {
-		pf = new PlayerFile(this);
-		cf = new ChallengesFile(this);
+		playerFile = new PlayerFile(this);
+		challengesFile = new ChallengesFile(this);
 		loadLang();
 		new ConfigFile(this);
 		new GodFoodFile(this);
@@ -198,32 +241,6 @@ public class Main extends JavaPlugin{
 		getCommand("tokenwarp").setExecutor(new WarpsExecutor(this));
 	}
 	
-	public void onDisable() {
-		for(Player p : Bukkit.getOnlinePlayers()) {
-			if(getChallenges().getChallenge(p) != 0) {
-				getChallenges().quitChallenge(p);
-			}
-			getPlayerManager().saveData(p);
-		}
-		for(Tribe t : TribeManager.getTribes()) {
-			TribeFile.createConfig(t.getName());
-			TribeFile.setChest(t.getContent());
-			TribeFile.setAllies(t.getAllies());
-			TribeFile.setBalance(t.getBalance());
-			TribeFile.setDescription(t.getDescription());
-			TribeFile.setEnemies(t.getEnemies());
-			TribeFile.setLeader(t.getLeader());
-			TribeFile.setLevel(t.getLevel());
-			TribeFile.setMembers(t.getMembers());
-			TribeFile.setName(t.getName());
-			TribeFile.setType(t.getType());
-		}
-		if(getRagnorak().eventStarted) {
-			getRagnorak().finishEvent();
-		}
-		PlaceholderHandler.unregisterPlaceholderHook(this);
-	}
-	
 	private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
@@ -232,8 +249,8 @@ public class Main extends JavaPlugin{
         if (rsp == null) {
             return false;
         }
-        econ = rsp.getProvider();
-        return econ != null;
+        economy = rsp.getProvider();
+        return economy != null;
     }
 	
 	private boolean setupChat() {
@@ -241,7 +258,6 @@ public class Main extends JavaPlugin{
         if (chatProvider != null) {
             chat = chatProvider.getProvider();
         }
-
         return chat != null;
     }
 	
@@ -264,10 +280,10 @@ public class Main extends JavaPlugin{
 						@Override
 						public String onPlaceholderReplace(
 								PlaceholderReplaceEvent event) {
-							if(econ == null)
+							if(economy == null)
 								return ChatColor.GRAY + "0%";
 							Player player = event.getPlayer();
-							double percentage = ((double)econ.getBalance(player) /
+							double percentage = ((double)economy.getBalance(player) /
 									(getChallengesFile().getPrice(getPlayerManager().getRank(player) + 1) * (getPlayerManager().getPrestige(player) + 1))) * 100;
 							if(percentage > 100)
 								percentage = 100;
@@ -294,28 +310,12 @@ public class Main extends JavaPlugin{
 		else getLogs().log("DeluxeChat is missing! Chat placeholders won't work!");
 	}
 	
-	public static WorldGuardPlugin getWorldGuard() {
+	public static WorldGuardPlugin registerWorldGuard() {
 		Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 		if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
 			return null; // Maybe you want throw an exception instead
 		}
 		return (WorldGuardPlugin) plugin;
-	}
-	
-	public ListenerManager getListenerManager() {
-		return lm;
-	}
-	
-	public TribeManager getTribeManager() {
-		return tm;
-	}
-	
-	public PlayerManager getPlayerManager() {
-		return pm;
-	}
-	
-	public PlayerFile getPlayerFile() {
-		return pf;
 	}
 	
 	public Logger getLogs() {
@@ -330,9 +330,49 @@ public class Main extends JavaPlugin{
 		return ragnorak;
 	}
 	
-	public ChallengesFile getChallengesFile() {
-		return cf;
+	// Managers
+	
+	public ListenerManager getListenerManager() {
+		return listenerManager;
 	}
+	
+	public TribeManager getTribeManager() {
+		return tribeManager;
+	}
+	
+	public PlayerManager getPlayerManager() {
+		return playerManager;
+	}
+	
+	public AbilityManager getAbilityManager() {
+		return abilityManager;
+	}
+	
+	public EffectManager getEffectManager() {
+		return effectManager;
+	}
+	
+	// Files
+	
+	public PlayerFile getPlayerFile() {
+		return playerFile;
+	}
+	
+	public ChallengesFile getChallengesFile() {
+		return challengesFile;
+	}
+	
+	// Libraries
+	
+	public WorldGuardPlugin getWorldGuard() {
+		return worldGuard;
+	}
+	
+	public Economy getEconomy() {
+		return economy;
+	}
+	
+	// Other
 	
 	public static boolean isPVPEnabled(Player player) {
 		return isPVPEnabled(player.getLocation());
@@ -340,9 +380,9 @@ public class Main extends JavaPlugin{
 	
 	public static boolean isPVPEnabled(Location location) {
 		String global = "__global__";
-		if(Main.wg.getRegionManager(location.getWorld()) == null)	
+		if(worldGuard.getRegionManager(location.getWorld()) == null)	
 			return true;
-		RegionManager regionManager = Main.wg.getRegionManager(location.getWorld());
+		RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
 		ApplicableRegionSet arset = regionManager.getApplicableRegions(location);
 		ProtectedRegion region = regionManager.getRegion(global);
 		int priority = -10000;
@@ -363,18 +403,11 @@ public class Main extends JavaPlugin{
 	}
 	
 	public static boolean canBreak(Player player, Location location) {
-		Plot plot = API.getPlot(location);
-		
+		Plot plot = plots.getPlot(location);
 		if(plot == null) {
 			return true;
-			
 		}
-		if(plot.isAdded(player.getUniqueId())) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return plot.isAdded(player.getUniqueId());
 	}
 	
 }

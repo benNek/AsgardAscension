@@ -11,9 +11,9 @@ import com.nekrosius.asgardascension.files.RagnorakFile;
 
 public class RagnorakCommand implements CommandExecutor {
 	
-	private Main pl;
+	private Main plugin;
 	public RagnorakCommand(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class RagnorakCommand implements CommandExecutor {
 		}
 		Player player = (Player) sender;
 		if(args.length == 0) {
-			pl.getRagnorak().addVote(player);
+			plugin.getRagnorak().addVote(player);
 			return true;
 		}
 		else if(args.length == 1) {
@@ -48,7 +48,7 @@ public class RagnorakCommand implements CommandExecutor {
 			}
 			else if(args[0].equalsIgnoreCase("start")) {
 				player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You've started Ragnorak!");
-				pl.getRagnorak().start();
+				plugin.getRagnorak().start();
 				return true;
 			}
 			else{
@@ -62,7 +62,7 @@ public class RagnorakCommand implements CommandExecutor {
 	}
 
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 	
 }

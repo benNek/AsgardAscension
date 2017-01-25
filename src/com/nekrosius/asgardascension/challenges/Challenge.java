@@ -28,9 +28,9 @@ public class Challenge {
 	
 	private String metaData = "challenge";
 	
-	Main pl;
-	public Challenge(Main pl) {
-		this.pl = pl;
+	Main plugin;
+	public Challenge(Main plugin) {
+		this.plugin = plugin;
 	}
 
 	public void startChallenge(final Player player) {
@@ -38,38 +38,38 @@ public class Challenge {
 		if(isTesting(player)) {
 			challenge = getChallenge(player);
 		} else {
-			challenge = pl.getPlayerManager().getRank(player) + 1;
+			challenge = plugin.getPlayerManager().getRank(player) + 1;
 		}
-		long price = pl.getChallengesFile().getPrice(challenge) * (pl.getPlayerManager().getPrestige(player) + 1);
-		if(!Main.econ.has(player, price)) {
+		long price = plugin.getChallengesFile().getPrice(challenge) * (plugin.getPlayerManager().getPrestige(player) + 1);
+		if(!plugin.getEconomy().has(player, price)) {
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString() +
 					Lang.CHALLENGES_NOT_ENOUGH_MONEY.toString().replaceAll("%p", Convert.toPrice(price)));
 			return;
 		}
-		Main.econ.withdrawPlayer(player, price);
+		plugin.getEconomy().withdrawPlayer(player, price);
 		saveData(player, challenge, price);
-		player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
-		if("fight".equalsIgnoreCase(pl.getChallengesFile().getType(challenge))) {
+		player.teleport(plugin.getChallengesFile().getSpawnpoint(challenge));
+		if("fight".equalsIgnoreCase(plugin.getChallengesFile().getType(challenge))) {
 			new BukkitRunnable() {
 				public void run() {
-					if(pl.getChallengesFile().getMonsters(challenge) != null) {
+					if(plugin.getChallengesFile().getMonsters(challenge) != null) {
 						String[] split;
-						for(String mob : pl.getChallengesFile().getMonsters(challenge)) {
+						for(String mob : plugin.getChallengesFile().getMonsters(challenge)) {
 							split = mob.split(", ");
 							addMobs(player, Integer.parseInt(split[1]));
 							Convert.spawnEntity(player.getName(), challenge, split[0], Integer.parseInt(split[1]));
 						}
 					}
 				}
-			}.runTaskLater(pl, 20L);
+			}.runTaskLater(plugin, 20L);
 		}
-		if("fight".equalsIgnoreCase(pl.getChallengesFile().getType(challenge))) {
+		if("fight".equalsIgnoreCase(plugin.getChallengesFile().getType(challenge))) {
 			player.setLevel(getKillsLeft(player));
 			player.setExp(0F);
 		}
 		player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 				+ Lang.CHALLENGES_START.toString()
-					.replaceAll("%t", pl.getChallengesFile().getTitle(challenge))
+					.replaceAll("%t", plugin.getChallengesFile().getTitle(challenge))
 					.replaceAll("%p", Convert.toPrice(price)));
 	}
 	
@@ -80,19 +80,19 @@ public class Challenge {
 					e.remove();
 				}
 			}
-			player.teleport(pl.getChallengesFile().getVictorySpawnpoint(getChallenge(player)));
+			player.teleport(plugin.getChallengesFile().getVictorySpawnpoint(getChallenge(player)));
 			loadData(player);
 			player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_TWINKLE, 1F, 1F);
 		}
-		for(String cmd : pl.getChallengesFile().getCommands(getChallenge(player))) {
+		for(String cmd : plugin.getChallengesFile().getCommands(getChallenge(player))) {
 			cmd = cmd.replaceAll("%s", player.getName());
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 		}
 		if(!isTesting(player)) {
-			pl.getPlayerManager().setRank(player, getChallenge(player));
+			plugin.getPlayerManager().setRank(player, getChallenge(player));
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString() 
 					+ Lang.CHALLENGES_COMPLETE.toString()
-						.replaceAll("%t", pl.getChallengesFile().getTitle(getChallenge(player))));
+						.replaceAll("%t", plugin.getChallengesFile().getTitle(getChallenge(player))));
 		} else {
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 					+ Lang.CHALLENGES_TEST_COMPLETE.toString());
@@ -108,11 +108,11 @@ public class Challenge {
 		}
 		player.teleport(getLocation(player));
 		if(!isTesting(player)){
-			Main.econ.depositPlayer(player, pl.getChallengesFile().getPrice(getChallenge(player)) 
-					* (pl.getPlayerManager().getPrestige(player) + 1));
+			plugin.getEconomy().depositPlayer(player, plugin.getChallengesFile().getPrice(getChallenge(player)) 
+					* (plugin.getPlayerManager().getPrestige(player) + 1));
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 					+ Lang.CHALLENGES_LEAVE.toString()
-						.replaceAll("%t", pl.getChallengesFile().getTitle(getChallenge(player))));
+						.replaceAll("%t", plugin.getChallengesFile().getTitle(getChallenge(player))));
 		} else {
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 					+ Lang.CHALLENGES_TEST_COMPLETE.toString());
@@ -125,12 +125,12 @@ public class Challenge {
 		setChallenge(player, challenge);
 		setLocation(player, player.getLocation());
 		setLevel(player);
-		pl.getPlayerFile().createConfig(player);
-		pl.getPlayerFile().setChallengeLocation(player.getLocation());
-		pl.getPlayerFile().setChallengeLevel(player.getLevel());
-		pl.getPlayerFile().setChallengeExperience(player.getExp());
-		pl.getPlayerFile().setChallengePrice(price);
-		pl.getPlayerFile().saveConfig();
+		plugin.getPlayerFile().createConfig(player);
+		plugin.getPlayerFile().setChallengeLocation(player.getLocation());
+		plugin.getPlayerFile().setChallengeLevel(player.getLevel());
+		plugin.getPlayerFile().setChallengeExperience(player.getExp());
+		plugin.getPlayerFile().setChallengePrice(price);
+		plugin.getPlayerFile().saveConfig();
 	}
 	
 	private void loadData(Player player) {
@@ -145,9 +145,9 @@ public class Challenge {
 		killsLeft.remove(player.getName());
 		exp.remove(player.getName());
 		level.remove(player.getName());
-		pl.getPlayerFile().createConfig(player);
-		pl.getPlayerFile().removeChallenge();
-		pl.getPlayerFile().saveConfig();
+		plugin.getPlayerFile().createConfig(player);
+		plugin.getPlayerFile().removeChallenge();
+		plugin.getPlayerFile().saveConfig();
 	}
 	
 	public void setChallenge(Player player, int challenge) {

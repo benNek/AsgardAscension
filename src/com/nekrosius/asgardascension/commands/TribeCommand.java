@@ -28,12 +28,13 @@ import com.nekrosius.asgardascension.utils.Pager;
 
 public class TribeCommand implements CommandExecutor {
 	
+	// TODO remove public ?
 	public static Map<String, Boolean> socialSpy;
 	
-	private Main pl;
+	private Main plugin;
 	public TribeCommand(Main plugin) {
-		pl = plugin;
-		socialSpy = new HashMap<String, Boolean>();
+		this.plugin = plugin;
+		socialSpy = new HashMap<>();
 	}
 
 	@Override
@@ -213,7 +214,7 @@ public class TribeCommand implements CommandExecutor {
 					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You already have tribe! Leave it to create new one!");
 					return true;
 				}
-				if(!Main.econ.has(player, ConfigFile.getTribePrice())){
+				if(!plugin.getEconomy().has(player, ConfigFile.getTribePrice())){
 					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You don't have enough money! To create tribe it costs " + ConfigFile.getTribePrice());
 					return true;
 				}
@@ -381,11 +382,11 @@ public class TribeCommand implements CommandExecutor {
 					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Amount must be greater than 0");
 					return true;
 				}
-				if(!Main.econ.has(player, amount)){
+				if(!plugin.getEconomy().has(player, amount)){
 					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Insufficient funds! (" + amount + ")");
 					return true;
 				}
-				Main.econ.withdrawPlayer(player, amount);
+				plugin.getEconomy().withdrawPlayer(player, amount);
 				Tribe tribe = TribeManager.getPlayerTribe(player.getName());
 				tribe.setBalance(tribe.getBalance() + amount);
 				TribeFile.createConfig(tribe.getName());
@@ -557,11 +558,11 @@ public class TribeCommand implements CommandExecutor {
 					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Amount must be greater than 0");
 					return true;
 				}
-				if(!Main.econ.has(player, amount)){
+				if(!plugin.getEconomy().has(player, amount)){
 					player.sendMessage(Lang.HEADERS_TRIBES.toString() + "Insufficient funds! (" + amount + ")");
 					return true;
 				}
-				Main.econ.withdrawPlayer(player, amount);
+				plugin.getEconomy().withdrawPlayer(player, amount);
 				Tribe tribe = TribeManager.getTribe(args[1]);
 				tribe.setBalance(tribe.getBalance() + amount);
 				TribeFile.createConfig(tribe.getName());
@@ -669,7 +670,7 @@ public class TribeCommand implements CommandExecutor {
 	}
 	
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 	
 }

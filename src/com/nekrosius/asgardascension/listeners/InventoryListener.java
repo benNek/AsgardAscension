@@ -33,9 +33,9 @@ import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
 public class InventoryListener implements Listener {
 	
-	private Main pl;
+	private Main plugin;
 	public InventoryListener(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 	}
 	
 	@EventHandler
@@ -55,7 +55,7 @@ public class InventoryListener implements Listener {
 				MainInventory.setupGodFoodInventory(player);
 			}
 			else if(event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)){
-				pl.setupFiles();
+				plugin.setupFiles();
 				player.closeInventory();
 				player.sendMessage(Lang.HEADERS_MAIN.toString() + "You've reloaded config files!");
 			}
@@ -63,21 +63,21 @@ public class InventoryListener implements Listener {
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Rank-Up")) { 
 			event.setCancelled(true);
 			if(event.getCurrentItem().getType().equals(Material.DIAMOND_HELMET)) {
-				pl.getChallenges().startChallenge(player);
+				plugin.getChallenges().startChallenge(player);
 				player.closeInventory();
 			}
 			else if(event.getCurrentItem().getType().equals(Material.GOLD_INGOT)) {
 				player.closeInventory();
-				if(!Main.econ.has(player, pl.getChallengesFile().getPrice(pl.getPlayerManager().getRank(player) + 1) 
-						* 2 * (pl.getPlayerManager().getPrestige(player) + 1))){
+				if(!plugin.getEconomy().has(player, plugin.getChallengesFile().getPrice(plugin.getPlayerManager().getRank(player) + 1) 
+						* 2 * (plugin.getPlayerManager().getPrestige(player) + 1))){
 					player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "You don't have enough money to buy rank-up! (" 
-						+ pl.getChallengesFile().getPrice(pl.getPlayerManager().getRank(player) + 1) 
-						* 2 * (pl.getPlayerManager().getPrestige(player) + 1) + ")");
+						+ plugin.getChallengesFile().getPrice(plugin.getPlayerManager().getRank(player) + 1) 
+						* 2 * (plugin.getPlayerManager().getPrestige(player) + 1) + ")");
 					return;
 				}
-				Main.econ.withdrawPlayer(player, pl.getChallengesFile().getPrice(pl.getPlayerManager().getRank(player) + 1) * 2 * (pl.getPlayerManager().getPrestige(player) + 1));
-				pl.getChallenges().setChallenge(player, pl.getPlayerManager().getRank(player) + 1);
-				pl.getChallenges().finishChallenge(player, true);
+				plugin.getEconomy().withdrawPlayer(player, plugin.getChallengesFile().getPrice(plugin.getPlayerManager().getRank(player) + 1) * 2 * (plugin.getPlayerManager().getPrestige(player) + 1));
+				plugin.getChallenges().setChallenge(player, plugin.getPlayerManager().getRank(player) + 1);
+				plugin.getChallenges().finishChallenge(player, true);
 			}
 		}
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "Rank-ups and Challenges")) {
@@ -97,11 +97,11 @@ public class InventoryListener implements Listener {
 			event.setCancelled(true);
 			if(event.getCurrentItem().getType().equals(Material.LEVER)) {
 				player.closeInventory();
-				if(pl.getRagnorak().eventStarted){
+				if(plugin.getRagnorak().eventStarted){
 					player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "Ragnorak has already started!");
 				}else{
 					player.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "You've force started Ragnorak!");
-					pl.getRagnorak().start();
+					plugin.getRagnorak().start();
 				}
 			}
 			else if(event.getCurrentItem().getType().equals(Material.DIAMOND_SWORD)) {
@@ -132,14 +132,14 @@ public class InventoryListener implements Listener {
 			event.setCancelled(true);
 			if(event.getCurrentItem().getType().equals(Material.GOLD_BOOTS)){
 				player.closeInventory();
-				pl.getChallengesFile().addChallenge("parkour");
+				plugin.getChallengesFile().addChallenge("parkour");
 				ChallengeSetup.setStep(player, 1);
-				ChallengeSetup.setChallenge(player, pl.getChallengesFile().getChallengesAmount());
+				ChallengeSetup.setChallenge(player, plugin.getChallengesFile().getChallengesAmount());
 				ChallengeSetup.setType(player, "parkour");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(
 						Lang.HEADERS_CHALLENGES.toString() + "You've created " + ChatColor.RED 
-						+ pl.getChallengesFile().getChallengesAmount() + Convert.getOrdinalFor(pl.getChallengesFile().getChallengesAmount())
+						+ plugin.getChallengesFile().getChallengesAmount() + Convert.getOrdinalFor(plugin.getChallengesFile().getChallengesAmount())
 						+ " Parkour"
 						+ ChatColor.GRAY +  " challenge");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
@@ -149,14 +149,14 @@ public class InventoryListener implements Listener {
 			}
 			else if(event.getCurrentItem().getType().equals(Material.TORCH)){
 				player.closeInventory();
-				pl.getChallengesFile().addChallenge("maze");
+				plugin.getChallengesFile().addChallenge("maze");
 				ChallengeSetup.setStep(player, 1);
-				ChallengeSetup.setChallenge(player, pl.getChallengesFile().getChallengesAmount());
+				ChallengeSetup.setChallenge(player, plugin.getChallengesFile().getChallengesAmount());
 				ChallengeSetup.setType(player, "maze");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(
 						Lang.HEADERS_CHALLENGES.toString() + "You've created " + ChatColor.RED 
-						+ pl.getChallengesFile().getChallengesAmount() + Convert.getOrdinalFor(pl.getChallengesFile().getChallengesAmount())
+						+ plugin.getChallengesFile().getChallengesAmount() + Convert.getOrdinalFor(plugin.getChallengesFile().getChallengesAmount())
 						+ " Maze"
 						+ ChatColor.GRAY +  " challenge");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
@@ -166,14 +166,14 @@ public class InventoryListener implements Listener {
 			}
 			else if(event.getCurrentItem().getType().equals(Material.GOLD_SWORD)){
 				player.closeInventory();
-				pl.getChallengesFile().addChallenge("fight");
+				plugin.getChallengesFile().addChallenge("fight");
 				ChallengeSetup.setStep(player, 1);
-				ChallengeSetup.setChallenge(player, pl.getChallengesFile().getChallengesAmount());
+				ChallengeSetup.setChallenge(player, plugin.getChallengesFile().getChallengesAmount());
 				ChallengeSetup.setType(player, "fight");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(
 						Lang.HEADERS_CHALLENGES.toString() + "You've created " + ChatColor.RED 
-						+ pl.getChallengesFile().getChallengesAmount() + Convert.getOrdinalFor(pl.getChallengesFile().getChallengesAmount())
+						+ plugin.getChallengesFile().getChallengesAmount() + Convert.getOrdinalFor(plugin.getChallengesFile().getChallengesAmount())
 						+ " Fight"
 						+ ChatColor.GRAY +  " challenge");
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
@@ -209,17 +209,17 @@ public class InventoryListener implements Listener {
 				return;
 			}
 			if(event.getCurrentItem().getType().equals(Material.IRON_BARDING)){
-				pl.getChallenges().setTesting(player, true);
-				pl.getChallenges().setChallenge(player, challenge);
-				pl.getChallenges().startChallenge(player);
+				plugin.getChallenges().setTesting(player, true);
+				plugin.getChallenges().setChallenge(player, challenge);
+				plugin.getChallenges().startChallenge(player);
 			}
 			else if(event.getCurrentItem().getType().equals(Material.GOLD_INGOT)){
 				player.closeInventory();
 				ChallengeSetup.setStep(player, 1);
-				ChallengeSetup.setType(player, pl.getChallengesFile().getType(challenge));
+				ChallengeSetup.setType(player, plugin.getChallengesFile().getType(challenge));
 				ChallengeSetup.setEditing(player, true);
 				ChallengeSetup.setChallenge(player, challenge);
-				player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
+				player.teleport(plugin.getChallengesFile().getSpawnpoint(challenge));
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "Type amount of price for this challenge!");
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "(number, like " + ChatColor.RED + "5002.5" + ChatColor.GRAY + ")");
@@ -228,10 +228,10 @@ public class InventoryListener implements Listener {
 			else if(event.getCurrentItem().getType().equals(Material.COAL)){
 				player.closeInventory();
 				ChallengeSetup.setStep(player, 2);
-				ChallengeSetup.setType(player, pl.getChallengesFile().getType(challenge));
+				ChallengeSetup.setType(player, plugin.getChallengesFile().getType(challenge));
 				ChallengeSetup.setEditing(player, true);
 				ChallengeSetup.setChallenge(player, challenge);
-				player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
+				player.teleport(plugin.getChallengesFile().getSpawnpoint(challenge));
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "Right-Click with Iron Axe to set spawnpoint");
 				player.getInventory().addItem(ItemStackGenerator.createItem(Material.IRON_AXE, 0, 0,
@@ -241,10 +241,10 @@ public class InventoryListener implements Listener {
 			else if(event.getCurrentItem().getType().equals(Material.NOTE_BLOCK)){
 				player.closeInventory();
 				ChallengeSetup.setStep(player, 3);
-				ChallengeSetup.setType(player, pl.getChallengesFile().getType(challenge));
+				ChallengeSetup.setType(player, plugin.getChallengesFile().getType(challenge));
 				ChallengeSetup.setEditing(player, true);
 				ChallengeSetup.setChallenge(player, challenge);
-				player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
+				player.teleport(plugin.getChallengesFile().getSpawnpoint(challenge));
 				player.getInventory().setItemInMainHand(ItemStackGenerator.createItem(Material.IRON_AXE, 0, 0,
 						ChatColor.GRAY + "Select a Noteblock", 
 						Arrays.asList(ChatColor.RED + "Click a block to make it noteblock!")));
@@ -254,10 +254,10 @@ public class InventoryListener implements Listener {
 			else if(event.getCurrentItem().getType().equals(Material.GOLD_HELMET)){
 				player.closeInventory();
 				ChallengeSetup.setStep(player, 4);
-				ChallengeSetup.setType(player, pl.getChallengesFile().getType(challenge));
+				ChallengeSetup.setType(player, plugin.getChallengesFile().getType(challenge));
 				ChallengeSetup.setEditing(player, true);
 				ChallengeSetup.setChallenge(player, challenge);
-				player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
+				player.teleport(plugin.getChallengesFile().getSpawnpoint(challenge));
 				player.getInventory().setItemInMainHand(ItemStackGenerator.createItem(Material.IRON_AXE, 0, 0,
 						ChatColor.GRAY + "Set Victory Spawnpoint", 
 						Arrays.asList(ChatColor.RED + "Right-Click to set spawnpoint upon victory!")));
@@ -267,10 +267,10 @@ public class InventoryListener implements Listener {
 			else if(event.getCurrentItem().getType().equals(Material.WATER_LILY)){
 				player.closeInventory();
 				ChallengeSetup.setStep(player, 5);
-				ChallengeSetup.setType(player, pl.getChallengesFile().getType(challenge));
+				ChallengeSetup.setType(player, plugin.getChallengesFile().getType(challenge));
 				ChallengeSetup.setEditing(player, true);
 				ChallengeSetup.setChallenge(player, challenge);
-				player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
+				player.teleport(plugin.getChallengesFile().getSpawnpoint(challenge));
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "Type commands that are going to be executed after completion");
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "%s " + ChatColor.GRAY + " - player; don't add '/' before command");
@@ -281,12 +281,12 @@ public class InventoryListener implements Listener {
 				player.closeInventory();
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "You've removed all Commands!");
-				pl.getChallengesFile().removeCommands(challenge);
+				plugin.getChallengesFile().removeCommands(challenge);
 			}
 			else if(event.getCurrentItem().getType().equals(Material.STICK)) {
 				player.closeInventory();
 				ChallengeSetup.setStep(player, 6);
-				ChallengeSetup.setType(player, pl.getChallengesFile().getType(challenge));
+				ChallengeSetup.setType(player, plugin.getChallengesFile().getType(challenge));
 				ChallengeSetup.setEditing(player, true);
 				ChallengeSetup.setChallenge(player, challenge);
 				ChallengeSetup.setStep(player, 6);
@@ -299,10 +299,10 @@ public class InventoryListener implements Listener {
 			else if(event.getCurrentItem().getType().equals(Material.MOB_SPAWNER)) {
 				player.closeInventory();
 				ChallengeSetup.setStep(player, 7);
-				ChallengeSetup.setType(player, pl.getChallengesFile().getType(challenge));
+				ChallengeSetup.setType(player, plugin.getChallengesFile().getType(challenge));
 				ChallengeSetup.setEditing(player, true);
 				ChallengeSetup.setChallenge(player, challenge);
-				player.teleport(pl.getChallengesFile().getSpawnpoint(challenge));
+				player.teleport(plugin.getChallengesFile().getSpawnpoint(challenge));
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "Type anything to open selection menu");
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "To finish ChallengeSetup type " + ChatColor.RED + "finish");
@@ -312,7 +312,7 @@ public class InventoryListener implements Listener {
 				player.closeInventory();
 				player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "You've removed all Mob Spawns!");
-				pl.getChallengesFile().removeMonsterSpawns(challenge);
+				plugin.getChallengesFile().removeMonsterSpawns(challenge);
 			}
 		}
 		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "FoG")) {
@@ -433,7 +433,7 @@ public class InventoryListener implements Listener {
 			event.setCancelled(true);
 			if(event.getCurrentItem().getItemMeta() == null)
 				return;
-			int tokens = pl.getPlayerManager().getTokens(player);
+			int tokens = plugin.getPlayerManager().getTokens(player);
 			if(event.getCurrentItem().getType().equals(Material.BOOK)) {
 				return;
 			}
@@ -448,7 +448,7 @@ public class InventoryListener implements Listener {
 							player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You didn't withdrawn any GT in time!");
 						}
 					}
-				}.runTaskLater(pl, 200L);
+				}.runTaskLater(plugin, 200L);
 			}
 			else if(event.getCurrentItem().getType().equals(Material.STONE_SPADE)) {
 				player.closeInventory();
@@ -460,7 +460,7 @@ public class InventoryListener implements Listener {
 					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough god tokens! (" + tokens + ")");
 					return;
 				}
-				pl.getPlayerManager().setTokens(player, tokens - 25);
+				plugin.getPlayerManager().setTokens(player, tokens - 25);
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + player.getName() + " remove plots.plot.1");
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + player.getName() + " add plots.plot.2");
 				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You now have one more available plot!");
@@ -471,7 +471,7 @@ public class InventoryListener implements Listener {
 					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough god tokens! (" + tokens + ")");
 					return;
 				}
-				pl.getPlayerManager().setTokens(player, tokens - 8);
+				plugin.getPlayerManager().setTokens(player, tokens - 8);
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "cr givekey " + player.getName() + " key 1");
 				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've bought a crate!");
 			}
@@ -484,7 +484,7 @@ public class InventoryListener implements Listener {
 					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough god tokens! (" + tokens + ")");
 					return;
 				}
-				pl.getPlayerManager().withdrawTokens(player, 1);
+				plugin.getPlayerManager().withdrawTokens(player, 1);
 				player.getInventory().addItem(
 					ItemStackGenerator.createItem(Material.GOLDEN_APPLE, 0, 1,
 							ChatColor.LIGHT_PURPLE + "" + ChatColor.UNDERLINE + "Odins Apple",
@@ -517,7 +517,7 @@ public class InventoryListener implements Listener {
 						+ ChatColor.GRAY + "!");
 				return;
 			}
-			if(pl.getPlayerManager().hasPurchasedToken((Player) event.getWhoClicked(), token.getName())) {
+			if(plugin.getPlayerManager().hasPurchasedToken((Player) event.getWhoClicked(), token.getName())) {
 				event.getWhoClicked().closeInventory();
 				GodTokens.startSkill(event.getWhoClicked().getName(), token);
 			}
@@ -537,22 +537,22 @@ public class InventoryListener implements Listener {
 			}
 			if(event.getCurrentItem().getType().equals(Material.PAPER)) {
 				player.closeInventory();
-				if(pl.getPlayerManager().getTokens(player) < token.getTempPrice()) {
+				if(plugin.getPlayerManager().getTokens(player) < token.getTempPrice()) {
 					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough tokens! (" + token.getTempPrice() + ")");
 					return;
 				}
-				pl.getPlayerManager().setTokens(player, pl.getPlayerManager().getTokens(player) - token.getTempPrice());
+				plugin.getPlayerManager().setTokens(player, plugin.getPlayerManager().getTokens(player) - token.getTempPrice());
 				GodTokens.startSkill(event.getWhoClicked().getName(), token);
 			}
 			else if(event.getCurrentItem().getType().equals(Material.BOOK)) {
-				if(pl.getPlayerManager().getTokens(player) < token.getPermPrice()) {
+				if(plugin.getPlayerManager().getTokens(player) < token.getPermPrice()) {
 					player.closeInventory();
 					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough tokens! (" + token.getPermPrice() + ")");
 					return;
 				}
 				player.closeInventory();
-				pl.getPlayerManager().setTokens(player, pl.getPlayerManager().getTokens(player) - token.getPermPrice());
-				pl.getPlayerManager().addPurchasedToken(player, token.getName());
+				plugin.getPlayerManager().setTokens(player, plugin.getPlayerManager().getTokens(player) - token.getPermPrice());
+				plugin.getPlayerManager().addPurchasedToken(player, token.getName());
 				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've permanently bought " + ChatColor.RED + token.getName() + ChatColor.GRAY + " ability!");
 			}
 			
@@ -570,9 +570,9 @@ public class InventoryListener implements Listener {
 			else if(event.getCurrentItem().hasItemMeta()
 					&& event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Repair item in main hand")) {
 				player.closeInventory();
-				if(pl.getPlayerManager().hasTokens(player, 1)) {
+				if(plugin.getPlayerManager().hasTokens(player, 1)) {
 					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "Your item in hand was successfully repaired!");
-					pl.getPlayerManager().withdrawTokens(player, 1);
+					plugin.getPlayerManager().withdrawTokens(player, 1);
 					player.getInventory().getItemInMainHand().setDurability((short)0);
 				}
 				else {
@@ -581,7 +581,7 @@ public class InventoryListener implements Listener {
 			}
 			else if(event.getCurrentItem().getType().equals(Material.CHEST)) {
 				player.closeInventory();
-				if(pl.getPlayerManager().hasTokens(player, 5)) {
+				if(plugin.getPlayerManager().hasTokens(player, 5)) {
 					for (ItemStack item : player.getInventory().getContents()) {
 	                    if (item != null) {
 	                        if (ItemStackGenerator.isRepairable(item))
@@ -592,7 +592,7 @@ public class InventoryListener implements Listener {
 	                    if (item != null)
 	                        item.setDurability((short) 0);
 	                }
-	                pl.getPlayerManager().withdrawTokens(player, 5);
+	                plugin.getPlayerManager().withdrawTokens(player, 5);
 	                player.sendMessage(Lang.HEADERS_TOKENS.toString() + "All items in your inventory were successfully repaired!");
 				}
 				else {
@@ -605,7 +605,7 @@ public class InventoryListener implements Listener {
 		else if(event.getInventory().getName().equals(ChatColor.BOLD + "Challenges")) {
 			event.setCancelled(true);
 			int challenge = event.getRawSlot() + 1;
-			int level = pl.getPlayerManager().getRank((Player)event.getWhoClicked());
+			int level = plugin.getPlayerManager().getRank((Player)event.getWhoClicked());
 			if(challenge > level + 1) {
 				event.getWhoClicked().sendMessage(Lang.HEADERS_CHALLENGES.toString() + "Your rank is too low for this challenge!");
 			}
@@ -619,7 +619,7 @@ public class InventoryListener implements Listener {
 	}
 
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 	
 }

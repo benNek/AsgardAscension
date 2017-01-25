@@ -10,9 +10,9 @@ import com.nekrosius.asgardascension.enums.Lang;
 
 public class RankCommand implements CommandExecutor {
 
-	private Main pl;
+	private Main plugin;
 	public RankCommand(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public class RankCommand implements CommandExecutor {
 				return true;
 			}
 			sender.sendMessage(Lang.HEADERS_MAIN.toString() + Bukkit.getPlayer(args[0]).getName() + " rank is " 
-					+ pl.getChallengesFile().getTitle(pl.getPlayerManager().getRank(Bukkit.getPlayer(args[0]))) + "!");
+					+ plugin.getChallengesFile().getTitle(plugin.getPlayerManager().getRank(Bukkit.getPlayer(args[0]))) + "!");
 			return true;
 		}
 		else if(args.length != 2){
@@ -43,24 +43,24 @@ public class RankCommand implements CommandExecutor {
 			rankId = Integer.parseInt(args[1]);
 		}catch(NumberFormatException e) {
 			String rankName = args[1];
-			rankId = pl.getChallengesFile().getChallengeId(rankName);
+			rankId = plugin.getChallengesFile().getChallengeId(rankName);
 			if(rankId == -1) {
 				sender.sendMessage(Lang.HEADERS_MAIN.toString() + "Unknown rank name or id!");
 				return true;
 			}
-			pl.getPlayerManager().setRank(Bukkit.getPlayer(args[0]), rankId);
+			plugin.getPlayerManager().setRank(Bukkit.getPlayer(args[0]), rankId);
 			Bukkit.getPlayer(args[0]).sendMessage(Lang.HEADERS_CHALLENGES.toString() + "Your rank now is " + args[1] + "!");
 			sender.sendMessage(Lang.HEADERS_MAIN.toString() + "You've set " + args[0] + " rank to " + args[1] + "!");
 			return true;
 		}
-		pl.getPlayerManager().setRank(Bukkit.getPlayer(args[0]), rankId);
+		plugin.getPlayerManager().setRank(Bukkit.getPlayer(args[0]), rankId);
 		Bukkit.getPlayer(args[0]).sendMessage(Lang.HEADERS_CHALLENGES.toString() + "Your rank now is " + args[1] + "!");
 		sender.sendMessage(Lang.HEADERS_MAIN.toString() + "You've set " + args[0] + " rank to " + args[1] + "!");
 		return true;
 	}
 	
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 
 }

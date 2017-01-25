@@ -20,9 +20,9 @@ public class ChallengesFile {
 	File file;
 	FileConfiguration config;
 
-	private Main pl;
+	private Main plugin;
 	public ChallengesFile(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 		createConfig();
 		for(String key : config.getKeys(false)) {
 			if(config.get(key + ".title") == null) {
@@ -198,7 +198,7 @@ public class ChallengesFile {
 	}
 	
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 
 }

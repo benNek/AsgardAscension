@@ -14,9 +14,9 @@ import com.nekrosius.asgardascension.inventories.GodTokensInventory;
 
 public class TokenCommand implements CommandExecutor {
 	
-	private Main pl;
+	private Main plugin;
 	public TokenCommand(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class TokenCommand implements CommandExecutor {
 					sender.sendMessage(Lang.HEADERS_TOKENS.toString() + "Amount must be greater than 0");
 					return true;
 				}
-				pl.getPlayerManager().setTokens(target, pl.getPlayerManager().getTokens(target) + amount);
+				plugin.getPlayerManager().setTokens(target, plugin.getPlayerManager().getTokens(target) + amount);
 				if(!sender.getName().equalsIgnoreCase("CONSOLE"))
 					target.sendMessage(Lang.HEADERS_TOKENS.toString() + sender.getName() + ChatColor.GRAY + " has sent you " + ChatColor.RED + amount + ChatColor.GRAY + " tokens!");
 				return true;
@@ -69,10 +69,10 @@ public class TokenCommand implements CommandExecutor {
 					sender.sendMessage(Lang.HEADERS_TOKENS.toString() + "Amount must be greater than 0");
 					return true;
 				}
-				if(pl.getPlayerManager().getTokens(target) - amount < 0) {
-					amount = pl.getPlayerManager().getTokens(target);
+				if(plugin.getPlayerManager().getTokens(target) - amount < 0) {
+					amount = plugin.getPlayerManager().getTokens(target);
 				}
-				pl.getPlayerManager().setTokens(target, pl.getPlayerManager().getTokens(target) - amount);
+				plugin.getPlayerManager().setTokens(target, plugin.getPlayerManager().getTokens(target) - amount);
 				target.sendMessage(Lang.HEADERS_TOKENS.toString() + sender.getName() + ChatColor.GRAY + " has removed your " + ChatColor.RED + amount + ChatColor.GRAY + " tokens!");
 				return true;
 			}
@@ -97,7 +97,7 @@ public class TokenCommand implements CommandExecutor {
 					sender.sendMessage(Lang.HEADERS_TOKENS.toString() + "Amount must be greater than -1");
 					return true;
 				}
-				pl.getPlayerManager().setTokens(target, amount);
+				plugin.getPlayerManager().setTokens(target, amount);
 				target.sendMessage(Lang.HEADERS_TOKENS.toString() + sender.getName() + ChatColor.GRAY + " has set your tokens to " + ChatColor.RED + amount + ChatColor.GRAY + "!");
 				return true;
 			}
@@ -124,7 +124,7 @@ public class TokenCommand implements CommandExecutor {
 	}
 	
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 
 }

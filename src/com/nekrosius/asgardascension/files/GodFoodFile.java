@@ -20,9 +20,9 @@ public class GodFoodFile {
 	static File file;
 	public static FileConfiguration config;
 
-	private Main pl;
+	private Main plugin;
 	public GodFoodFile(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 		createConfig();
 	}
 	
@@ -145,6 +145,6 @@ public class GodFoodFile {
 	}
 	
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 }

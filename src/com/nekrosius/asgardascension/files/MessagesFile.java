@@ -14,9 +14,9 @@ public class MessagesFile {
 	static File file;
 	public static FileConfiguration config;
 
-	Main pl;
+	Main plugin;
 	public MessagesFile(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 		createConfig();
 	}
 	

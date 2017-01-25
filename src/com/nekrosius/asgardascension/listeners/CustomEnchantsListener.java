@@ -74,19 +74,19 @@ public class CustomEnchantsListener implements Listener {
 				left = block.getRelative(BlockFace.NORTH);
 				right = block.getRelative(BlockFace.SOUTH);
 			}
-			if(Main.wg.canBuild(player, block)) {
+			if(plugin.getWorldGuard().canBuild(player, block)) {
 				player.getInventory().addItem(new ItemStack(block.getType()));
 				block.setType(Material.AIR);
 			}
-			if(Main.wg.canBuild(player, up)) {
+			if(plugin.getWorldGuard().canBuild(player, up)) {
 				player.getInventory().addItem(new ItemStack(up.getType()));
 				up.setType(Material.AIR);
 			}
-			if(Main.wg.canBuild(player, left)) {
+			if(plugin.getWorldGuard().canBuild(player, left)) {
 				player.getInventory().addItem(new ItemStack(left.getType()));
 				left.setType(Material.AIR);
 			}
-			if(Main.wg.canBuild(player, right)) {
+			if(plugin.getWorldGuard().canBuild(player, right)) {
 				player.getInventory().addItem(new ItemStack(right.getType()));
 				right.setType(Material.AIR);
 			}

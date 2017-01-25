@@ -16,9 +16,9 @@ public class PlayerManager {
 	Map<String, Integer> tokens;
 	Map<String, List<String>> purchased;
 	
-	Main pl;
-	public PlayerManager(Main pl) {
-		this.pl = pl;
+	Main plugin;
+	public PlayerManager(Main plugin) {
+		this.plugin = plugin;
 		rank = new HashMap<>();
 		prestige = new HashMap<>();
 		tokens = new HashMap<>();
@@ -26,20 +26,20 @@ public class PlayerManager {
 	}
 	
 	public void loadData(Player player) {
-		pl.getPlayerFile().createConfig(player);
-		setRank(player, pl.getPlayerFile().getRank());
-		setPrestige(player, pl.getPlayerFile().getPrestige(), PrestigeType.HIDE);
-		setTokens(player, pl.getPlayerFile().getGodTokens());
-		setPurchasedTokens(player, pl.getPlayerFile().getTokens());
+		plugin.getPlayerFile().createConfig(player);
+		setRank(player, plugin.getPlayerFile().getRank());
+		setPrestige(player, plugin.getPlayerFile().getPrestige(), PrestigeType.HIDE);
+		setTokens(player, plugin.getPlayerFile().getGodTokens());
+		setPurchasedTokens(player, plugin.getPlayerFile().getTokens());
 	}
 	
 	public void saveData(Player player) {
-		pl.getPlayerFile().createConfig(player);
-		pl.getPlayerFile().setRank(getRank(player));
-		pl.getPlayerFile().setPrestige(getPrestige(player));
-		pl.getPlayerFile().setGodTokens(getTokens(player));
-		pl.getPlayerFile().setTokens(getPurchasedTokens(player));
-		pl.getPlayerFile().saveConfig();
+		plugin.getPlayerFile().createConfig(player);
+		plugin.getPlayerFile().setRank(getRank(player));
+		plugin.getPlayerFile().setPrestige(getPrestige(player));
+		plugin.getPlayerFile().setGodTokens(getTokens(player));
+		plugin.getPlayerFile().setTokens(getPurchasedTokens(player));
+		plugin.getPlayerFile().saveConfig();
 		
 		rank.remove(player.getName());
 		prestige.remove(player.getName());
@@ -65,7 +65,7 @@ public class PlayerManager {
 	public void setPrestige(Player player, int prestige, PrestigeType type) {
 		this.prestige.put(player.getName(), prestige);
 		if(!type.equals(PrestigeType.HIDE))
-			pl.getLogs().log(player.getName() + " prestige set to " + prestige + " (" + type.toString() + ")");
+			plugin.getLogs().log(player.getName() + " prestige set to " + prestige + " (" + type.toString() + ")");
 	}
 	
 	public int getTokens(Player player) {

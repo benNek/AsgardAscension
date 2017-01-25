@@ -22,59 +22,69 @@ import de.slikey.effectlib.util.ParticleEffect;
 
 public class GodFoodListener implements Listener {
 
-	private Main pl;
+	Main plugin;
 	public GodFoodListener(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 	}
 	
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onFoodEat(PlayerInteractEvent event) {
-		if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			if(event.getPlayer().isSneaking()) {
-				if(event.getPlayer().getItemInHand() != null) {
-					Player player = event.getPlayer();
-					List<Integer> ids = GodFoodFile.getFoodId(player.getItemInHand().getTypeId());
-					for(int id : ids) {
-						byte data = (byte)GodFoodFile.getData(id);
-						if(player.getItemInHand().getData().getData() != data) continue;
-						if(id != 0){
-							if(player.getItemInHand().getAmount() > GodFoodFile.getAmount(id)){
-								ItemStack item = player.getItemInHand();
-								item.setAmount(item.getAmount() - GodFoodFile.getAmount(id));
-								player.setItemInHand(item);
-							}else if(player.getItemInHand().getAmount() == GodFoodFile.getAmount(id)){
-								player.setItemInHand(new ItemStack(Material.AIR));
-							}else{
-								return;
-							}
-							event.setCancelled(true);
-							int maxDuration = -1;
-							for(PotionEffect pe : GodFoodFile.getPotionEffects(id)){
-								player.addPotionEffect(pe);
-								if(pe.getDuration() > maxDuration) maxDuration = pe.getDuration();
-							}
-							final LoveEffect he = new LoveEffect(Main.em);
-							he.particle = ParticleEffect.CLOUD;
-							he.setEntity(player);
-							he.infinite();
-							he.start();
-							new BukkitRunnable() {
-								public void run() {
-									he.cancel();
-								}
-							}.runTaskLater(pl, maxDuration);
-							player.sendMessage(Lang.HEADERS_FOG.toString() + "You used " 
-									+ ChatColor.RED + GodFoodFile.getName(id) + ChatColor.GRAY + "!");
-						}
-					}
-				}
+		if(!(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK))) {
+			return;
+		}
+		if(!event.getPlayer().isSneaking() || event.getPlayer().getInventory().getItemInMainHand() == null) {
+			return;
+		}
+		
+		Player player = event.getPlayer();
+		List<Integer> ids = GodFoodFile.getFoodId(player.getInventory().getItemInMainHand().getTypeId());
+		for(int id : ids) {
+			byte data = (byte)GodFoodFile.getData(id);
+			
+			if(player.getInventory().getItemInMainHand().getData().getData() != data || id == 0)
+				continue;
+			
+			if(player.getInventory().getItemInMainHand().getAmount() > GodFoodFile.getAmount(id)) {
+				ItemStack item = player.getInventory().getItemInMainHand();
+				item.setAmount(item.getAmount() - GodFoodFile.getAmount(id));
+				player.setItemInHand(item);
+			} else if(player.getInventory().getItemInMainHand().getAmount() == GodFoodFile.getAmount(id)) {
+				player.setItemInHand(new ItemStack(Material.AIR));
+			} else {
+				return;
 			}
+			event.setCancelled(true);
+			
+			addPotionEffects(player, id);
+			player.sendMessage(Lang.HEADERS_FOG.toString() + "You used " 
+					+ ChatColor.RED + GodFoodFile.getName(id) + ChatColor.GRAY + "!");
 		}
 	}
 	
-	public Main getPlugin() {
-		return pl;
+	private void addPotionEffects(Player player, int id) {
+		int maxDuration = -1;
+		
+		// Adding all potion effects to player
+		for(PotionEffect pe : GodFoodFile.getPotionEffects(id)) {
+			player.addPotionEffect(pe);
+			if(pe.getDuration() > maxDuration)
+				maxDuration = pe.getDuration();
+		}
+		
+		// Showing visual effect to indicate that player is using FoG
+		final LoveEffect he = new LoveEffect(plugin.getEffectManager());
+		he.particle = ParticleEffect.CLOUD;
+		he.setEntity(player);
+		he.infinite();
+		he.start();
+		
+		// Canceling the visual effect once the potion effects are over
+		new BukkitRunnable() {
+			public void run() {
+				he.cancel();
+			}
+		}.runTaskLater(plugin, maxDuration);
 	}
 	
 }

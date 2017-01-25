@@ -17,9 +17,9 @@ public class ConfigFile {
 	static File file;
 	public static FileConfiguration config;
 
-	private Main pl;
+	private Main plugin;
 	public ConfigFile(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 		createConfig();
 	}
 	
@@ -127,6 +127,6 @@ public class ConfigFile {
 	}
 	
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 }

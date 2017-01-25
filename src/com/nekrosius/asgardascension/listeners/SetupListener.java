@@ -26,9 +26,9 @@ import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
 public class SetupListener implements Listener {
 	
-	private Main pl;
+	private Main plugin;
 	public SetupListener(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 	}
 	
 	public static Map<String, Boolean> withdrawal = new HashMap<>();
@@ -39,7 +39,7 @@ public class SetupListener implements Listener {
 		if(ChallengeSetup.getStep(player) > 0){
 			if(event.getMessage().equals("cancel")){
 				if(!ChallengeSetup.isEditing(player)){
-					pl.getChallengesFile().remove(ChallengeSetup.getChallenge(player));
+					plugin.getChallengesFile().remove(ChallengeSetup.getChallenge(player));
 				}
 				ChallengeSetup.finish(player);
 				event.setCancelled(true);
@@ -73,8 +73,8 @@ public class SetupListener implements Listener {
 				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You can only withdraw up to 20 GT!");
 				return;
 			}
-			if(!pl.getPlayerManager().hasTokens(player, amount)) {
-				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have " + amount + " tokens! (" + pl.getPlayerManager().getTokens(player) + ")");
+			if(!plugin.getPlayerManager().hasTokens(player, amount)) {
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have " + amount + " tokens! (" + plugin.getPlayerManager().getTokens(player) + ")");
 				return;
 			}
 			ItemStack item = ItemStackGenerator.createItem(Material.NETHER_STAR, amount, 0, 
@@ -86,7 +86,7 @@ public class SetupListener implements Listener {
 			}
 			player.getInventory().addItem(item);
 			player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've successfully withdrawn " + amount + " GT!");
-			pl.getPlayerManager().withdrawTokens(player, amount);
+			plugin.getPlayerManager().withdrawTokens(player, amount);
 			withdrawal.remove(player.getName());
 		}
 		
@@ -101,9 +101,9 @@ public class SetupListener implements Listener {
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "Please type number!");
 				return;
 			}
-			pl.getChallengesFile().setPrice(ChallengeSetup.getChallenge(player), price);
-			if(!pl.getChallengesFile().hasTitle(ChallengeSetup.getChallenge(player))) {
-				pl.getChallengesFile().setTitle(ChallengeSetup.getChallenge(player), String.valueOf(ChallengeSetup.getChallenge(player)));
+			plugin.getChallengesFile().setPrice(ChallengeSetup.getChallenge(player), price);
+			if(!plugin.getChallengesFile().hasTitle(ChallengeSetup.getChallenge(player))) {
+				plugin.getChallengesFile().setTitle(ChallengeSetup.getChallenge(player), String.valueOf(ChallengeSetup.getChallenge(player)));
 			}
 			ChallengeSetup.setStep(player, 2);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
@@ -145,7 +145,7 @@ public class SetupListener implements Listener {
 					}
 				}
 			}else{
-				pl.getChallengesFile().addCommand(ChallengeSetup.getChallenge(player), event.getMessage());
+				plugin.getChallengesFile().addCommand(ChallengeSetup.getChallenge(player), event.getMessage());
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "You've added a new command:");
 				player.sendMessage(event.getMessage());
 			}
@@ -183,7 +183,7 @@ public class SetupListener implements Listener {
 				player.sendMessage(ChatColor.RED + "Type minimum amount of mobs to be alive!");
 				return;
 			}
-			pl.getChallengesFile().addMob(ChallengeSetup.getChallenge(player), ChallengeSetup.getMob(player), amount);
+			plugin.getChallengesFile().addMob(ChallengeSetup.getChallenge(player), ChallengeSetup.getMob(player), amount);
 			player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "You've added "
 							+ ChatColor.RED + WordUtils.capitalize(ChallengeSetup.getMob(player).toLowerCase())
@@ -335,7 +335,7 @@ public class SetupListener implements Listener {
 						player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 						player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "You've set 1st location!");
 						if(ChallengeSetup.isReady(player)){
-							pl.getChallengesFile().setMobsLocation(ChallengeSetup.getChallenge(player), player);
+							plugin.getChallengesFile().setMobsLocation(ChallengeSetup.getChallenge(player), player);
 							if(ChallengeSetup.isEditing(player)){
 								player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 								player.sendMessage(
@@ -357,7 +357,7 @@ public class SetupListener implements Listener {
 						player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 						player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "You've set 2nd location!");
 						if(ChallengeSetup.isReady(player)) {
-							pl.getChallengesFile().setMobsLocation(ChallengeSetup.getChallenge(player), player);
+							plugin.getChallengesFile().setMobsLocation(ChallengeSetup.getChallenge(player), player);
 							if(ChallengeSetup.isEditing(player)){
 								player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 								player.sendMessage(
@@ -385,7 +385,7 @@ public class SetupListener implements Listener {
 						if(event.getPlayer().getInventory().getItemInMainHand().getItemMeta()
 								.getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Add Spawnpoint")){
 							event.setCancelled(true);
-							pl.getChallengesFile().setSpawnpoint(player, ChallengeSetup.getChallenge(player));
+							plugin.getChallengesFile().setSpawnpoint(player, ChallengeSetup.getChallenge(player));
 							ChallengeSetup.setStep(player, 3);
 							player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
 							player.sendMessage(Lang.HEADERS_CHALLENGES.toString() + "You've added spawnpoint!");
@@ -405,7 +405,7 @@ public class SetupListener implements Listener {
 							if(event.getPlayer().getInventory().getItemInMainHand().getItemMeta()
 									.getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Select a Noteblock")){
 								event.setCancelled(true);
-								pl.getChallengesFile().setNoteblock(ChallengeSetup.getChallenge(player), event.getClickedBlock().getLocation());
+								plugin.getChallengesFile().setNoteblock(ChallengeSetup.getChallenge(player), event.getClickedBlock().getLocation());
 								event.getClickedBlock().setType(Material.NOTE_BLOCK);
 								ChallengeSetup.setStep(player, 4);
 								player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
@@ -426,7 +426,7 @@ public class SetupListener implements Listener {
 						if(event.getPlayer().getInventory().getItemInMainHand().getItemMeta()
 								.getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Set Victory Spawnpoint")){
 							event.setCancelled(true);
-							pl.getChallengesFile().setVictorySpawnpoint(player, ChallengeSetup.getChallenge(player));
+							plugin.getChallengesFile().setVictorySpawnpoint(player, ChallengeSetup.getChallenge(player));
 							ChallengeSetup.setStep(player, 5);
 							player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 							player.sendMessage(ChatColor.RED + "*-*-*-*-*-*-*-*-*-*-*");
@@ -685,7 +685,7 @@ public class SetupListener implements Listener {
 	}
 
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 	
 }

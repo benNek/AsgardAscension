@@ -20,23 +20,23 @@ import com.nekrosius.asgardascension.Main;
 
 public class ChallengeListener implements Listener {
 	
-	private Main pl;
+	private Main plugin;
 	public ChallengeListener(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 	}
 
 	@EventHandler
 	public void onNoteBlockInteract(PlayerInteractEvent event) {
 		if(event.getClickedBlock() != null && event.getClickedBlock().getType().equals(Material.NOTE_BLOCK)){
-			if(pl.getChallenges().getChallenge(event.getPlayer()) == 0)
+			if(plugin.getChallenges().getChallenge(event.getPlayer()) == 0)
 				return;
-			if("fight".equalsIgnoreCase(pl.getChallengesFile().getType(pl.getChallenges().getChallenge(event.getPlayer())))) {
+			if("fight".equalsIgnoreCase(plugin.getChallengesFile().getType(plugin.getChallenges().getChallenge(event.getPlayer())))) {
 				return;
 			}
-			if(pl.getChallengesFile().getNoteblockLocation(pl.getChallenges().getChallenge(event.getPlayer()))
+			if(plugin.getChallengesFile().getNoteblockLocation(plugin.getChallenges().getChallenge(event.getPlayer()))
 					.equals(event.getClickedBlock().getLocation())){
 				event.setCancelled(true);
-				pl.getChallenges().finishChallenge(event.getPlayer(), false);
+				plugin.getChallenges().finishChallenge(event.getPlayer(), false);
 			}
 		}
 	}
@@ -49,13 +49,13 @@ public class ChallengeListener implements Listener {
 				event.getDrops().clear();
 				String[] meta = e.getMetadata("challenge").get(0).asString().split(", ");
 				final String player = meta[1];
-				pl.getChallenges().addKill(Bukkit.getPlayer(player));
-				Bukkit.getPlayer(player).setLevel(pl.getChallenges().getKillsLeft(Bukkit.getPlayer(player)));
+				plugin.getChallenges().addKill(Bukkit.getPlayer(player));
+				Bukkit.getPlayer(player).setLevel(plugin.getChallenges().getKillsLeft(Bukkit.getPlayer(player)));
 				if(e.getType().equals(EntityType.MAGMA_CUBE) || e.getType().equals(EntityType.SLIME)) {
 					e.remove();
 				}
-				if(pl.getChallenges().getKillsLeft(Bukkit.getPlayer(player)) == 0){
-					pl.getChallenges().finishChallenge(Bukkit.getPlayer(player), false);
+				if(plugin.getChallenges().getKillsLeft(Bukkit.getPlayer(player)) == 0){
+					plugin.getChallenges().finishChallenge(Bukkit.getPlayer(player), false);
 				}
 			}
 		}
@@ -69,10 +69,10 @@ public class ChallengeListener implements Listener {
 				event.blockList().clear();
 				String[] meta = e.getMetadata("challenge").get(0).asString().split(", ");
 				final String player = meta[1];
-				pl.getChallenges().addKill(Bukkit.getPlayer(player));
-				Bukkit.getPlayer(player).setLevel(pl.getChallenges().getKillsLeft(Bukkit.getPlayer(player)));
-				if(pl.getChallenges().getKillsLeft(Bukkit.getPlayer(player)) == 0) {
-					pl.getChallenges().finishChallenge(Bukkit.getPlayer(player), false);
+				plugin.getChallenges().addKill(Bukkit.getPlayer(player));
+				Bukkit.getPlayer(player).setLevel(plugin.getChallenges().getKillsLeft(Bukkit.getPlayer(player)));
+				if(plugin.getChallenges().getKillsLeft(Bukkit.getPlayer(player)) == 0) {
+					plugin.getChallenges().finishChallenge(Bukkit.getPlayer(player), false);
 				}
 			}
 		}
@@ -80,35 +80,35 @@ public class ChallengeListener implements Listener {
 	
 	@EventHandler
 	public void onEXP(PlayerExpChangeEvent event) {
-		if(pl.getChallenges().getChallenge(event.getPlayer()) == 0)
+		if(plugin.getChallenges().getChallenge(event.getPlayer()) == 0)
 			return;
 		event.setAmount(0);
 	}
 	
 	@EventHandler
 	public void onDie(PlayerDeathEvent event) {
-		if(pl.getChallenges().getChallenge(event.getEntity()) == 0)
+		if(plugin.getChallenges().getChallenge(event.getEntity()) == 0)
 			return;
-		pl.getChallenges().saveInventory(event.getEntity());
+		plugin.getChallenges().saveInventory(event.getEntity());
 		event.getDrops().clear();
 		event.getEntity().spigot().respawn();
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onRespawn(final PlayerRespawnEvent event) {
-		if(pl.getChallenges().getChallenge(event.getPlayer()) == 0)
+		if(plugin.getChallenges().getChallenge(event.getPlayer()) == 0)
 			return;
-		event.setRespawnLocation(pl.getChallengesFile().getSpawnpoint(pl.getChallenges().getChallenge(event.getPlayer())));
+		event.setRespawnLocation(plugin.getChallengesFile().getSpawnpoint(plugin.getChallenges().getChallenge(event.getPlayer())));
 		new BukkitRunnable() {
 			public void run() {
-				pl.getChallenges().loadInventory(event.getPlayer());
-				event.getPlayer().setLevel(pl.getChallenges().getKillsLeft(event.getPlayer()));
+				plugin.getChallenges().loadInventory(event.getPlayer());
+				event.getPlayer().setLevel(plugin.getChallenges().getKillsLeft(event.getPlayer()));
 			}
-		}.runTaskLater(pl, 10L);
+		}.runTaskLater(plugin, 10L);
 	}
 	
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 	
 }

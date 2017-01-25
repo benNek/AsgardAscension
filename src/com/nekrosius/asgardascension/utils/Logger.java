@@ -15,15 +15,16 @@ public class Logger {
 	File file;
 	String prefix;
 	
-	Main pl;
+	Main plugin;
 	
 	public Logger(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
+		
 		Date date = new Date();
 		DateFormat df = new SimpleDateFormat("Y-MM-d");
 		String fileName = df.format(date) + ".log";
-		(new File(pl.getDataFolder() + File.separator + "logs" + File.separator)).mkdir();
-		file = new File(pl.getDataFolder() + File.separator + "logs" + File.separator, fileName);
+		(new File(plugin.getDataFolder() + File.separator + "logs" + File.separator)).mkdir();
+		file = new File(plugin.getDataFolder() + File.separator + "logs" + File.separator, fileName);
 		if(!file.exists()) {
 			try {
 				file.createNewFile();

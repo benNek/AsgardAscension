@@ -14,9 +14,9 @@ import com.nekrosius.asgardascension.utils.Convert;
 
 public class PrestigeCommand implements CommandExecutor {
 	
-	private Main pl;
+	private Main plugin;
 	public PrestigeCommand(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -38,15 +38,15 @@ public class PrestigeCommand implements CommandExecutor {
 				return true;
 			}
 		}
-		if(pl.getPlayerManager().getPrestige(player) >= ConfigFile.getMaxPrestige()){
+		if(plugin.getPlayerManager().getPrestige(player) >= ConfigFile.getMaxPrestige()){
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 					+ Lang.PRESTIGE_REACHED_MAX.toString());
 			return true;
 		}
-		if(pl.getPlayerManager().getRank(player) != pl.getChallengesFile().getChallengesAmount()) {
+		if(plugin.getPlayerManager().getRank(player) != plugin.getChallengesFile().getChallengesAmount()) {
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 					+ Lang.PRESTIGE_RANK_INSUFFICIENT.toString()
-						.replaceAll("%t", pl.getChallengesFile().getTitle(pl.getChallengesFile().getChallengesAmount())));
+						.replaceAll("%t", plugin.getChallengesFile().getTitle(plugin.getChallengesFile().getChallengesAmount())));
 			return true;
 		}
 		if(args.length == 0){
@@ -61,9 +61,9 @@ public class PrestigeCommand implements CommandExecutor {
 				return true;
 			}
 			else {
-				pl.getPlayerManager().setPrestige(player, pl.getPlayerManager().getPrestige(player) + 1, PrestigeType.SELF);
-				pl.getPlayerManager().setRank(player, 0);
-				pl.getPlayerManager().setTokens(player, pl.getPlayerManager().getTokens(player) + ConfigFile.getTokensReward());
+				plugin.getPlayerManager().setPrestige(player, plugin.getPlayerManager().getPrestige(player) + 1, PrestigeType.SELF);
+				plugin.getPlayerManager().setRank(player, 0);
+				plugin.getPlayerManager().setTokens(player, plugin.getPlayerManager().getTokens(player) + ConfigFile.getTokensReward());
 				player.teleport(ConfigFile.getPrestigeLocation());
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user " + player.getName() + " group remove Odin");
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user " + player.getName() + " group add A");
@@ -72,7 +72,7 @@ public class PrestigeCommand implements CommandExecutor {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), comm);
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() 
 						+ Lang.PRESTIGE_ASCENDED.toString()
-							.replaceAll("%p", String.valueOf(pl.getPlayerManager().getPrestige(player))));
+							.replaceAll("%p", String.valueOf(plugin.getPlayerManager().getPrestige(player))));
 				if(ConfigFile.getTokensReward() > 0) {
 					player.sendMessage(Lang.HEADERS_CHALLENGES.toString() 
 							+ Lang.PRESTIGE_TOKEN_REWARD.toString()
@@ -85,7 +85,7 @@ public class PrestigeCommand implements CommandExecutor {
 	}
 
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 	
 }

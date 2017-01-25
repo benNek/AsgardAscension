@@ -220,7 +220,7 @@ public class GodTokens {
 		token.setType(TokenType.PVP);
 		token.setIcon(Material.ICE);
 		token.setDescription(Arrays.asList(	ChatColor.GRAY + "Freeze a target player",
-				ChatColor.GRAY + "Cost (temp/perm): " + ChatColor.RED + "1/10 tokens",
+				ChatColor.GRAY + "Cost (temp/perm): " + ChatColor.RED + "1/15 tokens",
 				ChatColor.GRAY + "Duration: " + ChatColor.RED + "5 seconds",
 				ChatColor.GRAY + "Radius: " + ChatColor.RED + "15 blocks",
 				ChatColor.GRAY + "Cooldown: " + ChatColor.RED + "20 minutes"));
@@ -233,7 +233,7 @@ public class GodTokens {
 		token.setType(TokenType.MINING);
 		token.setIcon(Material.DIAMOND_PICKAXE);
 		token.setDescription(Arrays.asList(	ChatColor.GRAY + "Become more efficient while mining",
-				ChatColor.GRAY + "Cost (temp/perm): " + ChatColor.RED + "2/15 tokens",
+				ChatColor.GRAY + "Cost (temp/perm): " + ChatColor.RED + "2/25 tokens",
 				ChatColor.GRAY + "Effect: " + ChatColor.RED + "Haste III",
 				ChatColor.GRAY + "Duration: " + ChatColor.RED + "5 minutes",
 				ChatColor.GRAY + "Cooldown: " + ChatColor.RED + "35 minutes"));
@@ -299,7 +299,7 @@ public class GodTokens {
 	
 	public static void startEffect(String player, String skill) {
 		if(skill.equalsIgnoreCase("Fire")) {
-			AnimatedBallEffect eff = new AnimatedBallEffect(Main.em);
+			AnimatedBallEffect eff = new AnimatedBallEffect(plugin.getEffectManager());
 			eff.setEntity(Bukkit.getPlayer(player));
 			eff.particle = ParticleEffect.FLAME;
 			eff.size = 0.7F;
@@ -310,7 +310,7 @@ public class GodTokens {
 			setEffect(player, eff);
 		}
 		else if(skill.equalsIgnoreCase("Fireball")) {
-			LoveEffect eff = new LoveEffect(Main.em);
+			LoveEffect eff = new LoveEffect(plugin.getEffectManager());
 			eff.setEntity(Bukkit.getPlayer(player));
 			eff.particle = ParticleEffect.LAVA;
 			eff.infinite();
@@ -318,7 +318,7 @@ public class GodTokens {
 			setEffect(player, eff);
 		}
 		else if(skill.equalsIgnoreCase("Ice")) {
-			LoveEffect eff = new LoveEffect(Main.em);
+			LoveEffect eff = new LoveEffect(plugin.getEffectManager());
 			eff.setEntity(Bukkit.getPlayer(player));
 			eff.particle = ParticleEffect.SNOW_SHOVEL;
 			eff.infinite();
@@ -326,7 +326,7 @@ public class GodTokens {
 			setEffect(player, eff);
 		}
 		else if(skill.equalsIgnoreCase("Slowness")) {
-			AnimatedBallEffect eff = new AnimatedBallEffect(Main.em);
+			AnimatedBallEffect eff = new AnimatedBallEffect(plugin.getEffectManager());
 			eff.setEntity(Bukkit.getPlayer(player));
 			eff.particle = ParticleEffect.ENCHANTMENT_TABLE;
 			eff.size = 0.7F;
@@ -337,7 +337,7 @@ public class GodTokens {
 			setEffect(player, eff);
 		}
 		else if(skill.equalsIgnoreCase("Dodge")) {
-			ShieldEffect eff = new ShieldEffect(Main.em);
+			ShieldEffect eff = new ShieldEffect(plugin.getEffectManager());
 			eff.setEntity(Bukkit.getPlayer(player));
 			eff.sphere = true;
 			eff.particle = ParticleEffect.TOWN_AURA;
@@ -347,7 +347,7 @@ public class GodTokens {
 			setEffect(player, eff);
 		}
 		else if(skill.equalsIgnoreCase("Lightning")) {
-			LoveEffect eff = new LoveEffect(Main.em);
+			LoveEffect eff = new LoveEffect(plugin.getEffectManager());
 			eff.setEntity(Bukkit.getPlayer(player));
 			eff.particle = ParticleEffect.CRIT_MAGIC;
 			eff.infinite();
@@ -355,7 +355,7 @@ public class GodTokens {
 			setEffect(player, eff);
 		}
 		else if(skill.equalsIgnoreCase("Regeneration")) {
-			LoveEffect eff = new LoveEffect(Main.em);
+			LoveEffect eff = new LoveEffect(plugin.getEffectManager());
 			eff.setEntity(Bukkit.getPlayer(player));
 			eff.infinite();
 			eff.start();

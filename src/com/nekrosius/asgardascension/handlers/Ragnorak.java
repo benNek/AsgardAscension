@@ -178,7 +178,7 @@ public class Ragnorak {
 		for(String locString : RagnorakFile.getLocations()){
 			Location loc = Convert.stringToLocation(locString);
 			loc.getBlock().setType(Material.CHEST);
-			ShieldEffect he = new ShieldEffect(Main.em);
+			ShieldEffect he = new ShieldEffect(plugin.getEffectManager());
 			he.setLocation(loc);
 			he.infinite();
 			he.start();

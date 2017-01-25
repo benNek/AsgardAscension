@@ -15,9 +15,9 @@ public class WarpsFile {
 	static File file;
 	public static FileConfiguration config;
 	
-	Main pl;
-	public WarpsFile(Main pl) {
-		this.pl = pl;
+	Main plugin;
+	public WarpsFile(Main plugin) {
+		this.plugin = plugin;
 		createConfig();
 	}
 	

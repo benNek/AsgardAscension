@@ -11,9 +11,9 @@ import com.nekrosius.asgardascension.inventories.ChallengesMenu;
 
 public class ChallengesExecutor implements CommandExecutor {
 	
-	Main pl;
-	public ChallengesExecutor(Main pl) {
-		this.pl = pl;
+	Main plugin;
+	public ChallengesExecutor(Main plugin) {
+		this.plugin = plugin;
 	}
 
 	@Override

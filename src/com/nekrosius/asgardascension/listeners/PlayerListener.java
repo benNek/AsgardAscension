@@ -49,13 +49,13 @@ public class PlayerListener implements Listener {
 	Map<String, ItemStack> rainbowMiner;
 	private Random randomGen;
 	
-	private Main pl;
+	private Main plugin;
 	public PlayerListener(Main plugin) {
 		diamondMiner = new HashMap<String, Boolean>();
 		speedMiner = new HashMap<String, ItemStack>();
 		rainbowMiner = new HashMap<String, ItemStack>();
 		randomGen = new Random();
-		this.pl = plugin;
+		this.plugin = plugin;
 	}
 	
 	@EventHandler
@@ -78,14 +78,14 @@ public class PlayerListener implements Listener {
 			diamondMiner.remove(event.getPlayer().getName());
 		}
 		// Quiting challenge in case player is doing it
-		if(pl.getChallenges().getChallenge(event.getPlayer()) > 0){
-			pl.getChallenges().quitChallenge(event.getPlayer());
+		if(plugin.getChallenges().getChallenge(event.getPlayer()) > 0){
+			plugin.getChallenges().quitChallenge(event.getPlayer());
 		}
 		// Finishing god token
 		if(!(GodTokens.getSkill(event.getPlayer().getName()).equalsIgnoreCase(""))){
 			GodTokens.finish(event.getPlayer().getName());
 		}
-		pl.getPlayerManager().saveData(event.getPlayer());
+		plugin.getPlayerManager().saveData(event.getPlayer());
 	}
 	
 	@EventHandler
@@ -208,7 +208,7 @@ public class PlayerListener implements Listener {
 						}
 					}
 				}
-			}.runTaskLater(pl, 40L);
+			}.runTaskLater(plugin, 40L);
 		}
 		// 10% Command
 		else if (random <= 54 - 25) {
@@ -253,7 +253,7 @@ public class PlayerListener implements Listener {
 					player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.speed_miner.end"));
 				}
 				
-			}.runTaskLater(pl, 300L);
+			}.runTaskLater(plugin, 300L);
 		}
 		// 12% Diamond miner
 		else if(random <= 76 - 25) {
@@ -269,7 +269,7 @@ public class PlayerListener implements Listener {
 					player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.diamond_miner.end"));
 				}
 				
-			}.runTaskLater(pl, 300L);
+			}.runTaskLater(plugin, 300L);
 		}
 		// 12% Rainbow miner
 		else if(random <= 88 - 25) {
@@ -304,7 +304,7 @@ public class PlayerListener implements Listener {
 					player.sendMessage(Lang.HEADERS_MAIN.toString() + MessagesFile.getMessage("lucky_blocks.rainbow_miner.end"));
 				}
 				
-			}.runTaskLater(pl, 300L);
+			}.runTaskLater(plugin, 300L);
 			
 		}
 	}
@@ -359,20 +359,20 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		pl.getPlayerManager().loadData(event.getPlayer());
+		plugin.getPlayerManager().loadData(event.getPlayer());
 		if(event.getPlayer().hasPermission("asgardascension.staff")) {
 			event.getPlayer().setPlayerListName(ChatColor.YELLOW + event.getPlayer().getDisplayName());
 		}
 		// Restoring location, level and experience in case server crashed
-		pl.getPlayerFile().createConfig(event.getPlayer());
-		if(pl.getPlayerFile().isInChallenge()) {
+		plugin.getPlayerFile().createConfig(event.getPlayer());
+		if(plugin.getPlayerFile().isInChallenge()) {
 			Player player = event.getPlayer();
-			player.teleport(pl.getPlayerFile().getChallengeLocation());
-			player.setLevel(pl.getPlayerFile().getChallengeLevel());
-			player.setExp(pl.getPlayerFile().getChallengeExperience());
-			Main.econ.depositPlayer(player, pl.getPlayerFile().getChallengePrice());
-			pl.getPlayerFile().removeChallenge();
-			pl.getPlayerFile().saveConfig();
+			player.teleport(plugin.getPlayerFile().getChallengeLocation());
+			player.setLevel(plugin.getPlayerFile().getChallengeLevel());
+			player.setExp(plugin.getPlayerFile().getChallengeExperience());
+			plugin.getEconomy().depositPlayer(player, plugin.getPlayerFile().getChallengePrice());
+			plugin.getPlayerFile().removeChallenge();
+			plugin.getPlayerFile().saveConfig();
 		}
 	}
 	
@@ -386,7 +386,7 @@ public class PlayerListener implements Listener {
 
 	@SuppressWarnings("unused")
 	private void fixRank(Player player) {
-		int rank = pl.getPlayerManager().getRank(player);
+		int rank = plugin.getPlayerManager().getRank(player);
 		String command = "pex user " + player.getName() + " group add ";
 		if(rank == 0) {
 			command += "SparkDevil";
@@ -475,7 +475,7 @@ public class PlayerListener implements Listener {
 	}
 	
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 	
 }

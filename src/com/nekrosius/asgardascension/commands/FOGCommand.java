@@ -19,9 +19,9 @@ import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
 public class FOGCommand implements CommandExecutor {
 
-	Main pl;
+	Main plugin;
 	public FOGCommand(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 	}
 	
 	@Override

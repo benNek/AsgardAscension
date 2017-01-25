@@ -22,9 +22,9 @@ public class RagnorakFile {
 	
 	private static Random random;
 
-	private Main pl;
+	private Main plugin;
 	public RagnorakFile(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 		random = new Random();
 		createConfig();	
 	}
@@ -163,7 +163,7 @@ public class RagnorakFile {
     }
 	
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 
 }

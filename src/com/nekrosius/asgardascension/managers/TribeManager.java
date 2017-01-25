@@ -22,9 +22,9 @@ public class TribeManager {
 	private static List<Tribe> tribes = new ArrayList<>();
 	private static Map<String, Tribe> playerTribe = new HashMap<>();
 	
-	private Main pl;
+	private Main plugin;
 	public TribeManager(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 		File file = new File("plugins" + File.separator + "AsgardAscension" + File.separator
 				+ "tribes" + File.separator);
 		String[] files = file.list();
@@ -175,6 +175,6 @@ public class TribeManager {
 	}
 	
 	public Main getPlugin() {	
-		return pl;
+		return plugin;
 	}
 }

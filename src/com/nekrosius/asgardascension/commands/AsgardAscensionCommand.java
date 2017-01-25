@@ -17,9 +17,9 @@ import net.md_5.bungee.api.ChatColor;
 
 public class AsgardAscensionCommand implements CommandExecutor {
 	
-	private Main pl;
+	private Main plugin;
 	public AsgardAscensionCommand(Main plugin) {
-		pl = plugin;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -38,10 +38,10 @@ public class AsgardAscensionCommand implements CommandExecutor {
 		if(args.length == 1) {
 			if("info".equalsIgnoreCase(args[0])) {
 				player.sendMessage(ChatColor.GRAY + "----------------------");
-				player.sendMessage(ChatColor.RED + pl.getDescription().getName());
-				player.sendMessage(ChatColor.GRAY + "Author: " + ChatColor.RED + pl.getDescription().getAuthors().get(0));
-				player.sendMessage(ChatColor.GRAY + "Version: " + ChatColor.RED + pl.getDescription().getVersion());
-				player.sendMessage(ChatColor.GRAY + "Description: " + ChatColor.RED + pl.getDescription().getDescription());
+				player.sendMessage(ChatColor.RED + plugin.getDescription().getName());
+				player.sendMessage(ChatColor.GRAY + "Author: " + ChatColor.RED + plugin.getDescription().getAuthors().get(0));
+				player.sendMessage(ChatColor.GRAY + "Version: " + ChatColor.RED + plugin.getDescription().getVersion());
+				player.sendMessage(ChatColor.GRAY + "Description: " + ChatColor.RED + plugin.getDescription().getDescription());
 				player.sendMessage(ChatColor.GRAY + "----------------------");
 			}
 			else {
@@ -86,7 +86,7 @@ public class AsgardAscensionCommand implements CommandExecutor {
 								.replaceAll("%p", String.valueOf(ConfigFile.getMaxPrestige())));
 					return true;
 				}
-				pl.getPlayerManager().setPrestige(target, amount, PrestigeType.COMMAND);
+				plugin.getPlayerManager().setPrestige(target, amount, PrestigeType.COMMAND);
 				target.sendMessage(Lang.HEADERS_MAIN.toString()
 						+ Lang.PRESTIGE_SET_FOR_TARGET.toString()
 							.replaceAll("%p", String.valueOf(amount)));
@@ -103,7 +103,7 @@ public class AsgardAscensionCommand implements CommandExecutor {
 	}
 	
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 	
 }

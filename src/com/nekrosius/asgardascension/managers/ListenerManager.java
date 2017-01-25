@@ -14,21 +14,22 @@ import com.nekrosius.asgardascension.listeners.TribeListener;
 
 public class ListenerManager{
 
-	private Main pl;
+	private Main plugin;
 	public ListenerManager(Main plugin) {
-		pl = plugin;
-		Bukkit.getPluginManager().registerEvents(new InventoryListener(pl), pl);
-		Bukkit.getPluginManager().registerEvents(new PlayerListener(pl), pl);
-		Bukkit.getPluginManager().registerEvents(new SetupListener(pl), pl);
-		Bukkit.getPluginManager().registerEvents(new ChallengeListener(pl), pl);
-		Bukkit.getPluginManager().registerEvents(new GodFoodListener(pl), pl);
-		Bukkit.getPluginManager().registerEvents(new GodTokenListener(pl), pl);
-		Bukkit.getPluginManager().registerEvents(new TribeListener(pl), pl);
-		Bukkit.getPluginManager().registerEvents(new CustomEnchantsListener(pl), pl);
+		this.plugin = plugin;
+		
+		Bukkit.getPluginManager().registerEvents(new InventoryListener(plugin), plugin);
+		Bukkit.getPluginManager().registerEvents(new PlayerListener(plugin), plugin);
+		Bukkit.getPluginManager().registerEvents(new SetupListener(plugin), plugin);
+		Bukkit.getPluginManager().registerEvents(new ChallengeListener(plugin), plugin);
+		Bukkit.getPluginManager().registerEvents(new GodFoodListener(plugin), plugin);
+		Bukkit.getPluginManager().registerEvents(new GodTokenListener(plugin), plugin);
+		Bukkit.getPluginManager().registerEvents(new TribeListener(plugin), plugin);
+		Bukkit.getPluginManager().registerEvents(new CustomEnchantsListener(plugin), plugin);
 	}
 	
 	public Main getPlugin() {
-		return pl;
+		return plugin;
 	}
 	
 }
