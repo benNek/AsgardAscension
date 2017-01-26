@@ -88,7 +88,7 @@ public class MainInventory {
 	}
 	
 	public static void setupFoodEditListMenu(Player player) {
-		Inventory inv = Bukkit.createInventory(player, getInventorySize(GodFoodFile.getEffectAmount()), ChatColor.BOLD + "Edit Food of the Gods");
+		Inventory inv = Bukkit.createInventory(player, Convert.getInventorySize(GodFoodFile.getEffectAmount()), ChatColor.BOLD + "Edit Food of the Gods");
 		for(int i = 1; i <= GodFoodFile.getEffectAmount(); i++) {
 			inv.addItem(ItemStackGenerator.createItem(
 					GodFoodFile.getFoodType(i), GodFoodFile.getAmount(i), GodFoodFile.getData(i), ChatColor.LIGHT_PURPLE + GodFoodFile.getName(i), null));
@@ -170,7 +170,7 @@ public class MainInventory {
 	}
 	
 	public static void setupEditMenu(Player player) {
-		Inventory inv = Bukkit.createInventory(player, getInventorySize(plugin.getChallengesFile().getChallengesAmount()), ChatColor.BOLD + "Edit Challenge");
+		Inventory inv = Bukkit.createInventory(player, Convert.getInventorySize(plugin.getChallengesFile().getChallengesAmount()), ChatColor.BOLD + "Edit Challenge");
 		for(int i = 1; i <= plugin.getChallengesFile().getChallengesAmount(); i++){
 			Material mat;
 			if(plugin.getChallengesFile().getType(i).equalsIgnoreCase("parkour")){
@@ -237,14 +237,4 @@ public class MainInventory {
 		inv.setItem(13, ItemStackGenerator.createItem(Material.MONSTER_EGG, 0, 66, ChatColor.DARK_PURPLE + "Witch", null));
 		player.openInventory(inv);
 	}
-	
-	public static int getInventorySize(int items) {
-		for(int i = 1; i <= 6; i++){
-			if(i * 9 > items) {
-				return i * 9;
-			}
-		}
-		return 9;
-	}
-	
 }

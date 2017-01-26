@@ -13,7 +13,6 @@ import org.bukkit.inventory.Inventory;
 
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.files.GodFoodFile;
-import com.nekrosius.asgardascension.inventories.MainInventory;
 import com.nekrosius.asgardascension.utils.Convert;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
@@ -30,7 +29,7 @@ public class FOGCommand implements CommandExecutor {
 			return true;
 		}
 		Player player = (Player) sender;
-		Inventory inv = Bukkit.createInventory(player, MainInventory.getInventorySize(GodFoodFile.getEffectAmount()), ChatColor.BOLD + "FoG");
+		Inventory inv = Bukkit.createInventory(player, Convert.getInventorySize(GodFoodFile.getEffectAmount()), ChatColor.BOLD + "FoG");
 		for(int i = 1; i <= GodFoodFile.getEffectAmount(); i++) {
 			
 			List<String> effects = new ArrayList<>();

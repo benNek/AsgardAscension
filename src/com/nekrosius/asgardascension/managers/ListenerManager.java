@@ -11,6 +11,7 @@ import com.nekrosius.asgardascension.listeners.InventoryListener;
 import com.nekrosius.asgardascension.listeners.PlayerListener;
 import com.nekrosius.asgardascension.listeners.SetupListener;
 import com.nekrosius.asgardascension.listeners.TribeListener;
+import com.nekrosius.asgardascension.listeners.inventories.GodTokensInventoryListener;
 
 public class ListenerManager{
 
@@ -18,6 +19,7 @@ public class ListenerManager{
 	public ListenerManager(Main plugin) {
 		this.plugin = plugin;
 		
+		// General listeners
 		Bukkit.getPluginManager().registerEvents(new InventoryListener(plugin), plugin);
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(plugin), plugin);
 		Bukkit.getPluginManager().registerEvents(new SetupListener(plugin), plugin);
@@ -26,6 +28,10 @@ public class ListenerManager{
 		Bukkit.getPluginManager().registerEvents(new GodTokenListener(plugin), plugin);
 		Bukkit.getPluginManager().registerEvents(new TribeListener(plugin), plugin);
 		Bukkit.getPluginManager().registerEvents(new CustomEnchantsListener(plugin), plugin);
+		
+		// Inventory listeners
+		Bukkit.getPluginManager().registerEvents(new GodTokensInventoryListener(plugin), plugin);
+		
 	}
 	
 	public Main getPlugin() {

@@ -169,7 +169,7 @@ public class Convert {
 		}
 	}
 	
-	public static String getOrdinalFor(int number){
+	public static String getOrdinalFor(int number) {
 		if(number >= 10 && number <= 20)
 			return "th";
 		int remainder = number % 10;
@@ -226,7 +226,7 @@ public class Convert {
 		}
 	}
 	
-	static double getRandom(int min, int max){
+	static double getRandom(int min, int max) {
 		if(min > max){
 			int temp = max;
 			max = min;
@@ -240,6 +240,13 @@ public class Convert {
 		DecimalFormat formatter = new DecimalFormat("#,###.00");
 		System.out.println(formatter.format(price));
 		return ChatColor.GRAY + "\\$" + ChatColor.RED + formatter.format(price) + ChatColor.GRAY;
+	}
+	
+	public static int getInventorySize(int amount) {
+		if(amount < 0)
+			return 9;
+		int quotient = (int) Math.ceil(amount / 9.0);
+		return quotient > 5 ? 54 : quotient * 9;
 	}
     
 }

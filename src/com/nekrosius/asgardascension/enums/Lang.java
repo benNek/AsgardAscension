@@ -40,7 +40,9 @@ public enum Lang {
 	PRESTIGE_REACHED_MAX("prestige.reached_max", "&7You've reached the last prestige level!"),
 	PRESTIGE_READY("prestige.ready", "&7You're ready to ascend! Type &c/prestige confirm &7to ascend!"),
 	PRESTIGE_ASCENDED("prestige.ascended", "&7You've successfully ascended! Your Prestige now is &c%p&7!"),
-	PRESTIGE_TOKEN_REWARD("prestige.token_reward", "&7As a reward for hard work you got &c%p &7God Tokens!");
+	PRESTIGE_TOKEN_REWARD("prestige.token_reward", "&7As a reward for hard work you got &c%p &7God Tokens!"),
+	
+	TOKENS_BUY_NOT_ENOUGH("tokens.buy.not_enough", "&7You don't have enough GT! It costs &c%p GT");
  
     private String path;
     private String def;

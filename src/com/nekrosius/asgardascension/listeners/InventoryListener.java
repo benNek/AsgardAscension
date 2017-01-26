@@ -3,7 +3,6 @@ package com.nekrosius.asgardascension.listeners;
 import java.util.Arrays;
 
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,23 +11,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.challenges.ChallengeSetup;
 import com.nekrosius.asgardascension.enums.Lang;
-import com.nekrosius.asgardascension.enums.TokenType;
 import com.nekrosius.asgardascension.files.GodFoodFile;
 import com.nekrosius.asgardascension.files.RagnorakFile;
 import com.nekrosius.asgardascension.handlers.FoodSetup;
-import com.nekrosius.asgardascension.handlers.GodTokens;
-import com.nekrosius.asgardascension.inventories.GodTokensInventory;
 import com.nekrosius.asgardascension.inventories.MainInventory;
 import com.nekrosius.asgardascension.managers.TribeManager;
-import com.nekrosius.asgardascension.objects.GodToken;
 import com.nekrosius.asgardascension.objects.Tribe;
 import com.nekrosius.asgardascension.utils.Convert;
-import com.nekrosius.asgardascension.utils.Cooldowns;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
 public class InventoryListener implements Listener {
@@ -426,178 +419,6 @@ public class InventoryListener implements Listener {
 				player.closeInventory();
 				tribe.setType("vanir");
 				player.sendMessage(Lang.HEADERS_TRIBES.toString() + "You've set tribe's type to " + ChatColor.RED + "Vanir");
-			}
-		}
-		// GOD TOKENS TYPE
-		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "God Tokens Type")) {
-			event.setCancelled(true);
-			if(event.getCurrentItem().getItemMeta() == null)
-				return;
-			int tokens = plugin.getPlayerManager().getTokens(player);
-			if(event.getCurrentItem().getType().equals(Material.BOOK)) {
-				return;
-			}
-			if(event.getCurrentItem().getType().equals(Material.NETHER_STAR)) {
-				player.closeInventory();
-				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "Type amount of GT to withdraw");
-				SetupListener.withdrawal.put(player.getName(), true);
-				new BukkitRunnable() {
-					public void run() {
-						if(SetupListener.withdrawal.containsKey(player.getName())) {
-							SetupListener.withdrawal.remove(player.getName());
-							player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You didn't withdrawn any GT in time!");
-						}
-					}
-				}.runTaskLater(plugin, 200L);
-			}
-			else if(event.getCurrentItem().getType().equals(Material.STONE_SPADE)) {
-				player.closeInventory();
-				if(!GodTokensInventory.canBuyPlot(player)) {
-					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "No more upgrades!");
-					return;
-				}
-				if(tokens < 25) {
-					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough god tokens! (" + tokens + ")");
-					return;
-				}
-				plugin.getPlayerManager().setTokens(player, tokens - 25);
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + player.getName() + " remove plots.plot.1");
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + player.getName() + " add plots.plot.2");
-				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You now have one more available plot!");
-			}
-			else if(event.getCurrentItem().getType().equals(Material.CHEST)) {	
-				player.closeInventory();
-				if(tokens < 8) {
-					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough god tokens! (" + tokens + ")");
-					return;
-				}
-				plugin.getPlayerManager().setTokens(player, tokens - 8);
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "cr givekey " + player.getName() + " key 1");
-				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've bought a crate!");
-			}
-			else if(event.getCurrentItem().getType().equals(Material.ANVIL)) {
-				GodTokensInventory.setupRepairMenu(player);
-			}
-			else if(event.getCurrentItem().getType().equals(Material.GOLDEN_APPLE)) {	
-				player.closeInventory();
-				if(tokens < 1) {
-					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough god tokens! (" + tokens + ")");
-					return;
-				}
-				plugin.getPlayerManager().withdrawTokens(player, 1);
-				player.getInventory().addItem(
-					ItemStackGenerator.createItem(Material.GOLDEN_APPLE, 0, 1,
-							ChatColor.LIGHT_PURPLE + "" + ChatColor.UNDERLINE + "Odins Apple",
-							Arrays.asList(ChatColor.GRAY + "Genuine apple of Odin")));
-				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've bought a Odins Apple!");
-			}
-			else {
-				GodTokensInventory.setupTokensShopMenu((Player) event.getWhoClicked(),
-						TokenType.valueOf(event.getCurrentItem().getItemMeta().getDisplayName().substring(2).toUpperCase()));
-			}
-		}
-		// GOD TOKENS SELECTION
-		else if(event.getInventory().getName().equalsIgnoreCase(ChatColor.BOLD + "God Tokens")) {
-			event.setCancelled(true);
-			if(event.getCurrentItem().getItemMeta() == null)
-				return;
-			if(event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
-				GodTokensInventory.setupTokensMenu((Player) event.getWhoClicked());
-				return;
-			}
-			GodToken token = GodTokens.findToken(event.getCurrentItem().getItemMeta().getDisplayName().substring(2));
-			if("Fortune".equalsIgnoreCase(token.getName())) {
-				event.getWhoClicked().sendMessage(Lang.HEADERS_TOKENS.toString() + "Currently disabled!");
-				return;
-			}
-			if(Cooldowns.getCooldown((Player) event.getWhoClicked(), token.getName()) > 0) {
-				event.getWhoClicked().closeInventory();
-				event.getWhoClicked().sendMessage(Lang.HEADERS_TOKENS.toString() + "You can use this token in " 
-						+ ChatColor.RED + Convert.timeToString((int)(Cooldowns.getCooldown((Player) event.getWhoClicked(), token.getName()) / 1000))
-						+ ChatColor.GRAY + "!");
-				return;
-			}
-			if(plugin.getPlayerManager().hasPurchasedToken((Player) event.getWhoClicked(), token.getName())) {
-				event.getWhoClicked().closeInventory();
-				GodTokens.startSkill(event.getWhoClicked().getName(), token);
-			}
-			else {
-				GodTokensInventory.setupTokensDurationMenu((Player) event.getWhoClicked(), token);
-			}
-		}
-		// GOD TOKEN DURATION
-		else if(event.getInventory().getName().startsWith(ChatColor.BOLD + "BUY")) {
-			event.setCancelled(true);
-			if(event.getCurrentItem().getItemMeta() == null)
-				return;
-			GodToken token = GodTokens.findToken(event.getInventory().getName().substring(6));
-			if(event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
-				GodTokensInventory.setupTokensShopMenu((Player) event.getWhoClicked(), token.getType());
-				return;
-			}
-			if(event.getCurrentItem().getType().equals(Material.PAPER)) {
-				player.closeInventory();
-				if(plugin.getPlayerManager().getTokens(player) < token.getTempPrice()) {
-					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough tokens! (" + token.getTempPrice() + ")");
-					return;
-				}
-				plugin.getPlayerManager().setTokens(player, plugin.getPlayerManager().getTokens(player) - token.getTempPrice());
-				GodTokens.startSkill(event.getWhoClicked().getName(), token);
-			}
-			else if(event.getCurrentItem().getType().equals(Material.BOOK)) {
-				if(plugin.getPlayerManager().getTokens(player) < token.getPermPrice()) {
-					player.closeInventory();
-					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough tokens! (" + token.getPermPrice() + ")");
-					return;
-				}
-				player.closeInventory();
-				plugin.getPlayerManager().setTokens(player, plugin.getPlayerManager().getTokens(player) - token.getPermPrice());
-				plugin.getPlayerManager().addPurchasedToken(player, token.getName());
-				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've permanently bought " + ChatColor.RED + token.getName() + ChatColor.GRAY + " ability!");
-			}
-			
-		}
-		// GOD TOKEN REPAIR MENU
-		else if(event.getInventory().getName().equals(ChatColor.BOLD + "Repair Menu")) {
-			if(event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
-				GodTokensInventory.setupTokensMenu((Player) event.getWhoClicked());
-				return;
-			}
-			else if(event.getCurrentItem().getType().equals(Material.STRING)) {
-				player.closeInventory();
-				player.sendMessage(Lang.HEADERS_TOKENS.toString() + event.getCurrentItem().getItemMeta().getDisplayName().substring(2));
-			}
-			else if(event.getCurrentItem().hasItemMeta()
-					&& event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Repair item in main hand")) {
-				player.closeInventory();
-				if(plugin.getPlayerManager().hasTokens(player, 1)) {
-					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "Your item in hand was successfully repaired!");
-					plugin.getPlayerManager().withdrawTokens(player, 1);
-					player.getInventory().getItemInMainHand().setDurability((short)0);
-				}
-				else {
-					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough GT! It costs" + ChatColor.RED + " 1 GT");
-				}
-			}
-			else if(event.getCurrentItem().getType().equals(Material.CHEST)) {
-				player.closeInventory();
-				if(plugin.getPlayerManager().hasTokens(player, 5)) {
-					for (ItemStack item : player.getInventory().getContents()) {
-	                    if (item != null) {
-	                        if (ItemStackGenerator.isRepairable(item))
-	                            item.setDurability((short) 0);
-	                    }
-	                }
-	                for (ItemStack item : player.getInventory().getArmorContents()) {
-	                    if (item != null)
-	                        item.setDurability((short) 0);
-	                }
-	                plugin.getPlayerManager().withdrawTokens(player, 5);
-	                player.sendMessage(Lang.HEADERS_TOKENS.toString() + "All items in your inventory were successfully repaired!");
-				}
-				else {
-					player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You don't have enough GT! It costs" + ChatColor.RED + " 5 GT");
-				}
 			}
 		}
 		

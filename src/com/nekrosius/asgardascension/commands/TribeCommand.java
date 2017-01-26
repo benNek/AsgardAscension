@@ -28,7 +28,6 @@ import com.nekrosius.asgardascension.utils.Pager;
 
 public class TribeCommand implements CommandExecutor {
 	
-	// TODO remove public ?
 	public static Map<String, Boolean> socialSpy;
 	
 	private Main plugin;

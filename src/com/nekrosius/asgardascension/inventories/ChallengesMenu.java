@@ -17,7 +17,7 @@ public class ChallengesMenu {
 	private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("AsgardAscension");
 	
 	public static void setup(Player player) {
-		Inventory inv = Bukkit.createInventory(player, getInventorySize(plugin.getChallengesFile().getChallengesAmount()), ChatColor.BOLD + "Challenges");
+		Inventory inv = Bukkit.createInventory(player, Convert.getInventorySize(plugin.getChallengesFile().getChallengesAmount()), ChatColor.BOLD + "Challenges");
 		String status = ChatColor.GREEN + " [COMPLETED]";
 		int level = plugin.getPlayerManager().getRank(player);
 		int prestige = plugin.getPlayerManager().getPrestige(player);
@@ -32,12 +32,5 @@ public class ChallengesMenu {
 		}
 		player.openInventory(inv);
 	}
-	
-	private static int getInventorySize(int amount) {
-		if(amount < 0) return 9;
-		int quotient = (int) Math.ceil(amount / 9.0);
-		return quotient > 5 ? 54 : quotient * 9;
-	}
-	
 
 }

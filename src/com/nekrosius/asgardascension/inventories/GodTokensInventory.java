@@ -1,6 +1,8 @@
 package com.nekrosius.asgardascension.inventories;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Bukkit;
@@ -11,9 +13,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.nekrosius.asgardascension.Main;
-import com.nekrosius.asgardascension.enums.TokenType;
-import com.nekrosius.asgardascension.handlers.GodTokens;
+import com.nekrosius.asgardascension.enums.ItemType;
+import com.nekrosius.asgardascension.objects.Ability;
 import com.nekrosius.asgardascension.objects.GodToken;
+import com.nekrosius.asgardascension.utils.Convert;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
 public class GodTokensInventory {
@@ -29,21 +32,8 @@ public class GodTokensInventory {
 		player.openInventory(inv);
 	}
 	
-	public static void setupTokensShopMenu(Player player, TokenType type) {
-		Inventory inv = Bukkit.createInventory(player, 9, ChatColor.BOLD + "God Tokens");
-		for(GodToken token : GodTokens.tokens) {
-			if(token.getType().equals(type)) {
-				inv.addItem(ItemStackGenerator.createItem(token.getIcon(),
-						0, 0, ChatColor.LIGHT_PURPLE + token.getName(),
-						token.getDescription(), true));
-			}
-		}
-		inv.setItem(8, ItemStackGenerator.createItem(Material.REDSTONE_BLOCK, 0, 0, ChatColor.RED + "Go back!", null));
-		player.openInventory(inv);
-	}
-	
 	public static void setupTokensMenu(Player player) {
-		Inventory inv = Bukkit.createInventory(player, 18, ChatColor.BOLD + "God Tokens Type");
+		Inventory inv = Bukkit.createInventory(player, 18, ChatColor.BOLD + "God Tokens Shop");
 		inv.setItem(0, ItemStackGenerator.createItem(Material.BOOK, 0, 0,
 				ChatColor.GRAY + "GT: " + ChatColor.RED + plugin.getPlayerManager().getTokens(player), null));
 		inv.setItem(9, ItemStackGenerator.createItem(Material.BOOK, 0, 0,
@@ -57,16 +47,10 @@ public class GodTokensInventory {
 			inv.setItem(1, ItemStackGenerator.createItem(Material.STONE_SPADE, 0, 0, ChatColor.LIGHT_PURPLE + "Additional plot access", 
 					Arrays.asList("Price: " + ChatColor.RED + "25 GT"), true));
 		}
-
-		//inv.setItem(2, ItemStackGenerator.createItem(Material.CHEST, 0, 0, ChatColor.LIGHT_PURPLE + "Donator rank", 
-		//		Arrays.asList(ChatColor.GREEN + "Price: " + ChatColor.RED + "8 god tokens")));
-		Material values[] = {Material.GOLD_SWORD, Material.GOLD_PICKAXE, Material.DOUBLE_PLANT};
-		int i = 0;
-		for(TokenType type : TokenType.values()) {
-			inv.setItem(i + 3, ItemStackGenerator.createItem(values[i], 0, 0,
-					ChatColor.LIGHT_PURPLE + WordUtils.capitalize(type.name().toLowerCase()), null, true));
-			i++;
-		}
+		inv.setItem(3, ItemStackGenerator.createItem(Material.WATCH, 0, 0, ChatColor.LIGHT_PURPLE + "Temporary Tokens",
+				Arrays.asList("Click for more information!")));
+		inv.setItem(4, ItemStackGenerator.createItem(Material.END_CRYSTAL, 0, 0, ChatColor.LIGHT_PURPLE + "Permanent Tokens",
+				Arrays.asList("Click for more information!")));
 		inv.setItem(12, ItemStackGenerator.createItem(Material.CHEST, 0, 0, ChatColor.LIGHT_PURPLE + "Crate", 
 				Arrays.asList("Price: " + ChatColor.RED + "8 GT")));
 		inv.setItem(13, ItemStackGenerator.createItem(Material.ANVIL, 0, 0, ChatColor.LIGHT_PURPLE + "Repair", 
@@ -75,6 +59,28 @@ public class GodTokensInventory {
 				Arrays.asList("Price: " + ChatColor.RED + "1 GT")));
 		
 		player.openInventory(inv);
+	}
+	
+	public static void setupAbilitiesMenu(Player player, boolean temporary) {
+		String title = temporary ? "Temporary" : "Permanent";
+		Inventory inventory = Bukkit.createInventory(player, Convert.getInventorySize(plugin.getAbilityManager().getAbilities().size()),
+				ChatColor.BOLD + title + " God Tokens");
+		for(Ability ability : plugin.getAbilityManager().getAbilities()) {
+			List<String> description = new ArrayList<>(ability.getDescription());
+			
+			// Adding price depending whetver ability is permanent or temporary
+			int price = temporary ? ability.getTemporaryPrice() : ability.getPermanentPrice();
+			String line = ChatColor.GRAY + "Price: " + ChatColor.RED + price + " GT";
+			description.add(line);
+			
+			description.add(ChatColor.GRAY + "Supported items:");
+			for(ItemType item : ability.getItems()) {
+				description.add(ChatColor.RED + "- " + WordUtils.capitalize(item.toString().replaceAll("_", "").toLowerCase()));
+			}
+			
+			inventory.addItem(ItemStackGenerator.createItem(ability.getIcon(), 0, 0, ChatColor.RED + ability.getName(), description, true));
+		}
+		player.openInventory(inventory);
 	}
 	
 	public static void setupRepairMenu(Player player) {
