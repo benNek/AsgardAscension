@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.commands.TribeCommand;
@@ -134,22 +133,6 @@ public class TribeManager {
 		if(one.getAllies().contains(two.getName()))
 			return true;
 		return false;
-	}
-	
-	public static boolean canAttack(Player one, Player two) {
-		if(!(Main.isPVPEnabled(one) || Main.isPVPEnabled(two))) {
-			return false;
-		}
-		if(!hasTribe(one.getName()) || !hasTribe(two.getName())) {
-			return true;
-		}
-		if(getPlayerTribe(one.getName()).getName().equals(getPlayerTribe(two.getName()).getName())){
-			return false;
-		}
-		if(isAllies(getPlayerTribe(one.getName()), getPlayerTribe(two.getName()))) {
-			return false;
-		}
-		return true;
 	}
 	
 	public static boolean canRankUp(Tribe tribe) {

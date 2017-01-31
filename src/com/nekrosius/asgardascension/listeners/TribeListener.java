@@ -26,6 +26,7 @@ import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.objects.Tribe;
 import com.nekrosius.asgardascension.utils.Cooldowns;
 import com.nekrosius.asgardascension.utils.TribeUtils;
+import com.nekrosius.asgardascension.utils.Utility;
 
 public class TribeListener implements Listener {
 	
@@ -88,7 +89,7 @@ public class TribeListener implements Listener {
 			if(!TribeManager.hasTribe(event.getPlayer().getName())) {
 				return;
 			}
-			if(!Main.isPVPEnabled(event.getPlayer())) {
+			if(!Utility.isPVPEnabled(event.getPlayer())) {
 				return;
 			}
 			if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.WOOD_SWORD) 
@@ -134,7 +135,7 @@ public class TribeListener implements Listener {
 				if(!TribeManager.hasTribe(event.getPlayer().getName())) {
 					return;
 				}
-				if(!Main.isPVPEnabled(event.getPlayer())) {
+				if(!Utility.isPVPEnabled(event.getPlayer())) {
 					return;
 				}
 				Player player = event.getPlayer();

@@ -39,8 +39,8 @@ import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.files.MessagesFile;
 import com.nekrosius.asgardascension.handlers.GodTokens;
-import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
+import com.nekrosius.asgardascension.utils.Utility;
 
 public class PlayerListener implements Listener {
 	
@@ -94,7 +94,7 @@ public class PlayerListener implements Listener {
 		if(event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
 			Player victim = (Player) event.getEntity();
 			Player damager = (Player) event.getDamager();
-			if(!TribeManager.canAttack(victim, damager)){
+			if(!Utility.canAttack(victim, damager)){
 				event.setCancelled(true);
 			}
 		}

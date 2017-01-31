@@ -43,6 +43,7 @@ public class ConfigFile {
 			msgs.add("Better luck next time!");
 			msgs.add("You've won special iron ingot!");
 			config.addDefault("lucky_blocks.messages", msgs);
+			config.addDefault("tokens.magnet", "give %player dirt");
 			config.addDefault("tribes.price", 10000);
 			config.addDefault("tribes.1.members", 5);
 			config.addDefault("tribes.2.price", 50000);
@@ -59,10 +60,8 @@ public class ConfigFile {
 			config.options().copyDefaults(true);
 		}
 		else {
-			if(config.get("enchants.disabled_worlds") == null) {
-				List<String> worlds = new ArrayList<>();
-				worlds.add("Plots");
-				config.set("enchants.disabled_worlds", worlds);
+			if(config.get("tokens.magnet") == null) {
+				config.set("tokens.magnet", "give %player dirt");
 			}
 		}
 		saveConfig();
@@ -120,6 +119,10 @@ public class ConfigFile {
 	public static void setPrestigeLocation(String location) {
 		config.set("prestige.location", location);
 		saveConfig();
+	}
+	
+	public static String getMagnetCommand() {
+		return config.getString("tokens.magnet");
 	}
 	
 	public static boolean isEnchantDisabled(String name) {

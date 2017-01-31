@@ -4,21 +4,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.enums.ItemType;
+import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.objects.Ability;
-
-import net.md_5.bungee.api.ChatColor;
+import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
 public class AbilityManager {
 	
 	private List<Ability> abilities;
+	
+	// |--------|------|-----------|
+	// | Player | Item | Time left |
+	// |--------|------|-----------|
+	private Table<Player, ItemStack, Integer> items;
+	
 	Main plugin;
 	
 	public AbilityManager(Main plugin) {
 		this.plugin = plugin;
+		this.items = HashBasedTable.create();
 		registerAbilities();
 	}
 	
@@ -95,9 +109,108 @@ public class AbilityManager {
 		abilities.add(ability);
 	}
 	
-	public boolean canUse(ItemStack item, List<ItemType> supported)
-	{
+	public void applyAbility(Player player, ItemStack item, Ability ability, boolean temporary) {
+		// Adding lore
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.hasLore() ?
+				meta.getLore() : new ArrayList<>();
+				
+		lore.add(ChatColor.GRAY + "Ability: " + ChatColor.RED + ability.getName());
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		player.getInventory().setItemInMainHand(item);
 		
+		addItem(player, item);
+		
+		if(!temporary)
+			return;
+		new BukkitRunnable() {
+			
+			@Override
+			public void run() {
+				if(!isActive(player, item)) {
+					player.sendMessage("cancelled");
+					this.cancel();
+				}
+				
+				/*
+				ItemMeta newMeta = item.getItemMeta();
+				List<String> newLore = newMeta.getLore();
+				newLore.remove(ChatColor.GRAY + "Ability: " + ChatColor.RED + ability.getName());
+				newMeta.setLore(newLore);
+				item.setItemMeta(newMeta);
+				player.getInventory().setItemInMainHand(item);
+				*/
+				player.sendMessage(Lang.HEADERS_TOKENS.toString() 
+						+ Lang.TOKENS_SHOP_EXPIRED.toString()
+							.replaceAll("%t", ability.getName()));
+			}
+			
+		}.runTaskLater(plugin, 100); //* 60 * 20);
+	}
+	
+	public Ability getAbility(ItemStack item) {
+		String name = "";
+		for(String lore : item.getItemMeta().getLore()) {
+			if(lore.contains("Ability: ")) {
+				name = lore.substring(13);
+			}
+		}
+		if(name.isEmpty())
+			return null;
+		
+		for(Ability ability : getAbilities()) {
+			if(ability.getName().equalsIgnoreCase(name))
+				return ability;
+		}
+		return null;
+	}
+	
+	/**
+	 * @param item player's item
+	 * @return is player's item has any abilities already
+	 */
+	public boolean hasAbility(ItemStack item) {
+		if(!item.hasItemMeta() || !item.getItemMeta().hasLore())
+			return false;
+		
+		for(String lore : item.getItemMeta().getLore()) {
+			if(lore.contains("Ability: ")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * @param item player's item
+	 * @param supported list of supported items
+	 * @return is player's item is supported by ability
+	 */
+	public boolean isSupported(ItemStack item, List<ItemType> supported)
+	{
+		if(ItemStackGenerator.isAxe(item)) {
+			return supported.contains(ItemType.AXE);
+		}
+		else if(ItemStackGenerator.isPickaxe(item)) {
+			return supported.contains(ItemType.PICKAXE);
+		}
+		else if(ItemStackGenerator.isSword(item)) {
+			return supported.contains(ItemType.SWORD);
+		}
+		else if(ItemStackGenerator.isHelmet(item)) {
+			return supported.contains(ItemType.HELMET);
+		}
+		else if(ItemStackGenerator.isChestplate(item)) {
+			return supported.contains(ItemType.CHESTPLATE);
+		}
+		else if(ItemStackGenerator.isLeggings(item)) {
+			return supported.contains(ItemType.LEGGINGS);
+		}
+		else if(ItemStackGenerator.isBoots(item)) {
+			return supported.contains(ItemType.BOOTS);
+		}
+		return false;
 	}
 
 	/**
@@ -132,5 +245,26 @@ public class AbilityManager {
 	public void addAbility(Ability ability) {
 		abilities.add(ability);
 	}
+	
+	/**
+	 * @param player the item holder
+	 * @param item the player's item
+	 */
+	public void addItem(Player player, ItemStack item) {
+		items.put(player, item, 15);
+	}
+	
+	/**
+	 * @param player the item holder
+	 * @param item the player's item
+	 */
+	public void subtractMinute(Player player, ItemStack item) {
+		items.put(player, item, items.get(player, item) - 1);
+	}
+	
+	public boolean isActive(Player player, ItemStack item) {
+		return player.getInventory().contains(item);
+	}
+	
 	
 }

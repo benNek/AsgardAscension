@@ -1,7 +1,6 @@
 package com.nekrosius.asgardascension.listeners;
 
 import java.util.HashSet;
-import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,13 +24,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
 
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.handlers.GodTokens;
-import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.utils.Convert;
+import com.nekrosius.asgardascension.utils.Utility;
 
 import de.slikey.effectlib.effect.LineEffect;
 import de.slikey.effectlib.util.ParticleEffect;
@@ -55,7 +53,7 @@ public class GodTokenListener implements Listener {
 		
 		Player player = event.getPlayer();
 		boolean remove = false;
-		if(!Main.isPVPEnabled(player)) {
+		if(!Utility.isPVPEnabled(player)) {
 			return;
 		}
 		if("Fireball".equalsIgnoreCase(GodTokens.getSkill(player.getName()))) {
@@ -67,14 +65,14 @@ public class GodTokenListener implements Listener {
 		else if("Lightning".equals(GodTokens.getSkill(player.getName()))) {
 			@SuppressWarnings("deprecation")
 			Block block = player.getTargetBlock((HashSet<Byte>) null, 15);
-			if(!Main.isPVPEnabled(block.getLocation())) {
+			if(!Utility.isPVPEnabled(block.getLocation())) {
 				return;
 			}
 			strikeLightning(player, block);
 			remove = true;
 		}
-		else if("Freeze".equals(GodTokens.getSkill(player.getName())) && getTargetPlayer(player) != null) {
-			Player target = getTargetPlayer(player);
+		else if("Freeze".equals(GodTokens.getSkill(player.getName())) && Utility.getTargetPlayer(player) != null) {
+			Player target = Utility.getTargetPlayer(player);
 			freezeTarget(player, target);
 			player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've frozen " + ChatColor.RED + target.getName());
 			target.sendMessage(Lang.HEADERS_TOKENS.toString() + "You were frozen by God Token of " + ChatColor.RED + player.getName());
@@ -120,7 +118,7 @@ public class GodTokenListener implements Listener {
 			return;
 		if(event.getEntity() instanceof Player){
 			if("Dodge".equals(GodTokens.getSkill(((Player)event.getEntity()).getName()))){
-				if(getRandom(1, 100) <= 30) {
+				if(Utility.getRandom(1, 100) <= 30) {
 					((Player)event.getEntity()).sendMessage(Lang.HEADERS_TOKENS.toString() + "You've dodged an attack!");
 					event.setCancelled(true);
 				}
@@ -194,19 +192,19 @@ public class GodTokenListener implements Listener {
 			left = block.getRelative(BlockFace.NORTH);
 			right = block.getRelative(BlockFace.SOUTH);
 		}
-		if(plugin.getWorldGuard().canBuild(player, block) && Main.canBreak(player, block.getLocation())) {
+		if(Utility.canBuild(player, block)) {
 			player.getInventory().addItem(new ItemStack(block.getType()));
 			block.setType(Material.AIR);
 		}
-		if(plugin.getWorldGuard().canBuild(player, up) && Main.canBreak(player, up.getLocation())) {
+		if(Utility.canBuild(player, up)) {
 			player.getInventory().addItem(new ItemStack(up.getType()));
 			up.setType(Material.AIR);
 		}
-		if(plugin.getWorldGuard().canBuild(player, left) && Main.canBreak(player, left.getLocation())) {
+		if(Utility.canBuild(player, left)) {
 			player.getInventory().addItem(new ItemStack(left.getType()));
 			left.setType(Material.AIR);
 		}
-		if(plugin.getWorldGuard().canBuild(player, right) && Main.canBreak(player, right.getLocation())) {
+		if(Utility.canBuild(player, right)) {
 			player.getInventory().addItem(new ItemStack(right.getType()));
 			right.setType(Material.AIR);
 		}
@@ -221,7 +219,7 @@ public class GodTokenListener implements Listener {
 				continue;
 			}
 			Player target = (Player) e;
-			if(!TribeManager.canAttack(player, target)) {
+			if(!Utility.canAttack(player, target)) {
 				continue;
 			}
 			double distance = target.getLocation().distance(block.getLocation());
@@ -251,32 +249,6 @@ public class GodTokenListener implements Listener {
 		eff.start();
 		target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 6));
 	}
-	
-	// Utilities
-	
-	static Player getTargetPlayer(Player player) {
-        return getTarget(player, player.getWorld().getPlayers());
-    }
- 
-    static <T extends Entity> T getTarget(Entity entity, Iterable<T> entities) {
-        T target = null;
-        double threshold = 1;
-        for (T other:entities) {
-        	if(entity.getLocation().distance(other.getLocation()) <= 15){
-	            Vector n = other.getLocation().toVector().subtract(entity.getLocation().toVector());
-	            if (entity.getLocation().getDirection().normalize().crossProduct(n).lengthSquared() < threshold && n.normalize().dot(entity.getLocation().getDirection().normalize()) >= 0) {
-	                if (target == null || target.getLocation().distanceSquared(entity.getLocation()) > other.getLocation().distanceSquared(entity.getLocation()))
-	                    target = other;
-	            }
-        	}
-        }
-		return target;
-	}
-    
-    public int getRandom(int min, int max){
-        Random random = new Random();
-        return random.nextInt((max - min) + 1) + min;
-    }
 	
 	public Main getPlugin() {
 		return plugin;

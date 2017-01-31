@@ -16,8 +16,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.files.ConfigFile;
-import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.utils.Convert;
+import com.nekrosius.asgardascension.utils.Utility;
 
 public class CustomEnchantsListener implements Listener {
 	
@@ -37,7 +37,7 @@ public class CustomEnchantsListener implements Listener {
 			if(damager.getInventory().getItemInMainHand().getItemMeta().getLore() == null)
 				return;
 			Player victim = (Player) event.getEntity();
-			if(!TribeManager.canAttack(damager, victim)) 
+			if(!Utility.canAttack(damager, victim)) 
 				return;
 			List<String> lore = damager.getInventory().getItemInMainHand().getItemMeta().getLore();
 			if(contains(lore, "Wither Damage")) {

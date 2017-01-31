@@ -3,6 +3,7 @@ package com.nekrosius.asgardascension.managers;
 import org.bukkit.Bukkit;
 
 import com.nekrosius.asgardascension.Main;
+import com.nekrosius.asgardascension.listeners.AbilityListener;
 import com.nekrosius.asgardascension.listeners.ChallengeListener;
 import com.nekrosius.asgardascension.listeners.CustomEnchantsListener;
 import com.nekrosius.asgardascension.listeners.GodFoodListener;
@@ -28,6 +29,7 @@ public class ListenerManager{
 		Bukkit.getPluginManager().registerEvents(new GodTokenListener(plugin), plugin);
 		Bukkit.getPluginManager().registerEvents(new TribeListener(plugin), plugin);
 		Bukkit.getPluginManager().registerEvents(new CustomEnchantsListener(plugin), plugin);
+		Bukkit.getPluginManager().registerEvents(new AbilityListener(plugin), plugin);
 		
 		// Inventory listeners
 		Bukkit.getPluginManager().registerEvents(new GodTokensInventoryListener(plugin), plugin);

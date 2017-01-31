@@ -42,7 +42,14 @@ public enum Lang {
 	PRESTIGE_ASCENDED("prestige.ascended", "&7You've successfully ascended! Your Prestige now is &c%p&7!"),
 	PRESTIGE_TOKEN_REWARD("prestige.token_reward", "&7As a reward for hard work you got &c%p &7God Tokens!"),
 	
-	TOKENS_BUY_NOT_ENOUGH("tokens.buy.not_enough", "&7You don't have enough GT! It costs &c%p GT");
+	TOKENS_SHOP_NOT_ENOUGH("tokens.shop.not_enough", "&7You don't have enough GT! It costs &c%p GT"),
+	TOKENS_SHOP_NOT_SUPPORTED("tokens.shop.not_supported", "&7Your current item in hand is &cnot supported&7!"),
+	TOKENS_SHOP_ALREADY_APPLIED("tokens.shop.already_applied", "&7Your current item in hand already has an active ability!"),
+	TOKENS_SHOP_APPLY("tokens.shop.apply", "&7You applied &c%t &7ability for your current item!"),
+	TOKENS_SHOP_EXPIRED("tokens.expired", "&c%t &7has ran out!"),
+	TOKENS_MAGNET("tokens.magnet", "&cMagnet &7ability has successfully activated!"),
+	TOKENS_POISONED("tokens.poisoned", "&7You have been poisoned by &c%s&7!"),
+	TOKENS_FLAMED("tokens.flamed", "&7You have been flamed by &c%s&7!");
  
     private String path;
     private String def;

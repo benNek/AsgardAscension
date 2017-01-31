@@ -6,25 +6,3 @@ headers:
   tokens: "&7[&cTokens&7]"
   ragnorak: "&7[&cRagnorak&7]"
   tribes: "&7[&cTribes&7]"
-commands:
-  only_player: "&7Only players can use this command!"
-  no_permission: "&7You do not have permission to use this command!"
-  unknown_command: "&7Unknown command! Check your syntax!"
-  unknown_target: "&7Player not found! Check your syntax!"
-challenges:
-  not_enough_money: "&7You don't have enough money! It costs %p"
-  start: "&7You've started &c%t &7challenge! (%p)"
-  complete: "&7You have completed the challenge! Your Rank now is &c%t&7!"
-  test_complete: "&7Test completed. If you see this message challenge works fine!"
-  leave: "&7You've left &c%t &7Challenge! Your money was refunded!"
-prestige:
-  set:
-    not_number: "&7Please type a number only (like 6)!"
-    not_in_range: "&7Prestige should be between 0 and %p!"
-    for_sender: "&7You've set &c%s &7prestige to &c%p&7!"
-    for_target: "&7Your prestige has been set to &c%p&7!"
-  rank_insufficient: "&7Your rank is insufficient to prestige! You need to reach Rank &c%t &7before prestiging!"
-  reached_max: "&7You've reached the last prestige level!"
-  ready: "&7You're ready to ascend! Type &c/prestige confirm &7to ascend!"
-  ascended: "&7You've successfully ascended! Your Prestige now is &c%p&7!"
-  token_reward: "&7As a reward for hard work you got &c%p &7God Tokens!"

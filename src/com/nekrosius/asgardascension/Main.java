@@ -6,7 +6,6 @@ import java.io.InputStream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -14,7 +13,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.intellectualcrafters.plot.api.PlotAPI;
-import com.intellectualcrafters.plot.object.Plot;
 import com.nekrosius.asgardascension.challenges.Challenge;
 import com.nekrosius.asgardascension.commands.AsgardAscensionCommand;
 import com.nekrosius.asgardascension.commands.ChallengesExecutor;
@@ -44,10 +42,6 @@ import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.objects.Tribe;
 import com.nekrosius.asgardascension.utils.Logger;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
 import be.maximvdw.placeholderapi.PlaceholderReplaceEvent;
@@ -368,46 +362,12 @@ public class Main extends JavaPlugin{
 		return worldGuard;
 	}
 	
+	public PlotAPI getPlotsAPI() {
+		return plots;
+	}
+	
 	public Economy getEconomy() {
 		return economy;
-	}
-	
-	// Other
-	
-	public static boolean isPVPEnabled(Player player) {
-		return isPVPEnabled(player.getLocation());
-	}
-	
-	public static boolean isPVPEnabled(Location location) {
-		String global = "__global__";
-		if(worldGuard.getRegionManager(location.getWorld()) == null)	
-			return true;
-		RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
-		ApplicableRegionSet arset = regionManager.getApplicableRegions(location);
-		ProtectedRegion region = regionManager.getRegion(global);
-		int priority = -10000;
-		for(ProtectedRegion r : arset.getRegions()) { 
-			if(r.getPriority() > priority) {
-				region = r;
-				priority = r.getPriority();
-			}
-		}
-		if(region == null) {
-			if(regionManager.getRegion(global) == null)
-				return false;
-			return "ALLOW".equals(regionManager.getRegion(global).getFlag(DefaultFlag.PVP).toString());
-		}
-		if(region.getFlag(DefaultFlag.PVP) == null)
-			return true;
-		return "ALLOW".equalsIgnoreCase(region.getFlag(DefaultFlag.PVP).toString());
-	}
-	
-	public static boolean canBreak(Player player, Location location) {
-		Plot plot = plots.getPlot(location);
-		if(plot == null) {
-			return true;
-		}
-		return plot.isAdded(player.getUniqueId());
 	}
 	
 }

@@ -18,10 +18,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.enums.TokenType;
-import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.objects.GodToken;
 import com.nekrosius.asgardascension.utils.Cooldowns;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
+import com.nekrosius.asgardascension.utils.Utility;
 
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.effect.AnimatedBallEffect;
@@ -61,7 +61,7 @@ public class GodTokens {
 						this.cancel();
 					for(Entity e : p.getNearbyEntities(radius, radius, radius)){
 						if(e instanceof Player) {
-							if(TribeManager.canAttack(p, (Player) e)) {
+							if(Utility.canAttack(p, (Player) e)) {
 								e.setFireTicks(60);
 							}
 						}
@@ -77,7 +77,7 @@ public class GodTokens {
 							this.cancel();
 						// TODO test this out
 						if(e instanceof Player) {
-							if(TribeManager.canAttack(p, (Player) e)) {
+							if(Utility.canAttack(p, (Player) e)) {
 								((Player) e).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, 1));
 							}
 						}

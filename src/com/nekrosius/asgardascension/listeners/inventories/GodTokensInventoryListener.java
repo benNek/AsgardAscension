@@ -116,15 +116,32 @@ public class GodTokensInventoryListener implements Listener {
 	
 	private void handleTemporaryTokenPurchase(Player player, Ability ability) {
 		player.closeInventory();
+		
+		// Not enough god tokens
 		if(!plugin.getPlayerManager().hasTokens(player, ability.getTemporaryPrice())) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
-					+ Lang.TOKENS_BUY_NOT_ENOUGH.toString()
+					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
 						.replaceAll("%p", String.valueOf(ability.getTemporaryPrice())));
 			return;
 		}
 		
+		// Current item in hand is not supported by ability
+		if(!plugin.getAbilityManager().isSupported(player.getInventory().getItemInMainHand(), ability.getItems())) {
+			player.sendMessage(Lang.HEADERS_TOKENS.toString()
+					+ Lang.TOKENS_SHOP_NOT_SUPPORTED.toString());
+			return;
+		}
 		
+		// Already has ability on current item
+		if(plugin.getAbilityManager().hasAbility(player.getInventory().getItemInMainHand())) {
+			player.sendMessage(Lang.HEADERS_TOKENS.toString() + Lang.TOKENS_SHOP_ALREADY_APPLIED);
+			return;
+		}
 		
+		plugin.getAbilityManager().applyAbility(player, player.getInventory().getItemInMainHand(), ability, true);
+		player.sendMessage(Lang.HEADERS_TOKENS.toString()
+				+ Lang.TOKENS_SHOP_APPLY.toString()
+					.replaceAll("%t", ability.getName()));
 	}
 	
 	private void handleGTWithdrawal(Player player) {
@@ -145,7 +162,7 @@ public class GodTokensInventoryListener implements Listener {
 		player.closeInventory();
 		if(!plugin.getPlayerManager().hasTokens(player, 8)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
-					+ Lang.TOKENS_BUY_NOT_ENOUGH.toString()
+					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
 						.replaceAll("%p", "8"));
 			return;
 		}
@@ -163,7 +180,7 @@ public class GodTokensInventoryListener implements Listener {
 		}
 		if(!plugin.getPlayerManager().hasTokens(player, 25)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
-					+ Lang.TOKENS_BUY_NOT_ENOUGH.toString()
+					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
 						.replaceAll("%p", "25"));
 			return;
 		}
@@ -178,7 +195,7 @@ public class GodTokensInventoryListener implements Listener {
 		player.closeInventory();
 		if(!plugin.getPlayerManager().hasTokens(player, 1)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
-					+ Lang.TOKENS_BUY_NOT_ENOUGH.toString()
+					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
 						.replaceAll("%p", "1"));
 			return;
 		}
@@ -195,7 +212,7 @@ public class GodTokensInventoryListener implements Listener {
 		player.closeInventory();
 		if(!plugin.getPlayerManager().hasTokens(player, 1)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
-					+ Lang.TOKENS_BUY_NOT_ENOUGH.toString()
+					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
 						.replaceAll("%p", "1"));
 			return;
 		}
@@ -210,7 +227,7 @@ public class GodTokensInventoryListener implements Listener {
 		
 		if(!plugin.getPlayerManager().hasTokens(player, 5)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
-					+ Lang.TOKENS_BUY_NOT_ENOUGH.toString()
+					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
 						.replaceAll("%p", "5"));
 			return;
 		}
