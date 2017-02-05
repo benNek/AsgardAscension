@@ -139,6 +139,7 @@ public class GodTokensInventoryListener implements Listener {
 		}
 		
 		plugin.getAbilityManager().applyAbility(player, player.getInventory().getItemInMainHand(), ability, true);
+		plugin.getPlayerManager().withdrawTokens(player, ability.getTemporaryPrice());
 		player.sendMessage(Lang.HEADERS_TOKENS.toString()
 				+ Lang.TOKENS_SHOP_APPLY.toString()
 					.replaceAll("%t", ability.getName()));

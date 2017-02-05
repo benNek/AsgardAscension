@@ -5,9 +5,15 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.AnvilInventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -27,6 +33,7 @@ public class AbilityListener implements Listener {
 		this.plugin = plugin;
 	}
 	
+	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
 		if(item == null)
@@ -50,6 +57,7 @@ public class AbilityListener implements Listener {
 		}
 	}
 	
+	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if(!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player))
 			return;
@@ -80,6 +88,7 @@ public class AbilityListener implements Listener {
 		}
 	}
 	
+	@EventHandler
 	private void handleAOE(BlockBreakEvent event) {
 		Player player = event.getPlayer();
 		
@@ -110,6 +119,77 @@ public class AbilityListener implements Listener {
 			right.setType(Material.AIR);
 		}
 	}
+	
+	// Removing temporary tokens
+	
+	@EventHandler
+	public void onItemDrop(PlayerDropItemEvent event) {
+		ItemStack item = event.getItemDrop().getItemStack();
+		if(!plugin.getAbilityManager().hasAbility(item) || !plugin.getAbilityManager().isTemporaryItem(item))
+			return;
+		
+		Ability ability = plugin.getAbilityManager().getAbility(item);
+		event.getItemDrop().remove();
+		event.getPlayer().getWorld().dropItemNaturally(event.getPlayer().getEyeLocation(), plugin.getAbilityManager().removeItemLore(item, ability));
+	}
+	
+	@EventHandler
+	public void onRepair(InventoryClickEvent event) {
+		if(event.isCancelled() || !(event.getWhoClicked() instanceof Player) || !(event.getInventory() instanceof AnvilInventory))
+			return;
+		
+		InventoryView view = event.getView();
+		int rawSlot = event.getRawSlot();
+		
+		if(rawSlot != view.convertSlot(rawSlot) || rawSlot != 2)
+			return;
+		
+		ItemStack item = event.getInventory().getItem(0);
+		if(!plugin.getAbilityManager().hasAbility(item) || !plugin.getAbilityManager().isTemporaryItem(item))
+			return;
+		
+		Ability ability = plugin.getAbilityManager().getAbility(item);
+		event.getInventory().setItem(0, plugin.getAbilityManager().removeItemLore(item, ability));
+		event.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
+		for(int i = 0; i < 32; i++) {
+			ItemStack item = player.getInventory().getItem(i);
+			if(item == null || !plugin.getAbilityManager().hasAbility(item) || !plugin.getAbilityManager().isTemporaryItem(item))
+				continue;
+			Ability ability = plugin.getAbilityManager().getAbility(item);
+			player.getInventory().setItem(i, plugin.getAbilityManager().removeItemLore(item, ability));
+		}
+		
+		ItemStack item = player.getInventory().getHelmet();
+		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
+			Ability ability = plugin.getAbilityManager().getAbility(item);
+			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
+		}
+		
+		item = player.getInventory().getChestplate();
+		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
+			Ability ability = plugin.getAbilityManager().getAbility(item);
+			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
+		}
+		
+		item = player.getInventory().getLeggings();
+		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
+			Ability ability = plugin.getAbilityManager().getAbility(item);
+			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
+		}
+		
+		item = player.getInventory().getBoots();
+		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
+			Ability ability = plugin.getAbilityManager().getAbility(item);
+			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
+		}
+	}
+		
+	// Handling
 	
 	private void handleMagnet(BlockBreakEvent event) {
 		if(Utility.getRandom(1, 10000) > 2) {

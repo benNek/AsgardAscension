@@ -11,8 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.enums.ItemType;
 import com.nekrosius.asgardascension.enums.Lang;
@@ -22,17 +20,11 @@ import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 public class AbilityManager {
 	
 	private List<Ability> abilities;
-	
-	// |--------|------|-----------|
-	// | Player | Item | Time left |
-	// |--------|------|-----------|
-	private Table<Player, ItemStack, Integer> items;
-	
+		
 	Main plugin;
 	
 	public AbilityManager(Main plugin) {
 		this.plugin = plugin;
-		this.items = HashBasedTable.create();
 		registerAbilities();
 	}
 	
@@ -114,39 +106,81 @@ public class AbilityManager {
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.hasLore() ?
 				meta.getLore() : new ArrayList<>();
-				
+		
 		lore.add(ChatColor.GRAY + "Ability: " + ChatColor.RED + ability.getName());
+		lore.add(ChatColor.GRAY + "Temporary");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		player.getInventory().setItemInMainHand(item);
 		
-		addItem(player, item);
-		
 		if(!temporary)
 			return;
+		
+		// Adding timer for temporary abilities
 		new BukkitRunnable() {
 			
 			@Override
 			public void run() {
 				if(!isActive(player, item)) {
-					player.sendMessage("cancelled");
 					this.cancel();
 				}
 				
-				/*
-				ItemMeta newMeta = item.getItemMeta();
-				List<String> newLore = newMeta.getLore();
-				newLore.remove(ChatColor.GRAY + "Ability: " + ChatColor.RED + ability.getName());
-				newMeta.setLore(newLore);
-				item.setItemMeta(newMeta);
-				player.getInventory().setItemInMainHand(item);
-				*/
+				updateTemporaryItem(player, item, ability);
+				
 				player.sendMessage(Lang.HEADERS_TOKENS.toString() 
 						+ Lang.TOKENS_SHOP_EXPIRED.toString()
 							.replaceAll("%t", ability.getName()));
 			}
 			
-		}.runTaskLater(plugin, 100); //* 60 * 20);
+		}.runTaskLater(plugin, 100 * 60 * 20);
+	}
+	
+	public ItemStack removeItemLore(ItemStack item, Ability ability) {
+		ItemStack newItem = item.clone();
+		ItemMeta newMeta = newItem.getItemMeta();
+		List<String> newLore = newMeta.getLore();
+		newLore.remove(ChatColor.GRAY + "Ability: " + ChatColor.RED + ability.getName());
+		newLore.remove(ChatColor.GRAY + "Temporary");
+		newMeta.setLore(newLore);
+		newItem.setItemMeta(newMeta);
+		return newItem;
+	}
+	
+	public void updateTemporaryItem(Player player, ItemStack item, Ability ability) {
+		
+		// Creating item with removed lore
+		ItemStack newItem = removeItemLore(item, ability);
+		
+		player.sendMessage("hiiii");
+		// Updating old one (inventory)
+		player.sendMessage(player.getInventory().getItem(0) + "");
+		for(int i = 0; i < 32; i++) {
+			player.sendMessage(i + ".");
+			ItemStack tempItem = player.getInventory().getItem(i);
+			if(tempItem == null)
+				continue;
+			
+			player.sendMessage(tempItem.getType().toString());
+			if(tempItem.equals(item)) {
+				player.sendMessage(i + "");
+				player.getInventory().setItem(i, newItem);
+				break;
+			}
+		}
+		
+		// Updating old one (armor)
+		if(player.getInventory().getChestplate() != null && player.getInventory().getChestplate().equals(item)) {
+			player.getInventory().setChestplate(newItem);
+		}
+		else if(player.getInventory().getHelmet() != null && player.getInventory().getHelmet().equals(item)) {
+			player.getInventory().setHelmet(newItem);
+		}
+		else if(player.getInventory().getLeggings() != null && player.getInventory().getLeggings().equals(item)) {
+			player.getInventory().setLeggings(newItem);
+		}
+		else if(player.getInventory().getBoots() != null && player.getInventory().getBoots().equals(item)) {
+			player.getInventory().setBoots(newItem);
+		}
 	}
 	
 	public Ability getAbility(ItemStack item) {
@@ -212,6 +246,22 @@ public class AbilityManager {
 		}
 		return false;
 	}
+	
+	/**
+	 * @param item Item to check
+	 * @return whetever item has temporary or not ability
+	 */
+	public boolean isTemporaryItem(ItemStack item) {
+		if(!item.hasItemMeta() || !item.getItemMeta().hasLore())
+			return false;
+		
+		for(String lore : item.getItemMeta().getLore()) {
+			if(lore.contains("Temporary")) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * @return the abilities
@@ -246,24 +296,8 @@ public class AbilityManager {
 		abilities.add(ability);
 	}
 	
-	/**
-	 * @param player the item holder
-	 * @param item the player's item
-	 */
-	public void addItem(Player player, ItemStack item) {
-		items.put(player, item, 15);
-	}
-	
-	/**
-	 * @param player the item holder
-	 * @param item the player's item
-	 */
-	public void subtractMinute(Player player, ItemStack item) {
-		items.put(player, item, items.get(player, item) - 1);
-	}
-	
 	public boolean isActive(Player player, ItemStack item) {
-		return player.getInventory().contains(item);
+		return player.isOnline() && player.getInventory().contains(item);
 	}
 	
 	
