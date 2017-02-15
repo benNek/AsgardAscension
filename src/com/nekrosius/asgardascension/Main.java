@@ -101,17 +101,22 @@ public class Main extends JavaPlugin{
 		// Loading players' data
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			getPlayerManager().loadData(p);
+			getAbilityManager().startTimer(p);
 		}
 		
 		getLogs().log("AA initialized succesfully!");
 	}
 	
 	public void onDisable() {
-		// Quitting challenges for those who are doing it
 		for(Player p : Bukkit.getOnlinePlayers()) {
+			// Quitting challenges for those who are doing it
 			if(getChallenges().getChallenge(p) != 0) {
 				getChallenges().quitChallenge(p);
 			}
+			// Compensating temporary tokens
+			getAbilityManager().compensateTokens(p, true);
+			
+			// Saving player's data to a personal file
 			getPlayerManager().saveData(p);
 		}
 		

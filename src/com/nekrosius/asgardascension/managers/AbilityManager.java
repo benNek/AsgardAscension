@@ -9,6 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.nekrosius.asgardascension.Main;
@@ -26,6 +28,116 @@ public class AbilityManager {
 	public AbilityManager(Main plugin) {
 		this.plugin = plugin;
 		registerAbilities();
+	}
+	
+	/**
+	 * Starts timer To add potion effect abilities
+	 * @param player The player
+	 */
+	public void startTimer(Player player) {
+		new BukkitRunnable() {
+			public void run() {
+				handleTimedEffects(player, player.getInventory().getItemInMainHand());
+				handleTimedEffects(player, player.getInventory().getHelmet());
+				handleTimedEffects(player, player.getInventory().getChestplate());
+				handleTimedEffects(player, player.getInventory().getLeggings());
+				handleTimedEffects(player, player.getInventory().getBoots());
+			}
+		}.runTaskTimer(plugin, 0L, 40L);
+	}
+	
+	/**
+	 * Adding potion effects to ability items
+	 * @param player The player
+	 * @param item The item with ability
+	 */
+	private void handleTimedEffects(Player player, ItemStack item) {
+		if(item == null)
+			return;
+		
+		if(!plugin.getAbilityManager().hasAbility(item))
+			return;
+		
+		Ability ability = plugin.getAbilityManager().getAbility(item);
+		
+		PotionEffectType type;
+		switch(ability.getName()) {
+			case "Haste":
+				type = PotionEffectType.FAST_DIGGING;
+				break;
+			case "High Jump":
+				type = PotionEffectType.JUMP;
+				break;
+			case "Speed":
+				type = PotionEffectType.SPEED;
+				break;
+			default:
+				return;
+		}
+		if(player.hasPotionEffect(type)) {
+			player.removePotionEffect(type);
+		}
+		player.addPotionEffect(new PotionEffect(type, 60, 1));
+	}
+	
+	/**
+	 * If player has any active temporary abilities,
+	 * god tokens will be refunded and ability removed
+	 * @param player The player
+	 * @param refund whether to refund god tokens to player
+	 */
+	public void compensateTokens(Player player, boolean refund) {
+		for(int i = 0; i < 32; i++) {
+			ItemStack item = player.getInventory().getItem(i);
+			if(item == null || !plugin.getAbilityManager().hasAbility(item) || !plugin.getAbilityManager().isTemporaryItem(item))
+				continue;
+			Ability ability = plugin.getAbilityManager().getAbility(item);
+			player.getInventory().setItem(i, plugin.getAbilityManager().removeItemLore(item, ability));
+			
+			if(refund) {
+				plugin.getPlayerManager().addTokens(player, ability.getTemporaryPrice());
+			}
+		}
+		
+		ItemStack item = player.getInventory().getHelmet();
+		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
+			Ability ability = plugin.getAbilityManager().getAbility(item);
+			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
+			
+			if(refund) {
+				plugin.getPlayerManager().addTokens(player, ability.getTemporaryPrice());
+			}
+		}
+		
+		item = player.getInventory().getChestplate();
+		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
+			Ability ability = plugin.getAbilityManager().getAbility(item);
+			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
+			
+			if(refund) {
+				plugin.getPlayerManager().addTokens(player, ability.getTemporaryPrice());
+			}
+		}
+		
+		item = player.getInventory().getLeggings();
+		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
+			Ability ability = plugin.getAbilityManager().getAbility(item);
+			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
+			
+			if(refund) {
+				plugin.getPlayerManager().addTokens(player, ability.getTemporaryPrice());
+			}
+		}
+		
+		item = player.getInventory().getBoots();
+		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
+			Ability ability = plugin.getAbilityManager().getAbility(item);
+			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
+			
+			if(refund) {
+				plugin.getPlayerManager().addTokens(player, ability.getTemporaryPrice());
+			}
+		}
 	}
 	
 	/**
@@ -108,7 +220,8 @@ public class AbilityManager {
 				meta.getLore() : new ArrayList<>();
 		
 		lore.add(ChatColor.GRAY + "Ability: " + ChatColor.RED + ability.getName());
-		lore.add(ChatColor.GRAY + "Temporary");
+		if(temporary)
+			lore.add(ChatColor.GRAY + "Temporary");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		player.getInventory().setItemInMainHand(item);

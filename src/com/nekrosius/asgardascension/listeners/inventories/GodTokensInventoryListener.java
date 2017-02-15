@@ -109,19 +109,28 @@ public class GodTokensInventoryListener implements Listener {
 		else if(title.equals(ChatColor.BOLD + "Temporary God Tokens")) {
 			String name = event.getCurrentItem().getItemMeta().getDisplayName().substring(2);
 			Ability ability = plugin.getAbilityManager().getAbility(name);
-			handleTemporaryTokenPurchase(player, ability);
+			handleTokenPurchase(player, ability, true);
+		}
+		
+		// Permanent abilities
+		else if(title.equals(ChatColor.BOLD + "Permanent God Tokens")) {
+			String name = event.getCurrentItem().getItemMeta().getDisplayName().substring(2);
+			Ability ability = plugin.getAbilityManager().getAbility(name);
+			handleTokenPurchase(player, ability, false);
 		}
 		
 	}
 	
-	private void handleTemporaryTokenPurchase(Player player, Ability ability) {
+	private void handleTokenPurchase(Player player, Ability ability, boolean temporary) {
 		player.closeInventory();
 		
+		int price = temporary ? ability.getTemporaryPrice() : ability.getPermanentPrice();
+		
 		// Not enough god tokens
-		if(!plugin.getPlayerManager().hasTokens(player, ability.getTemporaryPrice())) {
+		if(!plugin.getPlayerManager().hasTokens(player, price)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
 					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
-						.replaceAll("%p", String.valueOf(ability.getTemporaryPrice())));
+						.replaceAll("%p", String.valueOf(price)));
 			return;
 		}
 		
@@ -138,8 +147,8 @@ public class GodTokensInventoryListener implements Listener {
 			return;
 		}
 		
-		plugin.getAbilityManager().applyAbility(player, player.getInventory().getItemInMainHand(), ability, true);
-		plugin.getPlayerManager().withdrawTokens(player, ability.getTemporaryPrice());
+		plugin.getPlayerManager().withdrawTokens(player, price);
+		plugin.getAbilityManager().applyAbility(player, player.getInventory().getItemInMainHand(), ability, temporary);
 		player.sendMessage(Lang.HEADERS_TOKENS.toString()
 				+ Lang.TOKENS_SHOP_APPLY.toString()
 					.replaceAll("%t", ability.getName()));

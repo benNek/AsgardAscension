@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.InventoryView;
@@ -31,6 +32,11 @@ public class AbilityListener implements Listener {
 	Main plugin;
 	public AbilityListener(Main plugin) {
 		this.plugin = plugin;
+	}
+	
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+		plugin.getAbilityManager().startTimer(event.getPlayer());
 	}
 	
 	@EventHandler
@@ -155,38 +161,7 @@ public class AbilityListener implements Listener {
 	
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
-		Player player = event.getPlayer();
-		for(int i = 0; i < 32; i++) {
-			ItemStack item = player.getInventory().getItem(i);
-			if(item == null || !plugin.getAbilityManager().hasAbility(item) || !plugin.getAbilityManager().isTemporaryItem(item))
-				continue;
-			Ability ability = plugin.getAbilityManager().getAbility(item);
-			player.getInventory().setItem(i, plugin.getAbilityManager().removeItemLore(item, ability));
-		}
-		
-		ItemStack item = player.getInventory().getHelmet();
-		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
-			Ability ability = plugin.getAbilityManager().getAbility(item);
-			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
-		}
-		
-		item = player.getInventory().getChestplate();
-		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
-			Ability ability = plugin.getAbilityManager().getAbility(item);
-			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
-		}
-		
-		item = player.getInventory().getLeggings();
-		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
-			Ability ability = plugin.getAbilityManager().getAbility(item);
-			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
-		}
-		
-		item = player.getInventory().getBoots();
-		if(item != null && plugin.getAbilityManager().hasAbility(item) && plugin.getAbilityManager().isTemporaryItem(item)) {
-			Ability ability = plugin.getAbilityManager().getAbility(item);
-			player.getInventory().setHelmet(plugin.getAbilityManager().removeItemLore(item, ability));
-		}
+		plugin.getAbilityManager().compensateTokens(event.getPlayer(), false);
 	}
 		
 	// Handling
