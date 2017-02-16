@@ -57,6 +57,11 @@ public class GodTokensInventoryListener implements Listener {
 					GodTokensInventory.setupAbilitiesMenu(player, false);
 					return;
 					
+				// Runes
+				case ENCHANTED_BOOK:
+					GodTokensInventory.setupRunesMenu(player);
+					return;
+					
 				// Aditional plot access
 				case STONE_SPADE:
 					handlePlotPurchase(player);

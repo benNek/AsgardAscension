@@ -12,8 +12,9 @@ import com.comphenix.protocol.wrappers.nbt.NbtCompound;
 import com.comphenix.protocol.wrappers.nbt.NbtFactory;
 
 /*
- * Util by BENAS "BENRUSH" NEKROÐIUS
- * Converts
+ * ItemStackGenerator utility
+ * Author: benNek
+ * Version: 1.1
  */
 
 public class ItemStackGenerator {
@@ -22,44 +23,9 @@ public class ItemStackGenerator {
 
 	}
 	
-	public static ItemStack createItem(Material material, int amount, int data, String name, List<String> lore){
+	public static ItemStack createItem(Material material, int amount, int data, String name, List<String> lore, boolean removeAtt) {
 		short dat = (short) data;
-		ItemStack item;
-		if(amount == 0 && dat == 0){
-			item = new ItemStack(material);
-		}else if(amount == 0 && dat != 0){
-			item = new ItemStack(material, 1, dat);
-		}else if(amount != 0 && dat == 0){
-			item = new ItemStack(material, amount);
-		}else{
-			item = new ItemStack(material, amount, dat);
-		}
-		ItemMeta meta = item.getItemMeta();
-		if(name != null){
-			meta.setDisplayName(name);
-		}
-		if(lore != null && !lore.isEmpty()){
-			meta.setLore(lore);
-		}
-		item.setItemMeta(meta);
-		return item;
-	}
-	
-	public static ItemStack createItem(Material material, int amount, int data, String name, List<String> lore, boolean removeAtt){
-		short dat = (short) data;
-		ItemStack item;
-		if(amount == 0 && dat == 0) {
-			item = new ItemStack(material);
-		}
-		else if(amount == 0 && dat != 0) {
-			item = new ItemStack(material, 1, dat);
-		}
-		else if(amount != 0 && dat == 0) {
-			item = new ItemStack(material, amount);
-		}
-		else {
-			item = new ItemStack(material, amount, dat);
-		}
+		ItemStack item = getItemStack(material, amount, dat);
 		ItemMeta meta = item.getItemMeta();
 		if(name != null) {
 			meta.setDisplayName(name);
@@ -73,16 +39,31 @@ public class ItemStackGenerator {
 		return item;
 	}
 	
-	public static ItemStack createItem(ItemStack item, String name, List<String> lore) {
-		ItemMeta meta = item.getItemMeta();
-		if(name != null){
-			meta.setDisplayName(name);
+	public static ItemStack createItem(Material material, int amount, int data, String name, List<String> lore) {	
+		return createItem(material, amount, data, name, lore, false);
+	}
+	
+	public static ItemStack createItem(Material material, String name, List<String> lore) {
+		return createItem(material, 0, 0, name, lore, false);
+	}
+	
+	public static ItemStack createItem(Material material, String name, List<String> lore, boolean removeAtt) {
+		return createItem(material, 0, 0, name, lore, removeAtt);
+	}
+	
+	private static ItemStack getItemStack(Material material, int amount, short data) {
+		if(amount == 0 && data == 0) {
+			return new ItemStack(material);
 		}
-		if(lore != null && !lore.isEmpty()){
-			meta.setLore(lore);
+		else if(amount == 0 && data != 0) {
+			return new ItemStack(material, 1, data);
 		}
-		item.setItemMeta(meta);
-		return item;
+		else if(amount != 0 && data == 0) {
+			return new ItemStack(material, amount);
+		}
+		else {
+			return new ItemStack(material, amount, data);
+		}
 	}
 	
 	public static boolean isHelmet(ItemStack item) {

@@ -34,26 +34,33 @@ public class GodTokensInventory {
 	
 	public static void setupTokensMenu(Player player) {
 		Inventory inv = Bukkit.createInventory(player, 18, ChatColor.BOLD + "God Tokens Shop");
-		inv.setItem(0, ItemStackGenerator.createItem(Material.BOOK, 0, 0,
-				ChatColor.GRAY + "GT: " + ChatColor.RED + plugin.getPlayerManager().getTokens(player), null));
-		inv.setItem(9, ItemStackGenerator.createItem(Material.BOOK, 0, 0,
-				ChatColor.GRAY + "GT: " + ChatColor.RED + plugin.getPlayerManager().getTokens(player), null));
-		inv.setItem(8, ItemStackGenerator.createItem(Material.NETHER_STAR, 0, 0,
-				ChatColor.LIGHT_PURPLE + "Withdraw ... GT", null));
-		inv.setItem(17, ItemStackGenerator.createItem(Material.NETHER_STAR, 0, 0,
-				ChatColor.LIGHT_PURPLE + "Withdraw ... GT", null));
+		
+		ItemStack tokensAmount = ItemStackGenerator.createItem(Material.PAPER,
+				ChatColor.DARK_PURPLE + "GT: " + ChatColor.LIGHT_PURPLE + plugin.getPlayerManager().getTokens(player), null);
+		ItemStack withdraw = ItemStackGenerator.createItem(Material.NETHER_STAR, ChatColor.LIGHT_PURPLE + "Withdraw ... GT", null);
+		
+		inv.setItem(0, tokensAmount);
+		inv.setItem(9, tokensAmount);
+		inv.setItem(8, withdraw);
+		inv.setItem(17, withdraw);
 		
 		if(canBuyPlot(player)) {
-			inv.setItem(1, ItemStackGenerator.createItem(Material.STONE_SPADE, 0, 0, ChatColor.LIGHT_PURPLE + "Additional plot access", 
+			inv.setItem(1, ItemStackGenerator.createItem(Material.STONE_SPADE, ChatColor.LIGHT_PURPLE + "Additional plot access", 
 					Arrays.asList("Price: " + ChatColor.RED + "25 GT"), true));
 		}
-		inv.setItem(3, ItemStackGenerator.createItem(Material.WATCH, 0, 0, ChatColor.LIGHT_PURPLE + "Temporary Tokens",
+		
+		// 1st Row
+		inv.setItem(3, ItemStackGenerator.createItem(Material.WATCH, ChatColor.LIGHT_PURPLE + "Temporary Tokens",
 				Arrays.asList("Click for more information!")));
-		inv.setItem(4, ItemStackGenerator.createItem(Material.END_CRYSTAL, 0, 0, ChatColor.LIGHT_PURPLE + "Permanent Tokens",
+		inv.setItem(4, ItemStackGenerator.createItem(Material.END_CRYSTAL, ChatColor.LIGHT_PURPLE + "Permanent Tokens",
 				Arrays.asList("Click for more information!")));
-		inv.setItem(12, ItemStackGenerator.createItem(Material.CHEST, 0, 0, ChatColor.LIGHT_PURPLE + "Crate", 
+		inv.setItem(5, ItemStackGenerator.createItem(Material.ENCHANTED_BOOK, ChatColor.LIGHT_PURPLE + "Runes",
+				Arrays.asList("Click for more information!"), true));
+		
+		// 2nd Row
+		inv.setItem(12, ItemStackGenerator.createItem(Material.CHEST, ChatColor.LIGHT_PURPLE + "Crate", 
 				Arrays.asList("Price: " + ChatColor.RED + "8 GT")));
-		inv.setItem(13, ItemStackGenerator.createItem(Material.ANVIL, 0, 0, ChatColor.LIGHT_PURPLE + "Repair", 
+		inv.setItem(13, ItemStackGenerator.createItem(Material.ANVIL, ChatColor.LIGHT_PURPLE + "Repair", 
 				Arrays.asList("Click for more information!")));
 		inv.setItem(14, ItemStackGenerator.createItem(Material.GOLDEN_APPLE, 0, 1, ChatColor.LIGHT_PURPLE + "Odins Apple", 
 				Arrays.asList("Price: " + ChatColor.RED + "1 GT")));
@@ -80,6 +87,12 @@ public class GodTokensInventory {
 			
 			inventory.addItem(ItemStackGenerator.createItem(ability.getIcon(), 0, 0, ChatColor.RED + ability.getName(), description, true));
 		}
+		player.openInventory(inventory);
+	}
+	
+	public static void setupRunesMenu(Player player) {
+		Inventory inventory = Bukkit.createInventory(player, 9, ChatColor.BOLD + "Runes");
+		
 		player.openInventory(inventory);
 	}
 	
