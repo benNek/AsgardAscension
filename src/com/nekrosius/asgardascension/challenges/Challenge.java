@@ -201,6 +201,8 @@ public class Challenge {
 	}
 	
 	public void addKill(Player player) {
+		if(player == null || !player.isOnline())
+			return;
 		killsLeft.put(player.getName(), killsLeft.get(player.getName()) - 1);
 	}
 	
