@@ -1,6 +1,8 @@
 package com.nekrosius.asgardascension.listeners;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,10 +23,13 @@ import de.slikey.effectlib.effect.LoveEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 
 public class GodFoodListener implements Listener {
+	
+	HashMap<UUID, Boolean> hasEffect;
 
 	Main plugin;
 	public GodFoodListener(Main plugin) {
 		this.plugin = plugin;
+		hasEffect = new HashMap<>();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -72,7 +77,11 @@ public class GodFoodListener implements Listener {
 				maxDuration = pe.getDuration();
 		}
 		
+		if(hasEffect.get(player.getUniqueId()) != null) {
+			return;
+		}
 		// Showing visual effect to indicate that player is using FoG
+		hasEffect.put(player.getUniqueId(), true);
 		final LoveEffect he = new LoveEffect(plugin.getEffectManager());
 		he.particle = ParticleEffect.CLOUD;
 		he.setEntity(player);
@@ -83,6 +92,7 @@ public class GodFoodListener implements Listener {
 		new BukkitRunnable() {
 			public void run() {
 				he.cancel();
+				hasEffect.remove(player.getUniqueId());
 			}
 		}.runTaskLater(plugin, maxDuration);
 	}
