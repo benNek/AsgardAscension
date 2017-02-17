@@ -43,7 +43,7 @@ public class Challenge {
 		long price = plugin.getChallengesFile().getPrice(challenge) * (plugin.getPlayerManager().getPrestige(player) + 1);
 		if(!plugin.getEconomy().has(player, price)) {
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString() +
-					Lang.CHALLENGES_NOT_ENOUGH_MONEY.toString().replaceAll("%p", Convert.toPrice(price)));
+					Lang.CHALLENGES_NOT_ENOUGH_MONEY.toString().replaceAll("%d", Convert.toPrice(price)));
 			return;
 		}
 		plugin.getEconomy().withdrawPlayer(player, price);
@@ -69,8 +69,8 @@ public class Challenge {
 		}
 		player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 				+ Lang.CHALLENGES_START.toString()
-					.replaceAll("%t", plugin.getChallengesFile().getTitle(challenge))
-					.replaceAll("%p", Convert.toPrice(price)));
+					.replaceAll("%s", plugin.getChallengesFile().getTitle(challenge))
+					.replaceAll("%d", Convert.toPrice(price)));
 	}
 	
 	public void finishChallenge(Player player, boolean buy) {
@@ -92,7 +92,7 @@ public class Challenge {
 			plugin.getPlayerManager().setRank(player, getChallenge(player));
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString() 
 					+ Lang.CHALLENGES_COMPLETE.toString()
-						.replaceAll("%t", plugin.getChallengesFile().getTitle(getChallenge(player))));
+						.replaceAll("%s", plugin.getChallengesFile().getTitle(getChallenge(player))));
 		} else {
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 					+ Lang.CHALLENGES_TEST_COMPLETE.toString());
@@ -112,7 +112,7 @@ public class Challenge {
 					* (plugin.getPlayerManager().getPrestige(player) + 1));
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 					+ Lang.CHALLENGES_LEAVE.toString()
-						.replaceAll("%t", plugin.getChallengesFile().getTitle(getChallenge(player))));
+						.replaceAll("%s", plugin.getChallengesFile().getTitle(getChallenge(player))));
 		} else {
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 					+ Lang.CHALLENGES_TEST_COMPLETE.toString());

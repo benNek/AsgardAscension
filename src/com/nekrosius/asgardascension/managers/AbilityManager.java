@@ -242,7 +242,7 @@ public class AbilityManager {
 				
 				player.sendMessage(Lang.HEADERS_TOKENS.toString() 
 						+ Lang.TOKENS_SHOP_EXPIRED.toString()
-							.replaceAll("%t", ability.getName()));
+							.replaceAll("%s", ability.getName()));
 			}
 			
 		}.runTaskLater(plugin, 100 * 60 * 20);

@@ -16,6 +16,7 @@ import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.enums.ItemType;
 import com.nekrosius.asgardascension.objects.Ability;
 import com.nekrosius.asgardascension.objects.GodToken;
+import com.nekrosius.asgardascension.objects.Rune;
 import com.nekrosius.asgardascension.utils.Convert;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
@@ -35,21 +36,22 @@ public class GodTokensInventory {
 	public static void setupTokensMenu(Player player) {
 		Inventory inv = Bukkit.createInventory(player, 18, ChatColor.BOLD + "God Tokens Shop");
 		
-		ItemStack tokensAmount = ItemStackGenerator.createItem(Material.PAPER,
-				ChatColor.DARK_PURPLE + "GT: " + ChatColor.LIGHT_PURPLE + plugin.getPlayerManager().getTokens(player), null);
-		ItemStack withdraw = ItemStackGenerator.createItem(Material.NETHER_STAR, ChatColor.LIGHT_PURPLE + "Withdraw ... GT", null);
+		ItemStack tokensAmount = ItemStackGenerator.createItem(Material.STAINED_GLASS_PANE, 1, 3,
+				ChatColor.LIGHT_PURPLE + "" + ChatColor.MAGIC + "|"
+						+ ChatColor.DARK_PURPLE + "GT: " + ChatColor.LIGHT_PURPLE
+						+ plugin.getPlayerManager().getTokens(player)
+						+ ChatColor.MAGIC + "|", null);
 		
-		inv.setItem(0, tokensAmount);
-		inv.setItem(9, tokensAmount);
-		inv.setItem(8, withdraw);
-		inv.setItem(17, withdraw);
+		ItemStack withdraw = ItemStackGenerator.createItem(Material.NETHER_STAR,
+				ChatColor.LIGHT_PURPLE + "Withdraw ... GT", null);
 		
 		// 1st Row
-		inv.setItem(3, ItemStackGenerator.createItem(Material.WATCH, ChatColor.LIGHT_PURPLE + "Temporary Tokens",
+		inv.setItem(1, ItemStackGenerator.createItem(Material.WATCH, ChatColor.LIGHT_PURPLE + "Temporary Tokens",
 				Arrays.asList("Click for more information!")));
-		inv.setItem(4, ItemStackGenerator.createItem(Material.END_CRYSTAL, ChatColor.LIGHT_PURPLE + "Permanent Tokens",
+		inv.setItem(2, ItemStackGenerator.createItem(Material.END_CRYSTAL, ChatColor.LIGHT_PURPLE + "Permanent Tokens",
 				Arrays.asList("Click for more information!")));
-		inv.setItem(5, ItemStackGenerator.createItem(Material.ENCHANTED_BOOK, ChatColor.LIGHT_PURPLE + "Runes",
+		inv.setItem(4, withdraw);
+		inv.setItem(6, ItemStackGenerator.createItem(Material.ENCHANTED_BOOK, ChatColor.LIGHT_PURPLE + "Runes",
 				Arrays.asList("Click for more information!"), true));
 		
 		// 2nd Row
@@ -57,12 +59,19 @@ public class GodTokensInventory {
 			inv.setItem(10, ItemStackGenerator.createItem(Material.STONE_SPADE, ChatColor.LIGHT_PURPLE + "Additional plot access", 
 					Arrays.asList("Price: " + ChatColor.LIGHT_PURPLE + "25 GT"), true));
 		}
-		inv.setItem(12, ItemStackGenerator.createItem(Material.CHEST, ChatColor.LIGHT_PURPLE + "Crate", 
+		inv.setItem(11, ItemStackGenerator.createItem(Material.CHEST, ChatColor.LIGHT_PURPLE + "Crate", 
 				Arrays.asList("Price: " + ChatColor.LIGHT_PURPLE + "8 GT")));
-		inv.setItem(13, ItemStackGenerator.createItem(Material.ANVIL, ChatColor.LIGHT_PURPLE + "Repair", 
+		inv.setItem(13, withdraw);
+		inv.setItem(15, ItemStackGenerator.createItem(Material.ANVIL, ChatColor.LIGHT_PURPLE + "Repair", 
 				Arrays.asList("Click for more information!")));
-		inv.setItem(14, ItemStackGenerator.createItem(Material.GOLDEN_APPLE, 0, 1, ChatColor.LIGHT_PURPLE + "Odins Apple", 
+		inv.setItem(16, ItemStackGenerator.createItem(Material.GOLDEN_APPLE, 0, 1, ChatColor.LIGHT_PURPLE + "Odins Apple", 
 				Arrays.asList("Price: " + ChatColor.LIGHT_PURPLE + "1 GT")));
+		
+		for(int i = 0; i < inv.getSize(); i++) {
+			if(inv.getItem(i) != null)
+				continue;
+			inv.setItem(i, tokensAmount);
+		}
 		
 		player.openInventory(inv);
 	}
@@ -91,7 +100,19 @@ public class GodTokensInventory {
 	
 	public static void setupRunesMenu(Player player) {
 		Inventory inventory = Bukkit.createInventory(player, 9, ChatColor.BOLD + "Runes");
-		
+		for(Rune rune : plugin.getRuneManager().getRunes()) {
+			
+			List<String> description = new ArrayList<>(rune.getDescription());
+			
+			if(rune.getDuration() != -1) {
+				description.add(ChatColor.GRAY + "Duration: " + ChatColor.RED + rune.getDuration() + " seconds");
+			}
+			
+			description.add(ChatColor.GRAY + "Price: " + ChatColor.RED + rune.getPrice() + " GT");
+			
+			inventory.addItem(ItemStackGenerator.createItem(rune.getIcon(), ChatColor.RED + rune.getName(),
+					description));
+		}
 		player.openInventory(inventory);
 	}
 	

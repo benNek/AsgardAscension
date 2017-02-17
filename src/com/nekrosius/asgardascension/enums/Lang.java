@@ -9,9 +9,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 */
 public enum Lang {
 	
-	// %p - number
-	// %s - player
-	// %t - challenge title
+	// %d - number
+	// %s - string
 	
 	HEADERS_MAIN("headers.main", "&7[&cAsgard&7]"),
 	HEADERS_CHALLENGES("headers.challenges", "&7[&cChallenges&7]"),
@@ -25,31 +24,34 @@ public enum Lang {
 	COMMANDS_UNKNOWN_COMMAND("commands.unknown_command", "&7Unknown command! Check your syntax!"),
 	COMMANDS_PLAYER_NOT_FOUND("commands.unknown_target", "&7Player not found! Check your syntax!"),
 	
-	CHALLENGES_NOT_ENOUGH_MONEY("challenges.not_enough_money", "&7You don't have enough money! It costs %p"),
-	CHALLENGES_START("challenges.start", "&7You've started &c%t &7challenge! (%p)"),
-	CHALLENGES_COMPLETE("challenges.complete", "&7You have completed the challenge! Your Rank now is &c%t&7!"),
+	CHALLENGES_NOT_ENOUGH_MONEY("challenges.not_enough_money", "&7You don't have enough money! It costs %d"),
+	CHALLENGES_START("challenges.start", "&7You've started &c%s &7challenge! (%d)"),
+	CHALLENGES_COMPLETE("challenges.complete", "&7You have completed the challenge! Your Rank now is &c%s&7!"),
 	CHALLENGES_TEST_COMPLETE("challenges.test_complete", "&7Test completed. If you see this message challenge works fine!"),
-	CHALLENGES_LEAVE("challenges.leave", "&7You've left &c%t &7Challenge! Your money was refunded!"),
+	CHALLENGES_LEAVE("challenges.leave", "&7You've left &c%s &7Challenge! Your money was refunded!"),
 	
 	PRESTIGE_SET_NOT_NUMBER("prestige.set.not_number", "&7Please type a number only (like 6)!"),
-	PRESTIGE_SET_NOT_IN_RANGE("prestige.set.not_in_range", "&7Prestige should be between 0 and %p!"),
-	PRESTIGE_SET_FOR_SENDER("prestige.set.for_sender", "&7You've set &c%s &7prestige to &c%p&7!"),
-	PRESTIGE_SET_FOR_TARGET("prestige.set.for_target", "&7Your prestige has been set to &c%p&7!"),
+	PRESTIGE_SET_NOT_IN_RANGE("prestige.set.not_in_range", "&7Prestige should be between 0 and %d!"),
+	PRESTIGE_SET_FOR_SENDER("prestige.set.for_sender", "&7You've set &c%s &7prestige to &c%d&7!"),
+	PRESTIGE_SET_FOR_TARGET("prestige.set.for_target", "&7Your prestige has been set to &c%d&7!"),
 	PRESTIGE_SET_LOCATION("prestige.set.location", "&7You've successfully added prestige teleport location!"),
-	PRESTIGE_RANK_INSUFFICIENT("prestige.rank_insufficient", "&7Your rank is insufficient to prestige! You need to reach Rank &c%t &7before prestiging!"),
+	PRESTIGE_RANK_INSUFFICIENT("prestige.rank_insufficient", "&7Your rank is insufficient to prestige! You need to reach Rank &c%s &7before prestiging!"),
 	PRESTIGE_REACHED_MAX("prestige.reached_max", "&7You've reached the last prestige level!"),
 	PRESTIGE_READY("prestige.ready", "&7You're ready to ascend! Type &c/prestige confirm &7to ascend!"),
-	PRESTIGE_ASCENDED("prestige.ascended", "&7You've successfully ascended! Your Prestige now is &c%p&7!"),
-	PRESTIGE_TOKEN_REWARD("prestige.token_reward", "&7As a reward for hard work you got &c%p &7God Tokens!"),
+	PRESTIGE_ASCENDED("prestige.ascended", "&7You've successfully ascended! Your Prestige now is &c%d&7!"),
+	PRESTIGE_TOKEN_REWARD("prestige.token_reward", "&7As a reward for hard work you got &c%d &7God Tokens!"),
 	
-	TOKENS_SHOP_NOT_ENOUGH("tokens.shop.not_enough", "&7You don't have enough GT! It costs &c%p GT"),
+	TOKENS_ALREADY_ACTIVE("tokens.runes.already-active", "&7You already have active rune! Wait befores it expires to use another!"),
+	TOKENS_APPLY_RUNE("tokens.runes.apply", "&7You've successfully used rune &c%s!"),
+	TOKENS_COOLDOWN("tokens.runes.cooldown", "&7You can use another rune in %d!"),
+	TOKENS_MAGNET("tokens.abilities.magnet", "&cMagnet &7ability has successfully activated!"),
+	TOKENS_POISONED("tokens.abilities.poisoned", "&7You have been poisoned by &c%s&7!"),
+	TOKENS_FLAMED("tokens.abilities.flamed", "&7You have been flamed by &c%s&7!"),
+	TOKENS_SHOP_NOT_ENOUGH("tokens.shop.not_enough", "&7You don't have enough GT! It costs &c%d GT"),
 	TOKENS_SHOP_NOT_SUPPORTED("tokens.shop.not_supported", "&7Your current item in hand is &cnot supported&7!"),
 	TOKENS_SHOP_ALREADY_APPLIED("tokens.shop.already_applied", "&7Your current item in hand already has an active ability!"),
-	TOKENS_SHOP_APPLY("tokens.shop.apply", "&7You applied &c%t &7ability for your current item!"),
-	TOKENS_SHOP_EXPIRED("tokens.expired", "&c%t &7has ran out!"),
-	TOKENS_MAGNET("tokens.magnet", "&cMagnet &7ability has successfully activated!"),
-	TOKENS_POISONED("tokens.poisoned", "&7You have been poisoned by &c%s&7!"),
-	TOKENS_FLAMED("tokens.flamed", "&7You have been flamed by &c%s&7!");
+	TOKENS_SHOP_APPLY("tokens.shop.apply", "&7You applied &c%s &7ability for your current item!"),
+	TOKENS_SHOP_EXPIRED("tokens.expired", "&c%s &7has ran out!");
  
     private String path;
     private String def;

@@ -46,7 +46,7 @@ public class PrestigeCommand implements CommandExecutor {
 		if(plugin.getPlayerManager().getRank(player) != plugin.getChallengesFile().getChallengesAmount()) {
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 					+ Lang.PRESTIGE_RANK_INSUFFICIENT.toString()
-						.replaceAll("%t", plugin.getChallengesFile().getTitle(plugin.getChallengesFile().getChallengesAmount())));
+						.replaceAll("%s", plugin.getChallengesFile().getTitle(plugin.getChallengesFile().getChallengesAmount())));
 			return true;
 		}
 		if(args.length == 0){
@@ -72,11 +72,11 @@ public class PrestigeCommand implements CommandExecutor {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), comm);
 				player.sendMessage(Lang.HEADERS_CHALLENGES.toString() 
 						+ Lang.PRESTIGE_ASCENDED.toString()
-							.replaceAll("%p", String.valueOf(plugin.getPlayerManager().getPrestige(player))));
+							.replaceAll("%d", String.valueOf(plugin.getPlayerManager().getPrestige(player))));
 				if(ConfigFile.getTokensReward() > 0) {
 					player.sendMessage(Lang.HEADERS_CHALLENGES.toString() 
 							+ Lang.PRESTIGE_TOKEN_REWARD.toString()
-								.replaceAll("%p", String.valueOf(ConfigFile.getTokensReward())));
+								.replaceAll("%d", String.valueOf(ConfigFile.getTokensReward())));
 				}
 			}
 			return true;

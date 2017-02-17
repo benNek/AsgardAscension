@@ -10,15 +10,15 @@ public class Rune {
 	private String name;
 	private Material icon;
 	private List<String> description;
-	private int temporaryPrice;
-	private int permanentPrice;
+	private int price;
+	private int duration;
 	
-	public Rune(String name, Material icon, int temporaryPrice, int permanentPrice) {
+	public Rune(String name, Material icon, int price, int duration) {
 		super();
 		this.name = name;
 		this.icon = icon;
-		this.temporaryPrice = temporaryPrice;
-		this.permanentPrice = permanentPrice;
+		this.price = price;
+		this.duration = duration;
 		this.description = new ArrayList<>();
 	}
 
@@ -71,32 +71,20 @@ public class Rune {
 		description.add(line);
 	}
 
-	/**
-	 * @return the temporaryPrice
-	 */
-	public int getTemporaryPrice() {
-		return temporaryPrice;
+	public int getPrice() {
+		return price;
 	}
 
-	/**
-	 * @param temporaryPrice the temporaryPrice to set
-	 */
-	public void setTemporaryPrice(int temporaryPrice) {
-		this.temporaryPrice = temporaryPrice;
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
-	/**
-	 * @return the permanentPrice
-	 */
-	public int getPermanentPrice() {
-		return permanentPrice;
+	public int getDuration() {
+		return duration;
 	}
 
-	/**
-	 * @param permanentPrice the permanentPrice to set
-	 */
-	public void setPermanentPrice(int permanentPrice) {
-		this.permanentPrice = permanentPrice;
+	public void setDuration(int duration) {
+		this.duration = duration;
 	}
 
 }

@@ -83,17 +83,17 @@ public class AsgardAscensionCommand implements CommandExecutor {
 				if(amount < 0 || amount > ConfigFile.getMaxPrestige()) {
 					sender.sendMessage(Lang.HEADERS_TOKENS.toString()
 							+ Lang.PRESTIGE_SET_NOT_IN_RANGE.toString()
-								.replaceAll("%p", String.valueOf(ConfigFile.getMaxPrestige())));
+								.replaceAll("%d", String.valueOf(ConfigFile.getMaxPrestige())));
 					return true;
 				}
 				plugin.getPlayerManager().setPrestige(target, amount, PrestigeType.COMMAND);
 				target.sendMessage(Lang.HEADERS_MAIN.toString()
 						+ Lang.PRESTIGE_SET_FOR_TARGET.toString()
-							.replaceAll("%p", String.valueOf(amount)));
+							.replaceAll("%d", String.valueOf(amount)));
 				player.sendMessage(Lang.HEADERS_MAIN.toString()
 						+ Lang.PRESTIGE_SET_FOR_SENDER.toString()
 							.replaceAll("%s", target.getDisplayName())
-							.replaceAll("%p", String.valueOf(amount)));
+							.replaceAll("%d", String.valueOf(amount)));
 				return true;
 			}
 				

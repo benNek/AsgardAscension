@@ -17,6 +17,7 @@ import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.inventories.GodTokensInventory;
 import com.nekrosius.asgardascension.listeners.SetupListener;
 import com.nekrosius.asgardascension.objects.Ability;
+import com.nekrosius.asgardascension.objects.Rune;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 
 public class GodTokensInventoryListener implements Listener {
@@ -41,6 +42,8 @@ public class GodTokensInventoryListener implements Listener {
 		// Main shop
 		if(title.equals(ChatColor.BOLD + "God Tokens Shop")) {
 			event.setCancelled(true);
+			if(event.getCurrentItem().getItemMeta() == null)
+				return;
 			switch(event.getCurrentItem().getType()) {
 				// GT withdrawal
 				case NETHER_STAR:
@@ -90,6 +93,7 @@ public class GodTokensInventoryListener implements Listener {
 		// Repair menu
 		else if(title.equals(ChatColor.BOLD + "Repair Menu")) {
 			// Pressed 'Go back!' button
+			event.setCancelled(true);
 			if(event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
 				GodTokensInventory.setupTokensMenu((Player) event.getWhoClicked());
 				return;
@@ -112,6 +116,7 @@ public class GodTokensInventoryListener implements Listener {
 		
 		// Temporary abilities
 		else if(title.equals(ChatColor.BOLD + "Temporary God Tokens")) {
+			event.setCancelled(true);
 			String name = event.getCurrentItem().getItemMeta().getDisplayName().substring(2);
 			Ability ability = plugin.getAbilityManager().getAbility(name);
 			handleTokenPurchase(player, ability, true);
@@ -119,10 +124,39 @@ public class GodTokensInventoryListener implements Listener {
 		
 		// Permanent abilities
 		else if(title.equals(ChatColor.BOLD + "Permanent God Tokens")) {
+			event.setCancelled(true);
 			String name = event.getCurrentItem().getItemMeta().getDisplayName().substring(2);
 			Ability ability = plugin.getAbilityManager().getAbility(name);
 			handleTokenPurchase(player, ability, false);
 		}
+		
+		// Runes
+		else if(title.equals(ChatColor.BOLD + "Runes")) {
+			event.setCancelled(true);
+			String name = event.getCurrentItem().getItemMeta().getDisplayName().substring(2);
+			Rune rune = plugin.getRuneManager().getRune(name);
+			handleRunePurchase(player, rune);
+		}
+		
+	}
+	
+	private void handleRunePurchase(Player player, Rune rune) {
+		player.closeInventory();
+		
+		// Not enough god tokens
+		if(!plugin.getPlayerManager().hasTokens(player, rune.getPrice())) {
+			player.sendMessage(Lang.HEADERS_TOKENS.toString()
+					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
+						.replaceAll("%d", String.valueOf(rune.getPrice())));
+			return;
+		}
+		plugin.getPlayerManager().withdrawTokens(player, rune.getPrice());
+		ItemStack runeItem = ItemStackGenerator.createItem(Material.ENCHANTED_BOOK,
+				ChatColor.RED + rune.getName(),
+				Arrays.asList(ChatColor.GRAY + "Right-click to use this rune!"));
+		
+		player.getInventory().addItem(runeItem);
+		
 		
 	}
 	
@@ -135,7 +169,7 @@ public class GodTokensInventoryListener implements Listener {
 		if(!plugin.getPlayerManager().hasTokens(player, price)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
 					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
-						.replaceAll("%p", String.valueOf(price)));
+						.replaceAll("%d", String.valueOf(price)));
 			return;
 		}
 		
@@ -156,7 +190,7 @@ public class GodTokensInventoryListener implements Listener {
 		plugin.getAbilityManager().applyAbility(player, player.getInventory().getItemInMainHand(), ability, temporary);
 		player.sendMessage(Lang.HEADERS_TOKENS.toString()
 				+ Lang.TOKENS_SHOP_APPLY.toString()
-					.replaceAll("%t", ability.getName()));
+					.replaceAll("%s", ability.getName()));
 	}
 	
 	private void handleGTWithdrawal(Player player) {
@@ -178,7 +212,7 @@ public class GodTokensInventoryListener implements Listener {
 		if(!plugin.getPlayerManager().hasTokens(player, 8)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
 					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
-						.replaceAll("%p", "8"));
+						.replaceAll("%d", "8"));
 			return;
 		}
 		plugin.getPlayerManager().setTokens(player, plugin.getPlayerManager().getTokens(player) - 8);
@@ -196,7 +230,7 @@ public class GodTokensInventoryListener implements Listener {
 		if(!plugin.getPlayerManager().hasTokens(player, 25)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
 					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
-						.replaceAll("%p", "25"));
+						.replaceAll("%d", "25"));
 			return;
 		}
 		
@@ -211,7 +245,7 @@ public class GodTokensInventoryListener implements Listener {
 		if(!plugin.getPlayerManager().hasTokens(player, 1)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
 					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
-						.replaceAll("%p", "1"));
+						.replaceAll("%d", "1"));
 			return;
 		}
 		
@@ -228,7 +262,7 @@ public class GodTokensInventoryListener implements Listener {
 		if(!plugin.getPlayerManager().hasTokens(player, 1)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
 					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
-						.replaceAll("%p", "1"));
+						.replaceAll("%d", "1"));
 			return;
 		}
 		
@@ -243,7 +277,7 @@ public class GodTokensInventoryListener implements Listener {
 		if(!plugin.getPlayerManager().hasTokens(player, 5)) {
 			player.sendMessage(Lang.HEADERS_TOKENS.toString()
 					+ Lang.TOKENS_SHOP_NOT_ENOUGH.toString()
-						.replaceAll("%p", "5"));
+						.replaceAll("%d", "5"));
 			return;
 		}
 		
