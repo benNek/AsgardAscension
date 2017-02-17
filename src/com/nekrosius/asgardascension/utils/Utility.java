@@ -84,15 +84,15 @@ public class Utility {
 		return true;
 	}
 	
-	public static Player getTargetPlayer(Player player) {
-        return getTarget(player, player.getWorld().getPlayers());
+	public static Player getTargetPlayer(Player player, int distance) {
+        return getTarget(player, player.getWorld().getPlayers(), distance);
     }
  
-    public static <T extends Entity> T getTarget(Entity entity, Iterable<T> entities) {
+    public static <T extends Entity> T getTarget(Entity entity, Iterable<T> entities, int distance) {
         T target = null;
         double threshold = 1;
         for (T other:entities) {
-        	if(entity.getLocation().distance(other.getLocation()) <= 15){
+        	if(entity.getLocation().distance(other.getLocation()) <= distance){
 	            Vector n = other.getLocation().toVector().subtract(entity.getLocation().toVector());
 	            if (entity.getLocation().getDirection().normalize().crossProduct(n).lengthSquared() < threshold && n.normalize().dot(entity.getLocation().getDirection().normalize()) >= 0) {
 	                if (target == null || target.getLocation().distanceSquared(entity.getLocation()) > other.getLocation().distanceSquared(entity.getLocation()))

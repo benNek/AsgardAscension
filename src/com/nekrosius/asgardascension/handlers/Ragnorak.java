@@ -84,7 +84,6 @@ public class Ragnorak {
 		final int minCount = RagnorakFile.getMinimumAmountOfPlayers();
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			p.sendMessage(Lang.HEADERS_RAGNORAK.toString() + "Are you prepared for epic Ragnorak? Type /ragnorak to vote!");
-			p.playSound(p.getLocation(), Sound.ENTITY_ENDERDRAGON_GROWL, 1F, 1F);
 		}
 		
 		// Voting period

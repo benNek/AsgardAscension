@@ -71,8 +71,8 @@ public class GodTokenListener implements Listener {
 			strikeLightning(player, block);
 			remove = true;
 		}
-		else if("Freeze".equals(GodTokens.getSkill(player.getName())) && Utility.getTargetPlayer(player) != null) {
-			Player target = Utility.getTargetPlayer(player);
+		else if("Freeze".equals(GodTokens.getSkill(player.getName())) && Utility.getTargetPlayer(player, 10) != null) {
+			Player target = Utility.getTargetPlayer(player, 10);
 			freezeTarget(player, target);
 			player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've frozen " + ChatColor.RED + target.getName());
 			target.sendMessage(Lang.HEADERS_TOKENS.toString() + "You were frozen by God Token of " + ChatColor.RED + player.getName());

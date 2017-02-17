@@ -1,11 +1,17 @@
 package com.nekrosius.asgardascension.listeners.tokens;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import com.nekrosius.asgardascension.Main;
@@ -27,6 +33,10 @@ public class RuneListener implements Listener {
 			return;
 		}
 		
+		if(!event.getHand().equals(EquipmentSlot.HAND)) {
+			return;
+		}
+		
 		ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
 		if(item == null || item.getItemMeta() == null || !item.getType().equals(Material.ENCHANTED_BOOK)) {
 			return;
@@ -38,21 +48,52 @@ public class RuneListener implements Listener {
 			return;
 		}
 		
+		event.setCancelled(true);
+		
 		if(plugin.getRuneManager().hasActiveRune(player)) {
-			player.sendMessage(Lang.HEADERS_TOKENS.toString() + Lang.TOKENS_ALREADY_ACTIVE.toString());
+			player.sendMessage(Lang.HEADERS_TOKENS.toString() + Lang.TOKENS_RUNE_ALREADY_ACTIVE.toString());
 			return;
 		}
 		
 		if(Cooldowns.getCooldown(player, "rune") > 0) {
-			player.sendMessage(Lang.HEADERS_TOKENS.toString() + Lang.TOKENS_COOLDOWN.toString()
+			player.sendMessage(Lang.HEADERS_TOKENS.toString() + Lang.TOKENS_RUNE_COOLDOWN.toString()
 				.replaceAll("%d", Convert.timeToString((int) (Cooldowns.getCooldown(player, "rune") / 1000))));
 			return;
 		}
 		
-		plugin.getRuneManager().startRune(player, rune);
-		
+		plugin.getRuneManager().start(player, rune);
 	}
 	
+	@EventHandler
+	public void onTakeRune(PlayerItemHeldEvent event) {
+		Player player = event.getPlayer();
+		if(plugin.getRuneManager().getEffect(player) != null && plugin.getRuneManager().getActiveRune(player) == null) {
+			plugin.getRuneManager().removeEffect(event.getPlayer());
+		}
+		
+		ItemStack item = event.getPlayer().getInventory().getItem(event.getNewSlot());
+		if(item == null || item.getItemMeta() == null || !item.getType().equals(Material.ENCHANTED_BOOK)) {
+			return;
+		}
+		
+		Rune rune = plugin.getRuneManager().getRune(item.getItemMeta().getDisplayName().substring(2));
+		if(rune == null) {
+			return;
+		}
+		
+		plugin.getRuneManager().startHoldingEffect(player, rune);
+	}
 	
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		if(plugin.getRuneManager().hasActiveRune(event.getPlayer())) {
+			plugin.getRuneManager().finish(event.getPlayer(), false);
+		}
+		
+		// Removing invisibility of hidden players
+		for(UUID uuid : plugin.getRuneManager().getInvisiblePlayers()) {
+			event.getPlayer().showPlayer(Bukkit.getPlayer(uuid));
+		}
+	}
 
 }

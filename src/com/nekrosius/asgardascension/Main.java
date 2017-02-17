@@ -120,8 +120,14 @@ public class Main extends JavaPlugin{
 			
 			// Saving player's data to a personal file
 			getPlayerManager().saveData(p);
+			
+			
+			// Showing invisible players
+			if(getRuneManager().hasActiveRune(p)) {
+				getRuneManager().finish(p, false);
+			}
 		}
-		
+				
 		// Saving tribes data
 		for(Tribe t : TribeManager.getTribes()) {
 			TribeFile.createConfig(t.getName());
