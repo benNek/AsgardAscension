@@ -1,7 +1,6 @@
 package com.nekrosius.asgardascension.managers;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
@@ -14,7 +13,6 @@ public class PlayerManager {
 	Map<String, Integer> rank;
 	Map<String, Integer> prestige;
 	Map<String, Integer> tokens;
-	Map<String, List<String>> purchased;
 	
 	Main plugin;
 	public PlayerManager(Main plugin) {
@@ -22,7 +20,6 @@ public class PlayerManager {
 		rank = new HashMap<>();
 		prestige = new HashMap<>();
 		tokens = new HashMap<>();
-		purchased = new HashMap<>();
 	}
 	
 	public void loadData(Player player) {
@@ -30,7 +27,6 @@ public class PlayerManager {
 		setRank(player, plugin.getPlayerFile().getRank());
 		setPrestige(player, plugin.getPlayerFile().getPrestige(), PrestigeType.HIDE);
 		setTokens(player, plugin.getPlayerFile().getGodTokens());
-		setPurchasedTokens(player, plugin.getPlayerFile().getTokens());
 	}
 	
 	public void saveData(Player player) {
@@ -38,7 +34,6 @@ public class PlayerManager {
 		plugin.getPlayerFile().setRank(getRank(player));
 		plugin.getPlayerFile().setPrestige(getPrestige(player));
 		plugin.getPlayerFile().setGodTokens(getTokens(player));
-		plugin.getPlayerFile().setTokens(getPurchasedTokens(player));
 		plugin.getPlayerFile().saveConfig();
 		
 		rank.remove(player.getName());
@@ -90,24 +85,6 @@ public class PlayerManager {
 	
 	public boolean hasTokens(Player player, int tokens) {
 		return this.tokens.get(player.getName()) >= tokens;
-	}
-	
-	public List<String> getPurchasedTokens(Player player) {
-		return purchased.get(player.getName());
-	}
-	
-	public boolean hasPurchasedToken(Player player, String token) {
-		return purchased.get(player.getName()).contains(token);
-	}
-	
-	public void addPurchasedToken(Player player, String token) {
-		List<String> owned = getPurchasedTokens(player);
-		owned.add(token);
-		setPurchasedTokens(player, owned);
-	}
-	
-	public void setPurchasedTokens(Player player, List<String> tokens) {
-		purchased.put(player.getName(), tokens);
 	}
 
 }

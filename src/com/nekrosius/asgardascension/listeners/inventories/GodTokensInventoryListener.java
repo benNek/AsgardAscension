@@ -8,7 +8,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -297,6 +299,33 @@ public class GodTokensInventoryListener implements Listener {
         
         plugin.getPlayerManager().withdrawTokens(player, 5);
         player.sendMessage(Lang.HEADERS_TOKENS.toString() + "All items in your inventory were successfully repaired!");
+	}
+	
+	@EventHandler
+	public void onUseNetherStar(PlayerInteractEvent event) {
+		if(event.getPlayer().getInventory().getItemInMainHand() == null)
+			return;
+		if(!(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)))
+			return;
+		if(!(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.NETHER_STAR)))
+			return;
+		if(!event.getPlayer().getInventory().getItemInMainHand().hasItemMeta())
+			return;
+		if(!event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "God Token"))
+			return;
+		
+		Player player = event.getPlayer();
+		int amount = player.getInventory().getItemInMainHand().getAmount();
+		ItemStack item = player.getInventory().getItemInMainHand();
+		if(amount > 1) {
+			item.setAmount(amount - 1);
+		}
+		else {
+			item.setType(Material.AIR);
+		}
+		player.getInventory().setItemInMainHand(item);
+		plugin.getPlayerManager().addTokens(player, 1);
+		player.sendMessage(Lang.HEADERS_TOKENS.toString() + "You've successfully deposited 1 GT!");
 	}
 
 }

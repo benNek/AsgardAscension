@@ -2,8 +2,6 @@ package com.nekrosius.asgardascension.files;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,13 +31,7 @@ public class PlayerFile {
 			config.addDefault("rank", 0);
 			config.addDefault("prestige", 0);
 			config.addDefault("god_tokens", 0);
-			config.addDefault("purchased_tokens", new ArrayList<String>());
 			config.options().copyDefaults(true);
-		}
-		else {
-			if(config.get("purchased_tokens") == null) {
-				config.set("purchased_tokens", new ArrayList<String>());
-			}
 		}
 		saveConfig();
 	}
@@ -66,14 +58,6 @@ public class PlayerFile {
 	
 	public void setGodTokens(int tokens) {
 		config.set("god_tokens", tokens);
-	}
-	
-	public List<String> getTokens() {
-		return config.getStringList("purchased_tokens");
-	}
-	
-	public void setTokens(List<String> tokens) {
-		config.set("purchased_tokens", tokens);
 	}
 	
 	public boolean isInChallenge() {

@@ -33,7 +33,6 @@ import com.nekrosius.asgardascension.files.PlayerFile;
 import com.nekrosius.asgardascension.files.RagnorakFile;
 import com.nekrosius.asgardascension.files.TribeFile;
 import com.nekrosius.asgardascension.files.WarpsFile;
-import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.handlers.Ragnorak;
 import com.nekrosius.asgardascension.managers.AbilityManager;
 import com.nekrosius.asgardascension.managers.ListenerManager;
@@ -98,7 +97,6 @@ public class Main extends JavaPlugin{
             return;
         }
         enablePlaceholders();
-		GodTokens.setupTokens();
 		
 		// Loading players' data
 		for(Player p : Bukkit.getOnlinePlayers()) {

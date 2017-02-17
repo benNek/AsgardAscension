@@ -38,7 +38,6 @@ import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.enums.Lang;
 import com.nekrosius.asgardascension.files.ConfigFile;
 import com.nekrosius.asgardascension.files.MessagesFile;
-import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 import com.nekrosius.asgardascension.utils.Utility;
 
@@ -80,10 +79,6 @@ public class PlayerListener implements Listener {
 		// Quiting challenge in case player is doing it
 		if(plugin.getChallenges().getChallenge(event.getPlayer()) > 0){
 			plugin.getChallenges().quitChallenge(event.getPlayer());
-		}
-		// Finishing god token
-		if(!(GodTokens.getSkill(event.getPlayer().getName()).equalsIgnoreCase(""))){
-			GodTokens.finish(event.getPlayer().getName());
 		}
 		plugin.getPlayerManager().saveData(event.getPlayer());
 	}

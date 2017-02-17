@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.enums.Lang;
-import com.nekrosius.asgardascension.handlers.GodTokens;
 import com.nekrosius.asgardascension.inventories.GodTokensInventory;
 
 public class TokenCommand implements CommandExecutor {
@@ -113,10 +112,6 @@ public class TokenCommand implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "/token give <player> <amount> " + ChatColor.GRAY + "gives specified amount of god tokens to player.");
 				player.sendMessage(ChatColor.RED + "/token set <player> <amount> " + ChatColor.GRAY + "sets player's tokens to specified amount");
 				player.sendMessage(ChatColor.RED + "/token remove <player> <amount> " + ChatColor.GRAY + "removes specified amount of god tokens from player.");
-			}
-			if(!(GodTokens.getSkill(player.getName()).equals(""))){
-				player.sendMessage(Lang.HEADERS_TOKENS.toString() + "Your current God Token is being used! Wait for it to end!");
-				return true;
 			}
 			GodTokensInventory.setupTokensMenu(player);
 		}

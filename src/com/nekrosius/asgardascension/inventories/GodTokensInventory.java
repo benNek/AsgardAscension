@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import com.nekrosius.asgardascension.Main;
 import com.nekrosius.asgardascension.enums.ItemType;
 import com.nekrosius.asgardascension.objects.Ability;
-import com.nekrosius.asgardascension.objects.GodToken;
 import com.nekrosius.asgardascension.objects.Rune;
 import com.nekrosius.asgardascension.utils.Convert;
 import com.nekrosius.asgardascension.utils.ItemStackGenerator;
@@ -23,15 +22,6 @@ import com.nekrosius.asgardascension.utils.ItemStackGenerator;
 public class GodTokensInventory {
 	
 	private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("AsgardAscension");
-
-	public static void setupTokensDurationMenu(Player player, GodToken token) {
-		Inventory inv = Bukkit.createInventory(player, 9, ChatColor.BOLD + "BUY " + token.getName());
-		inv.setItem(2, ItemStackGenerator.createItem(Material.PAPER, 0, 0, ChatColor.RED + "Temporary (" + ChatColor.GOLD + token.getTempPrice() + " GT"  + ChatColor.RED + ")", null));
-		inv.setItem(4, ItemStackGenerator.createItem(token.getIcon(), 0, 0, ChatColor.RED + token.getName(), token.getDescription(), true));
-		inv.setItem(6, ItemStackGenerator.createItem(Material.BOOK, 0, 0, ChatColor.RED + "Permanent Access (" + ChatColor.GOLD + token.getPermPrice() + " GT"  + ChatColor.RED + ")", null));
-		inv.setItem(8, ItemStackGenerator.createItem(Material.REDSTONE_BLOCK, 0, 0, ChatColor.RED + "Go back!", null));
-		player.openInventory(inv);
-	}
 	
 	public static void setupTokensMenu(Player player) {
 		Inventory inv = Bukkit.createInventory(player, 18, ChatColor.BOLD + "God Tokens Shop");
