@@ -44,11 +44,6 @@ public class GodTokensInventory {
 		inv.setItem(8, withdraw);
 		inv.setItem(17, withdraw);
 		
-		if(canBuyPlot(player)) {
-			inv.setItem(1, ItemStackGenerator.createItem(Material.STONE_SPADE, ChatColor.LIGHT_PURPLE + "Additional plot access", 
-					Arrays.asList("Price: " + ChatColor.RED + "25 GT"), true));
-		}
-		
 		// 1st Row
 		inv.setItem(3, ItemStackGenerator.createItem(Material.WATCH, ChatColor.LIGHT_PURPLE + "Temporary Tokens",
 				Arrays.asList("Click for more information!")));
@@ -58,12 +53,16 @@ public class GodTokensInventory {
 				Arrays.asList("Click for more information!"), true));
 		
 		// 2nd Row
+		if(canBuyPlot(player)) {
+			inv.setItem(10, ItemStackGenerator.createItem(Material.STONE_SPADE, ChatColor.LIGHT_PURPLE + "Additional plot access", 
+					Arrays.asList("Price: " + ChatColor.LIGHT_PURPLE + "25 GT"), true));
+		}
 		inv.setItem(12, ItemStackGenerator.createItem(Material.CHEST, ChatColor.LIGHT_PURPLE + "Crate", 
-				Arrays.asList("Price: " + ChatColor.RED + "8 GT")));
+				Arrays.asList("Price: " + ChatColor.LIGHT_PURPLE + "8 GT")));
 		inv.setItem(13, ItemStackGenerator.createItem(Material.ANVIL, ChatColor.LIGHT_PURPLE + "Repair", 
 				Arrays.asList("Click for more information!")));
 		inv.setItem(14, ItemStackGenerator.createItem(Material.GOLDEN_APPLE, 0, 1, ChatColor.LIGHT_PURPLE + "Odins Apple", 
-				Arrays.asList("Price: " + ChatColor.RED + "1 GT")));
+				Arrays.asList("Price: " + ChatColor.LIGHT_PURPLE + "1 GT")));
 		
 		player.openInventory(inv);
 	}

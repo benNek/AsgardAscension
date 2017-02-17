@@ -38,6 +38,7 @@ import com.nekrosius.asgardascension.handlers.Ragnorak;
 import com.nekrosius.asgardascension.managers.AbilityManager;
 import com.nekrosius.asgardascension.managers.ListenerManager;
 import com.nekrosius.asgardascension.managers.PlayerManager;
+import com.nekrosius.asgardascension.managers.RuneManager;
 import com.nekrosius.asgardascension.managers.TribeManager;
 import com.nekrosius.asgardascension.objects.Tribe;
 import com.nekrosius.asgardascension.utils.Logger;
@@ -61,6 +62,7 @@ public class Main extends JavaPlugin{
 	private TribeManager tribeManager;
 	private PlayerManager playerManager;
 	private AbilityManager abilityManager;
+	private RuneManager runeManager;
 	private EffectManager effectManager;
 	
 	// Files
@@ -150,6 +152,7 @@ public class Main extends JavaPlugin{
 		tribeManager = new TribeManager(this);
 		playerManager = new PlayerManager(this);
 		abilityManager = new AbilityManager(this);
+		runeManager = new RuneManager(this);
 		effectManager = new EffectManager(lib);
 		worldGuard = registerWorldGuard();
 		plots = new PlotAPI();
@@ -345,6 +348,10 @@ public class Main extends JavaPlugin{
 	
 	public AbilityManager getAbilityManager() {
 		return abilityManager;
+	}
+	
+	public RuneManager getRuneManager() {
+		return runeManager;
 	}
 	
 	public EffectManager getEffectManager() {
