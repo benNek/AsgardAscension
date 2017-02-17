@@ -85,24 +85,25 @@ public class Main extends JavaPlugin{
 	private Challenge challenges;
 	
 	public void onEnable(){
-        setupChat();
+		setupChat();
 		logger = new Logger(this);
 		setupFiles();
-        setupManagers();
-        setupClasses();
+		setupManagers();
+		setupClasses();
 		setupCommands();
-        if (!setupEconomy()) {
-        	getLogs().log("Vault or Economy plugin hasn't been found! Plugin is shutting down!");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-        enablePlaceholders();
+		if (!setupEconomy()) {
+			getLogs().log("Vault or Economy plugin hasn't been found! Plugin is shutting down!");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+		enablePlaceholders();
 		
 		// Loading players' data
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			getPlayerManager().loadData(p);
 			getAbilityManager().startTimer(p);
 		}
+		
 		
 		getLogs().log("AA initialized succesfully!");
 	}
@@ -163,42 +164,42 @@ public class Main extends JavaPlugin{
 	}
 	
 	public void loadLang() {
-	    File lang = new File(getDataFolder(), "lang.yml");
-	    if (!lang.exists()) {
-	        try {
-	            getDataFolder().mkdir();
-	            lang.createNewFile();
-	            InputStream defConfigStream = this.getResource("lang.yml");
-	            if (defConfigStream != null) {
-	                @SuppressWarnings("deprecation")
+		File lang = new File(getDataFolder(), "lang.yml");
+		if (!lang.exists()) {
+			try {
+				getDataFolder().mkdir();
+				lang.createNewFile();
+				InputStream defConfigStream = this.getResource("lang.yml");
+				if (defConfigStream != null) {
+					@SuppressWarnings("deprecation")
 					YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	                defConfig.save(lang);
-	                Lang.setFile(defConfig);
-	                //return defConfig;
-	            }
-	        } catch(IOException e) {
-	            e.printStackTrace(); // So they notice
-	            logger.log("Couldn't create language file.");
-	            logger.log("This is a fatal error. Now disabling");
-	            this.setEnabled(false);
-	        }
-	    }
-	    YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
-	    for(Lang item : Lang.values()) {
-	        if (conf.getString(item.getPath()) == null) {
-	            conf.set(item.getPath(), item.getDefault());
-	        }
-	    }
-	    Lang.setFile(conf);
-	    LANG = conf;
-	    LANG_FILE = lang;
-	    try {
-	        conf.save(getLangFile());
-	    } catch(IOException e) {
-	        logger.log("Failed to save lang.yml.");
-	        logger.log("Report this stacktrace.");
-	        e.printStackTrace();
-	    }
+					defConfig.save(lang);
+					Lang.setFile(defConfig);
+					//return defConfig;
+				}
+			} catch(IOException e) {
+				e.printStackTrace(); // So they notice
+				logger.log("Couldn't create language file.");
+				logger.log("This is a fatal error. Now disabling");
+				this.setEnabled(false);
+			}
+		}
+		YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
+		for(Lang item : Lang.values()) {
+			if (conf.getString(item.getPath()) == null) {
+				conf.set(item.getPath(), item.getDefault());
+			}
+		}
+		Lang.setFile(conf);
+		LANG = conf;
+		LANG_FILE = lang;
+		try {
+			conf.save(getLangFile());
+		} catch(IOException e) {
+			logger.log("Failed to save lang.yml.");
+			logger.log("Report this stacktrace.");
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -206,7 +207,7 @@ public class Main extends JavaPlugin{
 	* @return The lang.yml config.
 	*/
 	public YamlConfiguration getLang() {
-	    return LANG;
+		return LANG;
 	}
 	 
 	/**
@@ -214,7 +215,7 @@ public class Main extends JavaPlugin{
 	* @return The lang.yml file.
 	*/
 	public File getLangFile() {
-	    return LANG_FILE;
+		return LANG_FILE;
 	}
 	
 	private void setupClasses() {
@@ -248,57 +249,60 @@ public class Main extends JavaPlugin{
 	}
 	
 	private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        economy = rsp.getProvider();
-        return economy != null;
-    }
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) {
+			return false;
+		}
+		economy = rsp.getProvider();
+		return economy != null;
+	}
 	
 	private boolean setupChat() {
-        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null) {
-            chat = chatProvider.getProvider();
-        }
-        return chat != null;
-    }
+		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+		if (chatProvider != null) {
+			chat = chatProvider.getProvider();
+		}
+		return chat != null;
+	}
 	
 	private void enablePlaceholders() {
 		// Check if the MVdWPlaceholderAPI plugin is present
 		if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
 			// The plugin is enabled
 			PlaceholderAPI.registerPlaceholder(this, "tokens",
-					new PlaceholderReplacer() {
-						@Override
-						public String onPlaceholderReplace(
-								PlaceholderReplaceEvent event) {
-							Player player = event.getPlayer();
-							return ChatColor.GRAY + "" + getPlayerManager().getTokens(player);
-						}
-
-			});
+				new PlaceholderReplacer() {
+					@Override
+					public String onPlaceholderReplace(
+							PlaceholderReplaceEvent event) {
+						Player player = event.getPlayer();
+						return ChatColor.GRAY + "" + getPlayerManager().getTokens(player);
+					}
+				}
+			);
 			PlaceholderAPI.registerPlaceholder(this, "rankup_progress",
-					new PlaceholderReplacer() {
-						@Override
-						public String onPlaceholderReplace(
-								PlaceholderReplaceEvent event) {
-							if(economy == null)
-								return ChatColor.GRAY + "0%";
-							Player player = event.getPlayer();
-							double percentage = ((double)economy.getBalance(player) /
-									(getChallengesFile().getPrice(getPlayerManager().getRank(player) + 1) * (getPlayerManager().getPrestige(player) + 1))) * 100;
-							if(percentage > 100)
-								percentage = 100;
-							return ChatColor.GRAY + "" + String.format("%.1f", percentage) + "%";
-						}
-
-			});
+				new PlaceholderReplacer() {
+					@Override
+					public String onPlaceholderReplace(
+							PlaceholderReplaceEvent event) {
+						if(economy == null)
+							return ChatColor.GRAY + "0%";
+						Player player = event.getPlayer();
+						double percentage = ((double)economy.getBalance(player) /
+								(getChallengesFile().getPrice(getPlayerManager().getRank(player) + 1) * (getPlayerManager().getPrestige(player) + 1))) * 100;
+						if(percentage > 100)
+							percentage = 100;
+						return ChatColor.GRAY + "" + String.format("%.1f", percentage) + "%";
+					}
+				}
+			);
 		}
-		else getLogs().log("MVdWPlaceholderAPI is missing! Custom placeholders won't work!");
+		else {
+			getLogs().log("MVdWPlaceholderAPI is missing! Custom placeholders won't work!");
+		}
+		
 		if (Bukkit.getPluginManager().isPluginEnabled("DeluxeChat")) {
 			PlaceholderHandler.registerPlaceholderHook(this, new DeluxePlaceholderHook() {
 				@Override

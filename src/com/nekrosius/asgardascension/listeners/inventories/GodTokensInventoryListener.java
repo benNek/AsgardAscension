@@ -285,20 +285,20 @@ public class GodTokensInventoryListener implements Listener {
 		
 		// Repairing items in inventory
 		for (ItemStack item : player.getInventory().getContents()) {
-            if (item == null)
-            	continue;
-            if (ItemStackGenerator.isRepairable(item))
-                item.setDurability((short) 0);
-        }
+			if (item == null)
+				continue;
+			if (ItemStackGenerator.isRepairable(item))
+				item.setDurability((short) 0);
+		}
 		
 		// Repairing items in armor slots
-        for (ItemStack item : player.getInventory().getArmorContents()) {
-            if (item != null)
-                item.setDurability((short) 0);
-        }
-        
-        plugin.getPlayerManager().withdrawTokens(player, 5);
-        player.sendMessage(Lang.HEADERS_TOKENS.toString() + "All items in your inventory were successfully repaired!");
+		for (ItemStack item : player.getInventory().getArmorContents()) {
+			if (item != null)
+				item.setDurability((short) 0);
+		}
+		
+		plugin.getPlayerManager().withdrawTokens(player, 5);
+		player.sendMessage(Lang.HEADERS_TOKENS.toString() + "All items in your inventory were successfully repaired!");
 	}
 	
 	@EventHandler

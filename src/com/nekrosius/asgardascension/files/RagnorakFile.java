@@ -158,9 +158,9 @@ public class RagnorakFile {
 		return items;
 	}
 	
-    private static int getRandom(int min, int max){
-        return random.nextInt((max - min) + 1) + min;
-    }
+	private static int getRandom(int min, int max){
+		return random.nextInt((max - min) + 1) + min;
+	}
 	
 	public Main getPlugin() {
 		return plugin;

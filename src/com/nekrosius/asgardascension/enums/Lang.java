@@ -56,50 +56,50 @@ public enum Lang {
 	TOKENS_SHOP_APPLY("tokens.shop.apply", "&7You applied &c%s &7ability for your current item!"),
 	TOKENS_SHOP_EXPIRED("tokens.expired", "&c%s &7has ran out!");
  
-    private String path;
-    private String def;
-    private static YamlConfiguration LANG;
+	private String path;
+	private String def;
+	private static YamlConfiguration LANG;
  
-    /**
-    * Lang enum constructor.
-    * @param path The string path.
-    * @param start The default string.
-    */
-    Lang(String path, String start) {
-        this.path = path;
-        this.def = start;
-    }
+	/**
+	* Lang enum constructor.
+	* @param path The string path.
+	* @param start The default string.
+	*/
+	Lang(String path, String start) {
+		this.path = path;
+		this.def = start;
+	}
  
-    /**
-    * Set the {@code YamlConfiguration} to use.
-    * @param config The config to set.
-    */
-    public static void setFile(YamlConfiguration config) {
-        LANG = config;
-    }
+	/**
+	* Set the {@code YamlConfiguration} to use.
+	* @param config The config to set.
+	*/
+	public static void setFile(YamlConfiguration config) {
+		LANG = config;
+	}
  
-    @Override
-    public String toString() {
-        if (this == HEADERS_MAIN || this == HEADERS_RAGNORAK
-        		|| this == Lang.HEADERS_TOKENS || this == Lang.HEADERS_TRIBES
-        		|| this == Lang.HEADERS_FOG || this == Lang.HEADERS_CHALLENGES)
-            return ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def)) + " ";
-        return ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def));
-    }
+	@Override
+	public String toString() {
+		if (this == HEADERS_MAIN || this == HEADERS_RAGNORAK
+				|| this == Lang.HEADERS_TOKENS || this == Lang.HEADERS_TRIBES
+				|| this == Lang.HEADERS_FOG || this == Lang.HEADERS_CHALLENGES)
+			return ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def)) + " ";
+		return ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def));
+	}
  
-    /**
-    * Get the default value of the path.
-    * @return The default value of the path.
-    */
-    public String getDefault() {
-        return this.def;
-    }
+	/**
+	* Get the default value of the path.
+	* @return The default value of the path.
+	*/
+	public String getDefault() {
+		return this.def;
+	}
  
-    /**
-    * Get the path to the string.
-    * @return The path to the string.
-    */
-    public String getPath() {
-        return this.path;
-    }
+	/**
+	* Get the path to the string.
+	* @return The path to the string.
+	*/
+	public String getPath() {
+		return this.path;
+	}
 }

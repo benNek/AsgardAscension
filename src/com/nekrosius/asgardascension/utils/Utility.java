@@ -23,10 +23,10 @@ public class Utility {
 	private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("AsgardAscension");
 	private static Random random = new Random();
 	
-    public static int getRandom(int min, int max){
-        return random.nextInt((max - min) + 1) + min;
-    }
-    
+	public static int getRandom(int min, int max){
+		return random.nextInt((max - min) + 1) + min;
+	}
+	
 	public static boolean isPVPEnabled(Player player) {
 		return isPVPEnabled(player.getLocation());
 	}
@@ -85,21 +85,21 @@ public class Utility {
 	}
 	
 	public static Player getTargetPlayer(Player player, int distance) {
-        return getTarget(player, player.getWorld().getPlayers(), distance);
-    }
+		return getTarget(player, player.getWorld().getPlayers(), distance);
+	}
  
-    public static <T extends Entity> T getTarget(Entity entity, Iterable<T> entities, int distance) {
-        T target = null;
-        double threshold = 1;
-        for (T other:entities) {
-        	if(entity.getLocation().distance(other.getLocation()) <= distance){
-	            Vector n = other.getLocation().toVector().subtract(entity.getLocation().toVector());
-	            if (entity.getLocation().getDirection().normalize().crossProduct(n).lengthSquared() < threshold && n.normalize().dot(entity.getLocation().getDirection().normalize()) >= 0) {
-	                if (target == null || target.getLocation().distanceSquared(entity.getLocation()) > other.getLocation().distanceSquared(entity.getLocation()))
-	                    target = other;
-	            }
-        	}
-        }
+	public static <T extends Entity> T getTarget(Entity entity, Iterable<T> entities, int distance) {
+		T target = null;
+		double threshold = 1;
+		for (T other:entities) {
+			if(entity.getLocation().distance(other.getLocation()) <= distance){
+				Vector n = other.getLocation().toVector().subtract(entity.getLocation().toVector());
+				if (entity.getLocation().getDirection().normalize().crossProduct(n).lengthSquared() < threshold && n.normalize().dot(entity.getLocation().getDirection().normalize()) >= 0) {
+					if (target == null || target.getLocation().distanceSquared(entity.getLocation()) > other.getLocation().distanceSquared(entity.getLocation()))
+						target = other;
+				}
+			}
+		}
 		return target;
 	}
 

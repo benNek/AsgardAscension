@@ -210,16 +210,16 @@ public class ItemStackGenerator {
 	}
 	
 	private static ItemStack removeAttributes(ItemStack item) {
-	    if (!MinecraftReflection.isCraftItemStack(item)) {
-	        item = MinecraftReflection.getBukkitItemStack(item);
-	    }
-	    try {
-	    	NbtCompound compound = (NbtCompound) NbtFactory.fromItemTag(item);
-	    	compound.put(NbtFactory.ofList("AttributeModifiers"));
-	    } catch (IllegalArgumentException e) {
-	    	return item;
-	    }
-	    return item;
+		if (!MinecraftReflection.isCraftItemStack(item)) {
+			item = MinecraftReflection.getBukkitItemStack(item);
+		}
+		try {
+			NbtCompound compound = (NbtCompound) NbtFactory.fromItemTag(item);
+			compound.put(NbtFactory.ofList("AttributeModifiers"));
+		} catch (IllegalArgumentException e) {
+			return item;
+		}
+		return item;
 	}
 	
 }

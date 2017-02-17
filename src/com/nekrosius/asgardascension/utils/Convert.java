@@ -50,7 +50,7 @@ public class Convert {
 	public static BlockFace yawToFace(float yaw) {
 		BlockFace[] axis = { BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST };
 		return axis[Math.round(yaw / 90f) & 0x3];
-    }
+	}
 	
 	public static Location stringToLocation(String str) {
 		String[] st = str.split(", ");
@@ -248,5 +248,5 @@ public class Convert {
 		int quotient = (int) Math.ceil(amount / 9.0);
 		return quotient > 5 ? 54 : quotient * 9;
 	}
-    
+	
 }

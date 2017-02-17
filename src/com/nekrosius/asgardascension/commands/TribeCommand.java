@@ -606,20 +606,20 @@ public class TribeCommand implements CommandExecutor {
 	
 	public String addLinebreaks(String input, int maxLineLength) {
 		// http://stackoverflow.com/questions/7528045/large-string-split-into-lines-with-maximum-length-in-java \\
-	    StringTokenizer tok = new StringTokenizer(input, " ");
-	    StringBuilder output = new StringBuilder(input.length());
-	    int lineLen = 0;
-	    while (tok.hasMoreTokens()) {
-	        String word = tok.nextToken();
+		StringTokenizer tok = new StringTokenizer(input, " ");
+		StringBuilder output = new StringBuilder(input.length());
+		int lineLen = 0;
+		while (tok.hasMoreTokens()) {
+			String word = tok.nextToken();
 
-	        if (lineLen + word.length() > maxLineLength) {
-	            output.append("\n");
-	            lineLen = 0;
-	        }
-	        output.append(word + " ");
-	        lineLen += word.length();
-	    }
-	    return output.toString();
+			if (lineLen + word.length() > maxLineLength) {
+				output.append("\n");
+				lineLen = 0;
+			}
+			output.append(word + " ");
+			lineLen += word.length();
+		}
+		return output.toString();
 	}
 	
 	private void printTribeInfo(Player player, Tribe tribe) {
@@ -634,7 +634,7 @@ public class TribeCommand implements CommandExecutor {
 		
 		String scores = "";
 		for(int i = 0; i < titleLength + 4; i++) scores += '-';
-		String title = "    " + tribe.getName() + "  ";
+		String title = "	" + tribe.getName() + "  ";
 		
 		player.sendMessage(ChatColor.GRAY + "" + ChatColor.BOLD + "/" + scores + "\\");
 		player.sendMessage(ChatColor.BOLD + title);
