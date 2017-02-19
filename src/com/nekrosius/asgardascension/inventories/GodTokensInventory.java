@@ -74,6 +74,9 @@ public class GodTokensInventory {
 			List<String> description = new ArrayList<>(ability.getDescription());
 			
 			// Adding price depending whetver ability is permanent or temporary
+			if(temporary) {
+				description.add(ChatColor.GRAY + "Duration: " + ChatColor.RED + "15 minutes");
+			}
 			int price = temporary ? ability.getTemporaryPrice() : ability.getPermanentPrice();
 			String line = ChatColor.GRAY + "Price: " + ChatColor.RED + price + " GT";
 			description.add(line);

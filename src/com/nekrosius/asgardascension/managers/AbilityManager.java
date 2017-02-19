@@ -144,7 +144,6 @@ public class AbilityManager {
 	 * Registers all the abilities
 	 */
 	private void registerAbilities() {
-		String duration = ChatColor.GRAY + "Duration: " + ChatColor.RED + "15 minutes";
 		abilities = new ArrayList<>();
 		Ability ability;
 		
@@ -153,7 +152,6 @@ public class AbilityManager {
 		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE, ItemType.PICKAXE));
 		ability.addDescription(ChatColor.GRAY + "Gives Haste Effect");
 		ability.addDescription(ChatColor.GRAY + "Haste Level: " + ChatColor.RED + "I");
-		ability.addDescription(duration);
 		abilities.add(ability);
 		
 		// Poison
@@ -162,14 +160,12 @@ public class AbilityManager {
 		ability.addDescription(ChatColor.GRAY + "Poisons target enemy");
 		ability.addDescription(ChatColor.GRAY + "Poison Level: " + ChatColor.RED + "I");
 		ability.addDescription(ChatColor.GRAY + "Poison Duration: " + ChatColor.RED + "3 seconds");
-		ability.addDescription(duration);
 		abilities.add(ability);
 		
 		// AoE (4 blocks)
 		ability = new Ability("AoE", Material.GOLD_PICKAXE, 20, 200);
 		ability.setItems(Arrays.asList(ItemType.PICKAXE));
 		ability.addDescription(ChatColor.GRAY + "Destroys 4 blocks instead of 1");
-		ability.addDescription(duration);
 		abilities.add(ability);
 		
 		// Magnet
@@ -177,7 +173,6 @@ public class AbilityManager {
 		ability.setItems(Arrays.asList(ItemType.PICKAXE));
 		ability.addDescription(ChatColor.GRAY + "Small chance to get crate key");
 		ability.addDescription(ChatColor.GRAY + "Chance: " + ChatColor.RED + "0.01%");
-		ability.addDescription(duration);
 		abilities.add(ability);
 		
 		// Flame
@@ -185,7 +180,6 @@ public class AbilityManager {
 		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE));
 		ability.addDescription(ChatColor.GRAY + "Sets target on fire");
 		ability.addDescription(ChatColor.GRAY + "Fire Duration: " + ChatColor.RED + "3 seconds");
-		ability.addDescription(duration);
 		abilities.add(ability);
 		
 		// High Jump
@@ -193,7 +187,6 @@ public class AbilityManager {
 		ability.setItems(Arrays.asList(ItemType.BOOTS, ItemType.LEGGINGS, ItemType.CHESTPLATE, ItemType.HELMET));
 		ability.addDescription(ChatColor.GRAY + "Jump 2 blocks high");
 		ability.addDescription(ChatColor.GRAY + "Jump Level: " + ChatColor.RED + "II");
-		ability.addDescription(duration);
 		abilities.add(ability);
 		
 		// Speed
@@ -201,7 +194,6 @@ public class AbilityManager {
 		ability.setItems(Arrays.asList(ItemType.BOOTS, ItemType.LEGGINGS, ItemType.CHESTPLATE, ItemType.HELMET));
 		ability.addDescription(ChatColor.GRAY + "Gives speed boost");
 		ability.addDescription(ChatColor.GRAY + "Speed Level: " + ChatColor.RED + "I");
-		ability.addDescription(duration);
 		abilities.add(ability);
 		
 		// Lucky Repair
@@ -209,7 +201,6 @@ public class AbilityManager {
 		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE, ItemType.PICKAXE));
 		ability.addDescription(ChatColor.GRAY + "Small chance to repair item");
 		ability.addDescription(ChatColor.GRAY + "Chance: " + ChatColor.RED + "0.01%");
-		ability.addDescription(duration);
 		abilities.add(ability);
 	}
 	
