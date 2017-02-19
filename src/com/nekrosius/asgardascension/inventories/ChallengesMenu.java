@@ -28,7 +28,7 @@ public class ChallengesMenu {
 				status = ChatColor.RED + " [LOCKED]";
 			inv.addItem(ItemStackGenerator.createItem(plugin.getChallengesFile().getTypeMaterial(i), 0, 0, ChatColor.GOLD + "" + i + Convert.getOrdinalFor(i) + " challenge" + status,
 					Arrays.asList(ChatColor.GRAY + "Type: " + ChatColor.RED + WordUtils.capitalize(plugin.getChallengesFile().getType(i)),
-							ChatColor.GRAY + "Cost: " + Convert.toPrice(plugin.getChallengesFile().getPrice(i) * (prestige + 1))), true));
+							ChatColor.GRAY + "Cost: " + Convert.toPrice(plugin.getChallengesFile().getPrice(i) * (prestige + 1), true)), true));
 		}
 		player.openInventory(inv);
 	}

@@ -236,10 +236,10 @@ public class Convert {
 		return random.nextInt((max - min) + 1) + (double)min;
 	}
 	
-	public static String toPrice(double price) {
+	public static String toPrice(double price, boolean gui) {
 		DecimalFormat formatter = new DecimalFormat("#,###.00");
-		System.out.println(formatter.format(price));
-		return ChatColor.GRAY + "\\$" + ChatColor.RED + formatter.format(price) + ChatColor.GRAY;
+		String escaping = gui ? "" : "\\";
+		return ChatColor.GRAY + escaping + "$" + ChatColor.RED + formatter.format(price) + ChatColor.GRAY;
 	}
 	
 	public static int getInventorySize(int amount) {

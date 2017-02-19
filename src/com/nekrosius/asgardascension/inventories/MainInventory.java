@@ -29,7 +29,7 @@ public class MainInventory {
 				ChatColor.LIGHT_PURPLE + "RankUp Information",
 				Arrays.asList(	ChatColor.RED + "Next rank: " + plugin.getChallengesFile().getTitle(challenge),
 								ChatColor.RED + "Challenge type: " + WordUtils.capitalize(plugin.getChallengesFile().getType(challenge)),
-								ChatColor.RED + "Price: " + Convert.toPrice(plugin.getChallengesFile().getPrice(challenge) * (plugin.getPlayerManager().getPrestige(player) + 1)))));
+								ChatColor.RED + "Price: " + Convert.toPrice(plugin.getChallengesFile().getPrice(challenge) * (plugin.getPlayerManager().getPrestige(player) + 1), true))));
 		inv.setItem(6, ItemStackGenerator.createItem(Material.GOLD_INGOT, 0, 0, 
 				ChatColor.LIGHT_PURPLE + "I can buy anything!",
 				Arrays.asList(	ChatColor.RED 	+ "Skip the challenge by",

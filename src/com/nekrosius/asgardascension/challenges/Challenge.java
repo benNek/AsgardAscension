@@ -43,7 +43,7 @@ public class Challenge {
 		long price = plugin.getChallengesFile().getPrice(challenge) * (plugin.getPlayerManager().getPrestige(player) + 1);
 		if(!plugin.getEconomy().has(player, price)) {
 			player.sendMessage(Lang.HEADERS_CHALLENGES.toString() +
-					Lang.CHALLENGES_NOT_ENOUGH_MONEY.toString().replaceAll("%d", Convert.toPrice(price)));
+					Lang.CHALLENGES_NOT_ENOUGH_MONEY.toString().replaceAll("%d", Convert.toPrice(price, false)));
 			return;
 		}
 		plugin.getEconomy().withdrawPlayer(player, price);
@@ -70,7 +70,7 @@ public class Challenge {
 		player.sendMessage(Lang.HEADERS_CHALLENGES.toString()
 				+ Lang.CHALLENGES_START.toString()
 					.replaceAll("%s", plugin.getChallengesFile().getTitle(challenge))
-					.replaceAll("%d", Convert.toPrice(price)));
+					.replaceAll("%d", Convert.toPrice(price, false)));
 	}
 	
 	public void finishChallenge(Player player, boolean buy) {
