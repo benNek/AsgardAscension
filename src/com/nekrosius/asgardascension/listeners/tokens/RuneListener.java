@@ -33,7 +33,7 @@ public class RuneListener implements Listener {
 			return;
 		}
 		
-		if(!event.getHand().equals(EquipmentSlot.HAND)) {
+		if(event.getHand() == null || !event.getHand().equals(EquipmentSlot.HAND)) {
 			return;
 		}
 		
