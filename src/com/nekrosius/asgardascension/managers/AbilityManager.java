@@ -163,7 +163,7 @@ public class AbilityManager {
 		abilities.add(ability);
 		
 		// AoE (4 blocks)
-		ability = new Ability("AoE", Material.GOLD_PICKAXE, 20, 200);
+		ability = new Ability("AoE", Material.GOLD_PICKAXE, 20, 750);
 		ability.setItems(Arrays.asList(ItemType.PICKAXE));
 		ability.addDescription(ChatColor.GRAY + "Destroys 4 blocks instead of 1");
 		abilities.add(ability);
@@ -176,7 +176,7 @@ public class AbilityManager {
 		abilities.add(ability);
 		
 		// Flame
-		ability = new Ability("Flame", Material.BLAZE_POWDER, 15, 150);
+		ability = new Ability("Flame", Material.BLAZE_POWDER, 15, 750);
 		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE));
 		ability.addDescription(ChatColor.GRAY + "Sets target on fire");
 		ability.addDescription(ChatColor.GRAY + "Fire Duration: " + ChatColor.RED + "3 seconds");
