@@ -107,19 +107,19 @@ public class AbilityListener implements Listener {
 			left = block.getRelative(BlockFace.NORTH);
 			right = block.getRelative(BlockFace.SOUTH);
 		}
-		if(Utility.canBuild(player, block)) {
+		if(canAOEBreak(player, block)) {
 			player.getInventory().addItem(new ItemStack(block.getType()));
 			block.setType(Material.AIR);
 		}
-		if(Utility.canBuild(player, up)) {
+		if(canAOEBreak(player, up)) {
 			player.getInventory().addItem(new ItemStack(up.getType()));
 			up.setType(Material.AIR);
 		}
-		if(Utility.canBuild(player, left)) {
+		if(canAOEBreak(player, left)) {
 			player.getInventory().addItem(new ItemStack(left.getType()));
 			left.setType(Material.AIR);
 		}
-		if(Utility.canBuild(player, right)) {
+		if(canAOEBreak(player, right)) {
 			player.getInventory().addItem(new ItemStack(right.getType()));
 			right.setType(Material.AIR);
 		}
@@ -200,6 +200,10 @@ public class AbilityListener implements Listener {
 		target.sendMessage(Lang.HEADERS_TOKENS.toString()
 				+ Lang.TOKENS_FLAMED.toString()
 					.replaceAll("%s", damager.getName()));
+	}
+	
+	private boolean canAOEBreak(Player player, Block block) {
+		return Utility.canBuild(player, block) && !block.getType().equals(Material.BEDROCK);
 	}
 	
 }
