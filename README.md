@@ -1,5 +1,7 @@
 # AsgardAscension
-Private plugin for Asgard-MC network. Updated since 2015 July.
+![Asgard Ascension](https://pbs.twimg.com/profile_images/633996461089423360/kijTML4F.jpg)
+
+[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 
 ## Table of Contents
 * [Features](#features)
@@ -17,6 +19,7 @@ Private plugin for Asgard-MC network. Updated since 2015 July.
 
 ## Dependencies
 AsgardAscension depends on these plugins:
+
 **NOTE:** Different versions may or may not break the plugin
 
 * [DeluxeChat **1.10.0**](https://www.spigotmc.org/resources/deluxechat.1277/)
@@ -30,7 +33,6 @@ AsgardAscension depends on these plugins:
 * [WorldGuard **6.1**](https://dev.bukkit.org/projects/worldguard)
 
 ## Commands
-
 * /asgardascension (/aa, /asg)
 * /rankup
 * /tribe
@@ -43,5 +45,18 @@ AsgardAscension depends on these plugins:
 * /tokenwarp
 
 ## Permissions
-* asgardascension.admin
-* asgardascension.staff
+* **asgardascension.admin**
+  * Default: **OP**
+  * Grants access to:
+    * /asgardascension (/aa, /asg)
+    * /prestige location
+    * /rank
+    * /token give
+    * /token remove
+    * /token set
+    * /tribe socialspy (/tribe ss)
+    * /tokenwarp
+* **asgardascension.staff**
+  * Default: **OP**
+  * Grants access to:
+    * /tribe socialspy (/tribe ss)
