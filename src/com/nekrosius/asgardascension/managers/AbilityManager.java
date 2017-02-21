@@ -31,6 +31,70 @@ public class AbilityManager {
 	}
 	
 	/**
+	 * Registers all the abilities
+	 */
+	private void registerAbilities() {
+		abilities = new ArrayList<>();
+		Ability ability;
+		
+		// Haste
+		ability = new Ability("Haste", Material.GOLD_BOOTS, 10, 100);
+		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE, ItemType.PICKAXE));
+		ability.addDescription(ChatColor.GRAY + "Gives Haste Effect");
+		ability.addDescription(ChatColor.GRAY + "Haste Level: " + ChatColor.RED + "I");
+		abilities.add(ability);
+		
+		// Poison
+		ability = new Ability("Poison", Material.BEETROOT, 15, 150);
+		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE));
+		ability.addDescription(ChatColor.GRAY + "Poisons target enemy");
+		ability.addDescription(ChatColor.GRAY + "Poison Level: " + ChatColor.RED + "I");
+		ability.addDescription(ChatColor.GRAY + "Poison Duration: " + ChatColor.RED + "3 seconds");
+		abilities.add(ability);
+		
+		// AoE (4 blocks)
+		ability = new Ability("AoE", Material.GOLD_PICKAXE, 20, 750);
+		ability.setItems(Arrays.asList(ItemType.PICKAXE));
+		ability.addDescription(ChatColor.GRAY + "Destroys 4 blocks instead of 1");
+		abilities.add(ability);
+		
+		// Magnet
+		ability = new Ability("Magnet", Material.DETECTOR_RAIL, 25, 250);
+		ability.setItems(Arrays.asList(ItemType.PICKAXE));
+		ability.addDescription(ChatColor.GRAY + "Small chance to get crate key");
+		ability.addDescription(ChatColor.GRAY + "Chance: " + ChatColor.RED + "0.01%");
+		abilities.add(ability);
+		
+		// Flame
+		ability = new Ability("Flame", Material.BLAZE_POWDER, 15, 750);
+		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE));
+		ability.addDescription(ChatColor.GRAY + "Sets target on fire");
+		ability.addDescription(ChatColor.GRAY + "Fire Duration: " + ChatColor.RED + "3 seconds");
+		abilities.add(ability);
+		
+		// High Jump
+		ability = new Ability("High Jump", Material.ELYTRA, 20, 200);
+		ability.setItems(Arrays.asList(ItemType.BOOTS, ItemType.LEGGINGS, ItemType.CHESTPLATE, ItemType.HELMET));
+		ability.addDescription(ChatColor.GRAY + "Jump 2 blocks high");
+		ability.addDescription(ChatColor.GRAY + "Jump Level: " + ChatColor.RED + "II");
+		abilities.add(ability);
+		
+		// Speed
+		ability = new Ability("Speed", Material.FEATHER, 15, 150);
+		ability.setItems(Arrays.asList(ItemType.BOOTS, ItemType.LEGGINGS, ItemType.CHESTPLATE, ItemType.HELMET));
+		ability.addDescription(ChatColor.GRAY + "Gives speed boost");
+		ability.addDescription(ChatColor.GRAY + "Speed Level: " + ChatColor.RED + "I");
+		abilities.add(ability);
+		
+		// Lucky Repair
+		ability = new Ability("Lucky Repair", Material.ANVIL, 25, 250);
+		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE, ItemType.PICKAXE));
+		ability.addDescription(ChatColor.GRAY + "Small chance to repair item");
+		ability.addDescription(ChatColor.GRAY + "Chance: " + ChatColor.RED + "0.01%");
+		abilities.add(ability);
+	}
+	
+	/**
 	 * Starts timer To add potion effect abilities
 	 * @param player The player
 	 */
@@ -138,70 +202,6 @@ public class AbilityManager {
 				plugin.getPlayerManager().addTokens(player, ability.getTemporaryPrice());
 			}
 		}
-	}
-	
-	/**
-	 * Registers all the abilities
-	 */
-	private void registerAbilities() {
-		abilities = new ArrayList<>();
-		Ability ability;
-		
-		// Haste
-		ability = new Ability("Haste", Material.GOLD_BOOTS, 10, 100);
-		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE, ItemType.PICKAXE));
-		ability.addDescription(ChatColor.GRAY + "Gives Haste Effect");
-		ability.addDescription(ChatColor.GRAY + "Haste Level: " + ChatColor.RED + "I");
-		abilities.add(ability);
-		
-		// Poison
-		ability = new Ability("Poison", Material.BEETROOT, 15, 150);
-		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE));
-		ability.addDescription(ChatColor.GRAY + "Poisons target enemy");
-		ability.addDescription(ChatColor.GRAY + "Poison Level: " + ChatColor.RED + "I");
-		ability.addDescription(ChatColor.GRAY + "Poison Duration: " + ChatColor.RED + "3 seconds");
-		abilities.add(ability);
-		
-		// AoE (4 blocks)
-		ability = new Ability("AoE", Material.GOLD_PICKAXE, 20, 750);
-		ability.setItems(Arrays.asList(ItemType.PICKAXE));
-		ability.addDescription(ChatColor.GRAY + "Destroys 4 blocks instead of 1");
-		abilities.add(ability);
-		
-		// Magnet
-		ability = new Ability("Magnet", Material.DETECTOR_RAIL, 25, 250);
-		ability.setItems(Arrays.asList(ItemType.PICKAXE));
-		ability.addDescription(ChatColor.GRAY + "Small chance to get crate key");
-		ability.addDescription(ChatColor.GRAY + "Chance: " + ChatColor.RED + "0.01%");
-		abilities.add(ability);
-		
-		// Flame
-		ability = new Ability("Flame", Material.BLAZE_POWDER, 15, 750);
-		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE));
-		ability.addDescription(ChatColor.GRAY + "Sets target on fire");
-		ability.addDescription(ChatColor.GRAY + "Fire Duration: " + ChatColor.RED + "3 seconds");
-		abilities.add(ability);
-		
-		// High Jump
-		ability = new Ability("High Jump", Material.ELYTRA, 20, 200);
-		ability.setItems(Arrays.asList(ItemType.BOOTS, ItemType.LEGGINGS, ItemType.CHESTPLATE, ItemType.HELMET));
-		ability.addDescription(ChatColor.GRAY + "Jump 2 blocks high");
-		ability.addDescription(ChatColor.GRAY + "Jump Level: " + ChatColor.RED + "II");
-		abilities.add(ability);
-		
-		// Speed
-		ability = new Ability("Speed", Material.FEATHER, 15, 150);
-		ability.setItems(Arrays.asList(ItemType.BOOTS, ItemType.LEGGINGS, ItemType.CHESTPLATE, ItemType.HELMET));
-		ability.addDescription(ChatColor.GRAY + "Gives speed boost");
-		ability.addDescription(ChatColor.GRAY + "Speed Level: " + ChatColor.RED + "I");
-		abilities.add(ability);
-		
-		// Lucky Repair
-		ability = new Ability("Lucky Repair", Material.ANVIL, 25, 250);
-		ability.setItems(Arrays.asList(ItemType.SWORD, ItemType.AXE, ItemType.PICKAXE));
-		ability.addDescription(ChatColor.GRAY + "Small chance to repair item");
-		ability.addDescription(ChatColor.GRAY + "Chance: " + ChatColor.RED + "0.01%");
-		abilities.add(ability);
 	}
 	
 	public void applyAbility(Player player, ItemStack item, Ability ability, boolean temporary) {

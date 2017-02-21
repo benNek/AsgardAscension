@@ -104,7 +104,6 @@ public class Main extends JavaPlugin{
 			getAbilityManager().startTimer(p);
 		}
 		
-		
 		getLogs().log("AA initialized succesfully!");
 	}
 	
