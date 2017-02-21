@@ -1,6 +1,4 @@
 # AsgardAscension
-![Asgard Ascension](https://pbs.twimg.com/profile_images/633996461089423360/kijTML4F.jpg)
-
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 
 ## Table of Contents
@@ -18,8 +16,6 @@
 * Custom Enchants
 
 ## Dependencies
-AsgardAscension depends on these plugins:
-
 **NOTE:** Different versions may or may not break the plugin
 
 * [DeluxeChat **1.10.0**](https://www.spigotmc.org/resources/deluxechat.1277/)
